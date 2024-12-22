@@ -27,9 +27,9 @@
     <script src="{{ asset('hospital/backend/app/assets/js/app.min.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/custom.js') }}"></script>
-    <script src="{{ asset('hospital/backend/app/assets/bundles/apexcharts/apexcharts.min.js') }}"></script>
+    {{-- <script src="{{ asset('hospital/backend/app/assets/bundles/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/page/index.js') }}"></script>
-    <script src="{{ asset('hospital/backend/app/assets/js/page/ion-icons.js') }}"></script>
+    <script src="{{ asset('hospital/backend/app/assets/js/page/ion-icons.js') }}"></script> --}}
 </body>
 
 </html>

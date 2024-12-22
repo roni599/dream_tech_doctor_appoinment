@@ -1,6 +1,7 @@
 <template>
     <div class="container d-flex align-items-center justify-content-center py-4"
         style="min-height: 100vh; overflow: hidden">
+
         <div class="row justify-content-center" style="width: 100%; height: 100%">
             <div class="col-lg-10 col-md-12" style="max-width: 1300px; width: 100%; height: 100%">
                 <div class="card dd card-primary" style="height: 100%; width: 100%; overflow: hidden">
@@ -13,66 +14,80 @@
                         </div>
                         <div
                             class="login-container w-100 w-lg-50 d-flex flex-column justify-content-center align-items-center">
-                            <form v-show="currentStep === 'initialForm'" @submit.prevent="storeData('otpCheck')"
-                                class="w-100 px-3 p-3">
+                            <form enctype="multipart/form-data" v-show="currentStep === 'initialForm'"
+                                @submit.prevent="storeData('otpCheck')" class="w-100 px-3 p-3">
                                 <div class="row">
                                     <div class="col-md-12 mb-2">
-                                        <input type="text" class="form-control" placeholder="Hospital Name" required />
+                                        <input type="text" class="form-control" placeholder="Hospital Name" required
+                                            v-model="hospitalRegForm.hospital_name" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="Reg. Number" required />
+                                        <input type="text" class="form-control" placeholder="Reg. Number" required
+                                            v-model="hospitalRegForm.reg_number" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="Establish" required />
+                                        <input type="text" class="form-control" placeholder="Establish" required
+                                            v-model="hospitalRegForm.establish" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="Country" required />
+                                        <input type="text" class="form-control" placeholder="Country" required
+                                            v-model="hospitalRegForm.country" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="Division" required />
+                                        <input type="text" class="form-control" placeholder="Division" required
+                                            v-model="hospitalRegForm.division" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="District" required />
+                                        <input type="text" class="form-control" placeholder="District" required
+                                            v-model="hospitalRegForm.district" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="Sub District" required />
+                                        <input type="text" class="form-control" placeholder="Sub District" required
+                                            v-model="hospitalRegForm.sub_district" />
                                     </div>
                                     <div class="col-md-12 mb-2">
-                                        <input type="text" class="form-control" placeholder="Location Details"
-                                            required />
+                                        <input type="text" class="form-control" placeholder="Location Details" required
+                                            v-model="hospitalRegForm.location_details" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="tel" class="form-control" placeholder="Mobile Number" required />
+                                        <input type="tel" class="form-control" placeholder="Hospital Mobile Number"
+                                            required v-model="hospitalRegForm.mobile_number_1" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="tel" class="form-control" placeholder="Mobile Number" required />
+                                        <input type="tel" class="form-control" placeholder="Admin Mobile Number"
+                                            required v-model="hospitalRegForm.mobile_number_2" />
                                     </div>
                                     <div class="col-md-12 mb-2">
-                                        <input type="email" class="form-control" placeholder="E-Mail" required />
+                                        <input type="email" class="form-control" placeholder="Hospital E-Mail" required
+                                            v-model="hospitalRegForm.email" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="Admin Name" required />
+                                        <input type="text" class="form-control" placeholder="Admin Name" required
+                                            v-model="hospitalRegForm.admin_name" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="tel" class="form-control" placeholder="Admin Mobile" required />
+                                        <input type="tel" class="form-control" placeholder="Admin Mobile" required
+                                            v-model="hospitalRegForm.admin_mobile" />
                                     </div>
                                     <div class="col-md-12 mb-2">
-                                        <input type="email" class="form-control" placeholder="Admin E-Mail" required />
+                                        <input type="email" class="form-control" placeholder="Admin E-Mail" required
+                                            v-model="hospitalRegForm.admin_email" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="password" class="form-control" placeholder="Password" required />
+                                        <input type="password" class="form-control" placeholder="Password" required
+                                            v-model="hospitalRegForm.password" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="password" class="form-control" placeholder="Re-Password"
-                                            required />
+                                        <input type="password" class="form-control" placeholder="Re-Password" required
+                                            v-model="hospitalRegForm.re_password" />
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <label class="form-label">Logo</label>
-                                        <input type="file" class="form-control" />
+                                        <input type="file" class="form-control" @change="onFileSelect" />
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Hospital/Medical Front Picture</label>
-                                        <input type="file" class="form-control" />
+                                        <input type="file" class="form-control" @change="onFileSelect2" />
                                     </div>
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary w-100">
@@ -84,16 +99,20 @@
                             <div v-if="currentStep === 'otpCheck'" class="text-center mb-1">
                                 <p v-if="timer > 0" class="text-danger fw-bold mb-0">OTP expired on: {{ formattedTimer
                                     }}</p>
-                                <p v-else class="text-danger fw-bold mb-0">Time is up! Please restart the process.</p>
+                                <p v-else class="text-danger fw-bold mb-0">Time is up! Please restart the process or
+                                    resend OTP.</p>
+                                <p v-if="otpText" class="text-danger fw-bold mb-0">{{ otpText }}</p>
+                                <button v-if="timer === 0" class="btn btn-primary w-100 mb-2"
+                                    @click="storeData('otpCheck')">Resend
+                                    Otp?</button>
                             </div>
-                            <form v-show="currentStep === 'otpCheck'" @submit.prevent="storeData('otpCheck')"
-                                class="w-100 px-3">
+                            <form enctype="multipart/form-data" v-if="timer > 0" v-show="currentStep === 'otpCheck'"
+                                @submit.prevent="storeData('storeHospital')" class="w-100 px-3">
                                 <div class="mb-3">
-                                    <input type="text" class="form-control w-100" placeholder="Enter your OTP"
-                                        required />
+                                    <input type="text" class="form-control w-100" placeholder="Enter your OTP" required
+                                        v-model="hospitalRegForm.otp" />
                                 </div>
-                                <router-link to="/" :disabled="buttonDesable" class="btn btn-primary w-100">Check
-                                    OTP</router-link>
+                                <button class="btn btn-primary w-100">Check Otp</button>
                             </form>
                         </div>
                     </div>
@@ -104,26 +123,99 @@
 </template>
 
 <script>
+import axios from "axios";
 import { ref, computed } from "vue";
-
+import { useRouter } from 'vue-router';
 export default {
     name: "Register",
     setup() {
+        const router = useRouter();
         const currentStep = ref("initialForm");
         const heading = ref('Welcome To Sign Up');
         const timer = ref(0);
         const buttonDesable = ref(false);
         let timerInterval = null;
-
-        const storeData = (nextStep) => {
-            if (nextStep === "otpCheck") {
-                heading.value = "Check Your Email For Otp"
-                startTimer();
+        const otpText = ref('')
+        const hospitalRegForm = ref({
+            hospital_name: '',
+            reg_number: '',
+            establish: '',
+            country: '',
+            division: '',
+            district: '',
+            sub_district: '',
+            location_details: '',
+            mobile_number_1: '',
+            mobile_number_2: '',
+            email: '',
+            admin_name: '',
+            admin_mobile: '',
+            admin_email: '',
+            password: '',
+            re_password: '',
+            logo: null,
+            front_picture: null,
+            otp: ''
+        })
+        const onFileSelect = (event) => {
+            const file = event.target.files[0];
+            if (file.size > 1048576) {
+                Toast.fire({
+                    icon: "warning",
+                    title: "Image must be less than 1 MB!",
+                });
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    hospitalRegForm.value.logo = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
-            currentStep.value = nextStep;
+        };
+        const onFileSelect2 = (event) => {
+            const file = event.target.files[0];
+            if (file.size > 1048576) {
+                Toast.fire({
+                    icon: "warning",
+                    title: "Image must be less than 1 MB!",
+                });
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    hospitalRegForm.value.front_picture = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        const storeData = async (nextStep) => {
+            if (nextStep === 'otpCheck') {
+                try {
+                    const response = await axios.post('/api/auth/send_otp', {
+                        admin_email: hospitalRegForm.value.admin_email,
+                    });
+                    if (response.data) {
+                        heading.value = "Check Your Email For Otp"
+                        startTimer();
+                        currentStep.value = nextStep;
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            if (nextStep === 'storeHospital') {
+                try {
+                    const response = await axios.post('/api/auth/signup', hospitalRegForm.value);
+                    if (response.data) {
+                        router.push({ name: 'Login' });
+                    }
+                } catch (error) {
+                    otpText.value = error.response.data.otpMessage;
+                }
+            }
         };
         const startTimer = () => {
-            timer.value = 120;
+            timer.value = 1800;
             timerInterval = setInterval(() => {
                 if (timer.value > 0) {
                     timer.value -= 1
@@ -135,7 +227,6 @@ export default {
         }
         const stopTimer = () => {
             timer.value = 0;
-            buttonDesable.value = true;
             if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null
@@ -147,13 +238,42 @@ export default {
             const seconds = timer.value % 60;
             return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         });
+
+        const resetForm = () => {
+            hospitalRegForm.value = {
+                hospital_name: '',
+                reg_number: '',
+                establish: '',
+                country: '',
+                division: '',
+                district: '',
+                sub_district: '',
+                location_details: '',
+                mobile_number_1: '',
+                mobile_number_2: '',
+                email: '',
+                admin_name: '',
+                admin_mobile: '',
+                admin_email: '',
+                password: '',
+                re_password: '',
+                logo: null,
+                front_picture: null,
+                otp: ''
+            };
+        };
         return {
             heading,
             currentStep,
             storeData,
             timer,
             buttonDesable,
-            formattedTimer
+            formattedTimer,
+            hospitalRegForm,
+            onFileSelect,
+            onFileSelect2,
+            otpText,
+            resetForm
         };
     },
 };
