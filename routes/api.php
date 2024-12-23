@@ -21,6 +21,8 @@ Route::group([
 ], function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('send_otp', [AuthController::class, 'sendOTP']);
+    Route::post('password_reset_otp_check', [AuthController::class, 'passwordResetOtpCheck']);
+    Route::post('reset_password', [AuthController::class, 'resetPassword']);
     Route::post('signup', [AuthController::class, 'signup']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);

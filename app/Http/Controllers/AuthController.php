@@ -21,7 +21,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('JWT', ['except' => ['login', 'signup', 'sendOTP']]);
+        $this->middleware('JWT', ['except' => ['login', 'signup', 'sendOTP', 'passwordResetOtpCheck', 'resetPassword']]);
     }
 
     /**
@@ -31,10 +31,11 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $validateData = $request->validate([
+        $request->validate([
             'email' => 'required',
             'password' => 'required'
         ]);
+
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
@@ -53,13 +54,51 @@ class AuthController extends Controller
             ['email' => $request->admin_email],
             [
                 'otp' => $otp,
-                'expires_at' => Carbon::now()->addMinutes(30),
+                'expires_at' => Carbon::now()->addMinutes(2),
             ]
         );
         SendOtpEmail::dispatch($request->admin_email, $otp);
         return response()->json([
             'message' => 'OTP sent to your email',
         ]);
+    }
+
+    public function passwordResetOtpCheck(Request $request)
+    {
+        $request->validate([
+            'admin_email' => 'required|email',
+            'otp_check' => 'required'
+        ]);
+        $otpVerification = OtpVerification::where('email', $request->admin_email)->first();
+        if (!$otpVerification) {
+            return response()->json(['otpMessage' => 'OTP not found'], 404);
+        }
+        if (Carbon::now()->greaterThan($otpVerification->expires_at)) {
+            return response()->json(['otpMessage' => 'OTP has expired'], 400);
+        }
+        if ($otpVerification->otp !== $request->otp_check) {
+            return response()->json(['otpMessage' => 'Invalid OTP'], 400);
+        } else {
+            return response()->json(['otpMessage' => 'OTP Check successfully done']);
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'admin_email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = User::where('admin_email', $request->admin_email)->first();
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json(['message' => 'Password updated successfully']);
     }
 
 
@@ -162,12 +201,6 @@ class AuthController extends Controller
         return response()->json(auth()->user());
     }
 
-    public function all_user()
-    {
-        $user = User::all();
-        return response()->json($user);
-    }
-
     /**
      * Log the user out (Invalidate the token).
      *
@@ -207,12 +240,14 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => $ttl, // TTL in seconds for 24 hours
             'user_id' => auth()->user()->id,
-            'name' => auth()->user()->user_name,
-            'email' => auth()->user()->email,
-            'phone' => auth()->user()->phone,
-            'role_name' => auth()->user()->role->role_name,
-            'image' => auth()->user()->profile_img,
-            'status' => auth()->user()->status,
+            'hospital_name' => auth()->user()->hospital_name,
+            'admin_email' => auth()->user()->email,
+            'admin_name' => auth()->user()->admin_name,
+            'admin_mobile' => auth()->user()->mobile_number_2,
+            'logo' => auth()->user()->logo,
+            'front_picture' => auth()->user()->front_picture,
+            // 'role_name' => auth()->user()->role->role_name,
+            // 'status' => auth()->user()->status,
         ]);
     }
 }

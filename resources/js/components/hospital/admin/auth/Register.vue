@@ -18,8 +18,8 @@
                                 @submit.prevent="storeData('otpCheck')" class="w-100 px-3 p-3">
                                 <div class="row">
                                     <div class="col-md-12 mb-2">
-                                        <input type="text" class="form-control" placeholder="Hospital Name" required
-                                            v-model="hospitalRegForm.hospital_name" />
+                                        <input type="text" class="form-control" placeholder="Hospital Name"
+                                            required v-model="hospitalRegForm.hospital_name" />
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="text" class="form-control" placeholder="Reg. Number" required
@@ -30,20 +30,49 @@
                                             v-model="hospitalRegForm.establish" />
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="Country" required
-                                            v-model="hospitalRegForm.country" />
+                                        <select class="form-control form-select" aria-label="Default select example"
+                                            v-model="hospitalRegForm.country">
+                                            <option value="" selected>select country</option>
+                                            <option value="Bangladesh">Bangladesh</option>
+                                            <option value="Pakisthan">Pakisthan</option>
+                                            <option value="India">India</option>
+                                            <option value="Nepal">Nepal</option>
+                                            <option value="Vhutan">Vhutan</option>
+                                            <option value="Srilankha">Srilankha</option>
+                                            <option value="Maldhip">Maldhip</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="Division" required
-                                            v-model="hospitalRegForm.division" />
+                                        <select v-model="hospitalRegForm.division" @change="onDivisionChange"
+                                            class="form-control form-select" aria-label="Division select">
+                                            <option value="" disabled selected>Select Division</option>
+                                            <option v-for="division in divisions" :key="division.id"
+                                                :value="division.name">
+                                                {{ division.name }}
+                                            </option>
+                                        </select>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="District" required
-                                            v-model="hospitalRegForm.district" />
+                                        <select v-model="hospitalRegForm.district" @change="onDistrictChange"
+                                            class="form-control form-select" aria-label="District select">
+                                            <option value="" disabled selected>Select District</option>
+                                            <option v-for="district in filteredDistricts" :key="district.name"
+                                                :value="district.name">
+                                                {{ district.name }}
+                                            </option>
+                                        </select>
+
+
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="text" class="form-control" placeholder="Sub District" required
-                                            v-model="hospitalRegForm.sub_district" />
+                                        <select v-model="hospitalRegForm.sub_district" class="form-control form-select"
+                                            aria-label="Sub-District select">
+                                            <option value="" disabled selected>Select Sub-District</option>
+                                            <option v-for="subDistrict in filteredSubDistricts" :key="subDistrict"
+                                                :value="subDistrict">
+                                                {{ subDistrict }}
+                                            </option>
+                                        </select>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <input type="text" class="form-control" placeholder="Location Details" required
@@ -97,11 +126,12 @@
                                 </div>
                             </form>
                             <div v-if="currentStep === 'otpCheck'" class="text-center mb-1">
+                                <p v-if="timer > 0" class="text-success fw-bold mb-0">OTP send to : {{ hospitalRegForm.admin_email }}</p>
                                 <p v-if="timer > 0" class="text-danger fw-bold mb-0">OTP expired on: {{ formattedTimer
                                     }}</p>
                                 <p v-else class="text-danger fw-bold mb-0">Time is up! Please restart the process or
                                     resend OTP.</p>
-                                <p v-if="otpText" class="text-danger fw-bold mb-0">{{ otpText }}</p>
+                                <p v-if="timer > 0" class="text-danger fw-bold mb-0">{{ otpText }}</p>
                                 <button v-if="timer === 0" class="btn btn-primary w-100 mb-2"
                                     @click="storeData('otpCheck')">Resend
                                     Otp?</button>
@@ -126,6 +156,7 @@
 import axios from "axios";
 import { ref, computed } from "vue";
 import { useRouter } from 'vue-router';
+import divisions from '../../../Helpers/Address';
 export default {
     name: "Register",
     setup() {
@@ -135,7 +166,8 @@ export default {
         const timer = ref(0);
         const buttonDesable = ref(false);
         let timerInterval = null;
-        const otpText = ref('')
+        const otpText = ref('');
+        const errors = ref({});
         const hospitalRegForm = ref({
             hospital_name: '',
             reg_number: '',
@@ -157,6 +189,27 @@ export default {
             front_picture: null,
             otp: ''
         })
+
+        const filteredDistricts = ref([]);
+        const filteredSubDistricts = ref([]);
+
+        const onDivisionChange = () => {
+            const selectedDivisionName = hospitalRegForm.value.division;
+            const division = divisions.value.find((div) => div.name === selectedDivisionName);
+            filteredDistricts.value = division ? division.districts : [];
+            hospitalRegForm.value.district = ""; // Reset district
+            filteredSubDistricts.value = []; // Reset sub-district
+        };
+
+        // Handle District Change
+        const onDistrictChange = () => {
+            const selectedDistrictName = hospitalRegForm.value.district;
+            const district = filteredDistricts.value.find((dist) => dist.name === selectedDistrictName);
+            filteredSubDistricts.value = district ? district.subDistricts : [];
+            hospitalRegForm.value.sub_district = ""; // Reset sub-district
+        };
+
+
         const onFileSelect = (event) => {
             const file = event.target.files[0];
             if (file.size > 1048576) {
@@ -190,6 +243,9 @@ export default {
 
         const storeData = async (nextStep) => {
             if (nextStep === 'otpCheck') {
+                console.log(hospitalRegForm.value)
+                hospitalRegForm.value.otp = '';
+                otpText.value = '';
                 try {
                     const response = await axios.post('/api/auth/send_otp', {
                         admin_email: hospitalRegForm.value.admin_email,
@@ -215,18 +271,20 @@ export default {
             }
         };
         const startTimer = () => {
-            timer.value = 1800;
+            timer.value = 120;
             timerInterval = setInterval(() => {
                 if (timer.value > 0) {
                     timer.value -= 1
                 }
                 else {
-                    stopTimer()
+                    stopTimer();
+                    otpText.value = '';
                 }
             }, 1000)
         }
         const stopTimer = () => {
             timer.value = 0;
+            otpText.value = '';
             if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null
@@ -273,10 +331,26 @@ export default {
             onFileSelect,
             onFileSelect2,
             otpText,
-            resetForm
+            resetForm,
+            errors,
+            divisions,
+            filteredDistricts,
+            filteredSubDistricts,
+            onDivisionChange,
+            onDistrictChange,
         };
     },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.custom-input {
+    color: black;
+    /* Input text color */
+}
+
+.custom-input::placeholder {
+    color: rgb(209, 204, 204);
+    /* Placeholder text color */
+}
+</style>

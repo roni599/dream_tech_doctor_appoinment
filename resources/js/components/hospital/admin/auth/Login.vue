@@ -11,26 +11,30 @@
                         </div>
                         <div
                             class="login-container w-100 w-lg-50 d-flex flex-column justify-content-center align-items-center">
-                            <form class="w-75">
+                            <form @submit.prevent="login" class="w-75">
                                 <div class="mb-3">
-                                    <input type="email" class="form-control" placeholder="Admin E-Mail" required>
+                                    <input type="email" class="form-control" placeholder="Admin E-Mail" required
+                                        v-model="loginForm.email">
+                                    <small class="text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
                                 </div>
                                 <div class="mb-3 position-relative">
                                     <input :type="eye ? 'text' : 'password'" class="form-control" placeholder="Password"
-                                        required>
+                                        required v-model="loginForm.password">
                                     <button type="button" @click="eye = !eye"
                                         class="btn btn-link position-absolute end-0 top-0" style="margin: 5px;">
                                         <i
-                                            :class="eye ? 'fa-solid fa-eye text-black fs-6' : 'fa-solid fa-eye-slash text-black fs-6'"></i>
+                                            :class="eye ? 'fa-solid fa-eye text-black fs-6' : 'fa-solid fa-eye-slash text-black fs-6'">
+                                        </i>
                                     </button>
+                                    <small class="text-danger" v-if="errors.password">{{ errors.password[0] }}</small>
                                 </div>
-                                <router-link to="/hospital_dashboard" type="submit"
-                                    class="btn btn-primary w-100">Login</router-link>
+                                <button class="btn btn-primary w-100">Login</button>
                             </form>
                             <div
                                 class="footer-links mt-4 w-75 d-flex justify-content-between align-items-center flex-wrap flex-md-nowrap">
                                 <div class="forgate w-100 w-md-50 text-center text-md-start mb-2 mb-md-0">
-                                    <router-link to="/forget" href="#" class="text-decoration-none">Forget Password?</router-link>
+                                    <router-link to="/forget" href="#" class="text-decoration-none">Forget
+                                        Password?</router-link>
                                 </div>
                                 <div class="create_hospital w-100 w-md-50 text-center text-md-end">
                                     <router-link to="/register" href="#" class="text-decoration-none fw-bold">Create
@@ -55,14 +59,41 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { ref } from 'vue';
-
+import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
 export default {
     name: 'Login',
     setup() {
         let eye = ref(false);
+        const router = useRouter();
+        const errors = ref({});
+        const loginForm = ref({
+            email: '',
+            password: ''
+        })
+        const login = async () => {
+            try {
+                const response = await axios.post('/api/auth/login', loginForm.value);
+                console.log(response.data);
+                if (response.data) {
+                    Cookies.set('access_token', response.data.access_token, {
+                        expires: 1 / 24,
+                        secure: true,
+                        sameSite: 'Strict',
+                    });
+                    router.push({ name: 'Dashboard' })
+                }
+            } catch (error) {
+                errors.value = error.response.data.errors;
+            }
+        }
         return {
             eye,
+            loginForm,
+            login,
+            errors
         }
     }
 }
