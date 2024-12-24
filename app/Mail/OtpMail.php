@@ -23,7 +23,7 @@ class OtpMail extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->subject('Your OTP for Registration')
-              ->from($this->email, "Doctor-appoinment")
-              ->view('emails.otp');
+            ->from($this->email, "Doctor-appoinment")
+            ->view('emails.otp');
     }
 }

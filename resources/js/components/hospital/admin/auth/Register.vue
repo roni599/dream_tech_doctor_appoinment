@@ -18,8 +18,8 @@
                                 @submit.prevent="storeData('otpCheck')" class="w-100 px-3 p-3">
                                 <div class="row">
                                     <div class="col-md-12 mb-2">
-                                        <input type="text" class="form-control" placeholder="Hospital Name"
-                                            required v-model="hospitalRegForm.hospital_name" />
+                                        <input type="text" class="form-control" placeholder="Hospital Name" required
+                                            v-model="hospitalRegForm.hospital_name" />
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="text" class="form-control" placeholder="Reg. Number" required
@@ -126,7 +126,8 @@
                                 </div>
                             </form>
                             <div v-if="currentStep === 'otpCheck'" class="text-center mb-1">
-                                <p v-if="timer > 0" class="text-success fw-bold mb-0">OTP send to : {{ hospitalRegForm.admin_email }}</p>
+                                <p v-if="timer > 0" class="text-success fw-bold mb-0">OTP send to : {{
+                                    hospitalRegForm.admin_email }}</p>
                                 <p v-if="timer > 0" class="text-danger fw-bold mb-0">OTP expired on: {{ formattedTimer
                                     }}</p>
                                 <p v-else class="text-danger fw-bold mb-0">Time is up! Please restart the process or
@@ -250,6 +251,7 @@ export default {
                     const response = await axios.post('/api/auth/send_otp', {
                         admin_email: hospitalRegForm.value.admin_email,
                     });
+                    console.log(response)
                     if (response.data) {
                         heading.value = "Check Your Email For Otp"
                         startTimer();

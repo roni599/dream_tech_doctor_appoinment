@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\SendOtpEmail;
+use App\Mail\OtpMail;
 use App\Models\OtpVerification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -32,11 +34,11 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'admin_email' => 'required',
             'password' => 'required'
         ]);
 
-        $credentials = request(['email', 'password']);
+        $credentials = request(['admin_email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Email or password is invalid'], 401);
@@ -54,13 +56,16 @@ class AuthController extends Controller
             ['email' => $request->admin_email],
             [
                 'otp' => $otp,
-                'expires_at' => Carbon::now()->addMinutes(2),
+                'expires_at' => null,
+                // 'expires_at' => Carbon::now()->addMinutes(2),
             ]
         );
-        SendOtpEmail::dispatch($request->admin_email, $otp);
+        // SendOtpEmail::dispatch($request->admin_email, $otp);
+        Mail::to($request->admin_email)->send(new OtpMail($otp, $request->admin_email));
         return response()->json([
             'message' => 'OTP sent to your email',
-        ]);
+            'otp' => $otp, // Include the OTP in the response
+        ], 200);
     }
 
     public function passwordResetOtpCheck(Request $request)
@@ -188,7 +193,11 @@ class AuthController extends Controller
         $user->save();
         $otpVerification->delete();
 
-        return response()->json(['message' => 'User created successfully']);
+        // return response()->json(['message' => 'User created successfully']);
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user, // Include the saved user data
+        ], 201);
     }
 
     /**

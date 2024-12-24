@@ -171,12 +171,18 @@
             </nav>
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
+                    <!-- <div class=" p-3" style="background-color: #1c93d1; color: white; width: 15.6rem;">
+                        <img src="https://img.freepik.com/free-vector/young-man-with-glasses-illustration_1308-174706.jpg"
+                            alt="Admin Picture" class="border border-white rounded-circle mb-3" width="80"
+                            height="80">
+                        <h5 class="fw-bold" style="line-height: 1px;">Admin</h5>
+                        <p class="mb-0">Md. Jasim Uddin</p>
+                    </div> -->
                     <div class="sidebar-brand">
-                        <a href=""> <img alt="image"
-                                src="../../../../../../public/hospital/backend/app/assets/img/heartboard-1.png"
-                                class="header-logo" />
-                            <span class="logo-name">Otika</span>
-                        </a>
+                        <img src="https://img.freepik.com/free-vector/young-man-with-glasses-illustration_1308-174706.jpg"
+                            alt="Admin Picture" class="border border-white rounded-circle mb-3" width="80" height="80">
+                        <h5 class="fw-bold" style="line-height: 1px;">Admin</h5>
+                        <p class="mb-0">Md. Jasim Uddin</p>
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">Main</li>

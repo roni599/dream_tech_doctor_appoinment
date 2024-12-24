@@ -70,7 +70,7 @@ export default {
         const router = useRouter();
         const errors = ref({});
         const loginForm = ref({
-            email: '',
+            admin_email: '',
             password: ''
         })
         const login = async () => {
