@@ -14,7 +14,7 @@
                             <form @submit.prevent="login" class="w-75">
                                 <div class="mb-3">
                                     <input type="email" class="form-control" placeholder="Admin E-Mail" required
-                                        v-model="loginForm.email">
+                                        v-model="loginForm.admin_email">
                                     <small class="text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
                                 </div>
                                 <div class="mb-3 position-relative">
