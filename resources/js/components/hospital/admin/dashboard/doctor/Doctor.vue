@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3 w-100">
             <div class="d-flex w-100 mb-2 mb-sm-0">
                 <button @click="anotherLoad" class="btn btn-primary">

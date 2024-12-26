@@ -1,393 +1,364 @@
 <template>
-    <!-- <div class="mt-4">
-        <form>
-            <div class="row form-section mb-2">
-                <div class="col-md-12">
-                    <label for="department" class="form-label mb-0">Department/Category</label>
-                    <select class="form-select" id="department">
-                        <option value="" disabled selected>Select Department</option>
-                    </select>
-                </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="card" style="width: 1300px;">
+            <div class="card-header">
+                <h5 class="card-title">Doctor Create</h5>
             </div>
-            <div class="row form-section mb-2">
-                <div class="col-md-12">
-                    <label for="department" class="form-label mb-0">Department/Category</label>
-                    <input type="text" class="form-control" id="reg-number">
-                </div>
-            </div>
-            <div class="row form-section mb-2">
-                <div class="col-md-12">
-                    <label for="department" class="form-label mb-0">Doctor Name</label>
-                    <input type="text" class="form-control" id="reg-number">
-                </div>
-            </div>
-
-            <div class="row form-section mb-2">
-                <div class="col-md-4">
-                    <label for="gender" class="form-label mb-0">Gender</label>
-                    <input type="text" class="form-control" id="gender">
-                </div>
-                <div class="col-md-4">
-                    <label for="age" class="form-label mb-0">Age</label>
-                    <input type="number" class="form-control" id="age">
-                </div>
-                <div class="col-md-4">
-                    <label for="experience" class="form-label mb-0">Experience</label>
-                    <input type="text" class="form-control" id="experience">
-                </div>
-            </div>
-            <div class="row form-section mb-2">
-                <div class="col-md-12">
-                    <label for="details" class="form-label mb-0">Details</label>
-                    <textarea class="form-control" id="details" rows="2"></textarea>
-                </div>
-            </div>
-            <div class="row form-section mb-2">
-                <div class="col-md-12">
-                    <label for="specialist" class="form-label mb-0">Specialist</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row form-section mb-2">
-                <div class="col-md-12">
-                    <label for="specialist" class="form-label mb-0">Symptom</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row form-section mb-2">
-                <div class="col-md-12">
-                    <label for="email" class="form-label mb-0">E-Mail</label>
-                    <input type="email" class="form-control" id="email">
-                </div>
-            </div>
-            <div class="row form-section mb-2">
-                <div class="col-md-6">
-                    <label for="mobile" class="form-label mb-0">Mobile</label>
-                    <input type="text" class="form-control" id="mobile">
-                </div>
-                <div class="col-md-6">
-                    <label for="mobile" class="form-label mb-0">Mobile</label>
-                    <input type="text" class="form-control" id="mobile">
-                </div>
-            </div>
-            <div class="row form-section mb-2">
-                <div class="col-md-12">
-                    <label for="mobile" class="form-label mb-0">Shedule</label>
-                    <table class="table table-bordered border-black table-hover table-striped">
-                        <thead>
-                            <tr class=" border-black">
-                                <th class="border-black" scope="col">Days</th>
-                                <th class="border-black" scope="col">Start</th>
-                                <th class="border-black" scope="col">End</th>
-                                <th class="border-black" scope="col">Visit Limit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-black">
-                                <th class="border-black" scope="row">1</th>
-                                <td class="border-black">Mark</td>
-                                <td class="border-black">Otto</td>
-                                <td class="border-black">@mdo</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="row form-section mb-2">
-                <div class="col-md-12">
-                    <label for="mobile" class="form-label mb-0">Payment Detals</label>
-                    <table class="table table-bordered border-black table-hover table-striped">
-                        <thead>
-                            <tr class=" border-black">
-                                <th class="border-black" scope="col">Days</th>
-                                <th class="border-black" scope="col">Start</th>
-                                <th class="border-black" scope="col">End</th>
-                                <th class="border-black" scope="col">Visit Limit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-black">
-                                <th class="border-black" scope="row">1</th>
-                                <td class="border-black">Mark</td>
-                                <td class="border-black">Otto</td>
-                                <td class="border-black">@mdo</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="row form-section mb-2">
-                <label for="mobile" class="form-label mb-0"> For Appoint Mobile</label>
-                <div class="col-md-6">
-                    <input type="text" class="form-control" id="mobile">
-                </div>
-                <div class="col-md-6">
-                    <input type="text" class="form-control" id="mobile">
-                </div>
-            </div>
-            <div class="row form-section">
-                <div class="col-md-6">
-                    <label>Picture</label>
-                    <div class="picture-box rounded-circle bg-light"></div>
-                </div>
-                <div class="col-md-6">
-                    <label>Signature</label>
-                    <div class="signature-box bg-light"></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 d-flex justify-content-between">
-                    <button type="button" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-success">Save & View</button>
-                </div>
-            </div>
-        </form>
-    </div> -->
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title">Doctor Create</h5>
-        </div>
-        <div class="card-body">
-            <form>
-                <div class="row form-section mb-2">
-                    <div class="col-md-12">
-                        <label for="department" class="form-label mb-0">Department/Category</label>
-                        <select class="form-select" id="department">
-                            <option value="" disabled selected>Select Department</option>
-                        </select>
+            <div class="card-body">
+                <form @submit.prevent="submitForm">
+                    <div class="row form-section mb-2">
+                        <div class="col-md-6">
+                            <label for="department" class="form-label mb-0">Department/Category</label>
+                            <select v-model="form.deparment_category" class="form-select">
+                                <option value="" disabled selected>Select Department</option>
+                                <option value="Medicine">Medicine</option>
+                                <option value="Cardiology">Cardiology</option>
+                                <option value="Hypertension">Hypertension</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="department" class="form-label mb-0">Reg Number</label>
+                            <input v-model="form.regnum" type="text" class="form-control" id="reg-number">
+                        </div>
                     </div>
-                </div>
-
-                <div class="row form-section mb-2">
-                    <div class="col-md-12">
-                        <label for="department" class="form-label mb-0">Reg Number</label>
-                        <input type="text" class="form-control" id="reg-number">
-                    </div>
-                </div>
-
-                <div class="row form-section mb-2">
-                    <div class="col-md-12">
-                        <label for="department" class="form-label mb-0">Doctor Name</label>
-                        <input type="text" class="form-control" id="reg-number">
-                    </div>
-                </div>
-                <div class="row form-section mb-2">
-                    <div class="col-md-12">
-                        <label for="email" class="form-label mb-0">E-Mail</label>
-                        <input type="email" class="form-control" id="email">
-                    </div>
-                </div>
-
-                <div class="row form-section mb-2">
-                    <div class="col-md-4">
-                        <label for="age" class="form-label mb-0">Age</label>
-                        <input type="number" class="form-control" id="age">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="gender" class="form-label mb-0">Gender</label>
-                        <select class="form-select form-control" aria-label="Default select example">
-                            <option selected>Open this select menu</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Others">Others</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="experience" class="form-label mb-0">Experience</label>
-                        <input type="text" class="form-control" id="experience">
-                    </div>
-                </div>
-
-                <div class="row form-section mb-2">
-                    <div class="col-md-12">
-                        <label for="details" class="form-label mb-0">Details</label>
-                        <textarea class="form-control" id="details" rows="2"></textarea>
+                    <div class="row form-section mb-2">
+                        <div class="col-md-6">
+                            <label for="department" class="form-label mb-0">Doctor Name</label>
+                            <input v-model="form.doctorName" type="text" class="form-control" id="reg-number">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label mb-0">E-Mail</label>
+                            <input v-model="form.email" type="email" class="form-control" id="email">
+                        </div>
                     </div>
 
-                </div>
-                <div class="row form-section mb-2">
-                    <div class="col-md-12">
-                        <label for="specialist" class="form-label mb-0">Specialist</label>
-                        <div v-for="(item, index) in selects" :key="index" class="d-flex align-items-center mt-2">
-                            <select class="form-select flex-grow-1 me-2" v-model="item.value"
+                    <div class="row form-section mb-2">
+                        <div class="col-md-6">
+                            <label for="age" class="form-label mb-0">Age</label>
+                            <input v-model="form.age" type="number" class="form-control" id="age">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="gender" class="form-label mb-0">Gender</label>
+                            <select v-model="form.gender" class="form-select form-control"
                                 aria-label="Default select example">
-                                <option selected disabled value="">Open this select menu</option>
+                                <option selected value="">Open this select menu</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row form-section mb-2">
+                        <div class="col-md-6">
+                            <label for="details" class="form-label mb-0">Details</label>
+                            <input v-model="form.details" class="form-control" id="details" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="experience" class="form-label mb-0">Experience</label>
+                            <input v-model="form.experience" type="text" class="form-control" id="experience">
+                        </div>
+
+                    </div>
+                    <div class="row form-section mb-2">
+                        <div class="col-md-12">
+                            <label for="specialist" class="form-label mb-0">Specialist</label>
+                            <div v-for="(item, index) in selects" :key="index" class="d-flex align-items-center mt-2">
+                                <select class="form-select flex-grow-1 me-2" v-model="item.value"
+                                    aria-label="Default select example">
+                                    <option selected disabled value="">Open this select menu</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Rheumatic ">Rheumatic</option>
+                                    <option value="Fever">Fever</option>
+                                </select>
+                                <div class="d-flex">
+                                    <button type="button" class="btn btn-success me-1"
+                                        v-if="index === selects.length - 1" @click="addSelect">+
+                                    </button>
+                                    <button type="button" class="btn btn-danger" v-if="selects.length > 1"
+                                        @click="removeSelect(index)"> -
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-section mb-2">
+                        <div class="col-md-12">
+                            <label for="symptom" class="form-label mb-0">Symptom</label>
+                            <select v-model="form.symptom" class="form-select" aria-label="Default select example">
+                                <option selected>Open this select menu</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
                             </select>
-                            <div class="d-flex">
-                                <button type="button" class="btn btn-success me-1" v-if="index === selects.length - 1"
-                                    @click="addSelect">+
-                                </button>
-                                <button type="button" class="btn btn-danger" v-if="selects.length > 1"
-                                    @click="removeSelect(index)"> -
-                                </button>
+                        </div>
+                    </div>
+                    <div class="row form-section mb-2">
+                        <div class="col-md-6">
+                            <label for="mobile" class="form-label mb-0">Mobile</label>
+                            <input v-model="form.mobile" type="text" class="form-control" id="mobile">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="mobile" class="form-label mb-0">Optional Mobile</label>
+                            <input v-model="form.mobile_optional" type="text" class="form-control" id="mobile">
+                        </div>
+                    </div>
+                    <div class="row form-section mb-2">
+                        <div class="col-md-12">
+                            <label for="mobile" class="form-label mb-0">Shedule</label>
+                            <div class="table_size">
+                                <table class="table table-bordered  table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="height: 30px;">Days</th>
+                                            <th style="height: 30px;">Start</th>
+                                            <th style="height: 30px;">End</th>
+                                            <th style="height: 30px;">Visit Limit</th>
+                                            <th style="height: 30px;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(row, index) in rows" :key="index">
+                                            <td style="min-width: 150px;">
+                                                <select v-model="row.day" class="form-select form-control"
+                                                    aria-label="Default select example">
+                                                    <option value="Saturday">Saturday</option>
+                                                    <option value="Sunday">Sunday</option>
+                                                    <option value="Monday">Monday</option>
+                                                    <option value="Tuesday">Tuesday</option>
+                                                </select>
+                                            </td>
+                                            <td style="min-width: 150px;">
+                                                <input v-model="row.start" type="text" class="fw-6 form-control"
+                                                    placeholder="Start Time">
+                                            </td>
+                                            <td style="min-width: 150px;">
+                                                <input v-model="row.end" type="text" class="form-control"
+                                                    placeholder="End Time">
+                                            </td>
+                                            <td style="min-width: 150px;">
+                                                <input v-model="row.visitLimit" type="text" class="form-control"
+                                                    placeholder="Visit Limit">
+                                            </td>
+                                            <td class="text-center">
+                                                <button @click.prevent="addRow"
+                                                    class="btn btn-sm btn-success me-1">+</button>
+                                                <button @click.prevent="removeRow(index)" class="btn btn-sm btn-danger"
+                                                    :disabled="rows.length === 1">-</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row form-section mb-2">
-                    <div class="col-md-12">
-                        <label for="symptom" class="form-label mb-0">Symptom</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row form-section mb-2">
-                    <div class="col-md-6">
-                        <label for="mobile" class="form-label mb-0">Mobile</label>
-                        <input type="text" class="form-control" id="mobile">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="mobile" class="form-label mb-0">Optional Mobile</label>
-                        <input type="text" class="form-control" id="mobile">
-                    </div>
-                </div>
-                <div class="row form-section mb-2">
-                    <div class="col-md-12">
-                        <label for="mobile" class="form-label mb-0">Shedule</label>
-                        <table class="table table-bordered border-black table-hover table-striped">
-                            <thead>
-                                <tr class=" border-black">
-                                    <th class="border-black" scope="col">Days</th>
-                                    <th class="border-black" scope="col">Start</th>
-                                    <th class="border-black" scope="col">End</th>
-                                    <th class="border-black" scope="col">Visit Limit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-black">
-                                    <th class="border-black" scope="row" style="width: 222px;">
-                                        <select class="form-select form-control" aria-label="Default select example">
-                                            <option selected>SatarDay</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Others">Others</option>
-                                        </select>
-                                    </th>
-                                    <td class="border-black">Mark</td>
-                                    <td class="border-black">Otto</td>
-                                    <td class="border-black">@mdo</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="row form-section mb-2">
-                    <div class="col-md-12">
-                        <label for="mobile" class="form-label mb-0">Payment Detals</label>
-                        <table class="table table-bordered border-black">
-                            <thead class="border-black">
-                                <tr class="border-black">
-                                    <th class="border-black">Visit Fee</th>
-                                    <th class="border-black">2nd Time</th>
-                                    <th class="border-black">3rd Time</th>
-                                    <th class="border-black">Payment Type</th>
-                                    <th class="border-black">Room Number</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-black">
-                                    <td class="border-black"><input type="text" class="input-cell" value="600"></td>
-                                    <td class="border-black">
-                                        <div class="d-flex">
-                                            <input type="text" class="input-cell me-2" placeholder="Day">
-                                            <input type="text" class="input-cell" placeholder="Fee">
-                                        </div>
-                                    </td>
-                                    <td class="border-black">
-                                        <div class="d-flex">
-                                            <input type="text" class="input-cell me-2" placeholder="Day">
-                                            <input type="text" class="input-cell" placeholder="Fee">
-                                        </div>
-                                    </td>
-                                    <td class="border-black">
-                                        <select class="form-select input-cell">
-                                            <option value="" disabled selected>Select</option>
-                                            <option value="online">Online</option>
-                                            <option value="offline">Offline</option>
-                                            <option value="both">Offline/Online</option>
-                                        </select>
-                                    </td>
-                                    <td class="border-black">
-                                        <div class="d-flex">
-                                            <input type="text" class="input-cell me-2" placeholder="Rom number">
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="row form-section mb-2">
-                    <label for="mobile" class="form-label mb-0"> For Appoint Mobile</label>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" id="mobile">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" id="mobile">
-                    </div>
-                </div>
-                <div class="row form-section mb-3">
-                    <div class="col-md-5 mb-2">
-                        <label for="inputFile">Doctor Picture</label>
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control p-3 px-4" type="file" @change="onFileSelect" />
+                    <div class="row form-section mb-2">
+                        <div class="col-md-12">
+                            <label for="mobile" class="form-label mb-0">Payment Detals</label>
+                            <div class="table_size">
+                                <table class="table table-bordered  table-hover table-striped ">
+                                    <thead>
+                                        <tr>
+                                            <th style="height: 30px;">Visit Fee</th>
+                                            <th style="height: 30px;">2nd Time</th>
+                                            <th style="height: 30px;">3rd Time</th>
+                                            <th style="height: 30px;">Payment Type</th>
+                                            <th style="height: 30px;">Room Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="min-width: 150px;">
+                                                <input type="text" class="form-control" v-model="form.visitfee">
+                                            </td>
+                                            <td style="min-width: 150px;">
+                                                <div class="d-flex">
+                                                    <input v-model="form.second_day" type="text" class="form-control"
+                                                        style="min-width: 100px;" placeholder="Day">
+                                                    <input type="text" v-model="form.second_dayFee"
+                                                        class="form-control ms-2" style="min-width: 100px;"
+                                                        placeholder="Fee">
+                                                </div>
+                                            </td>
+                                            <td style="min-width: 150px;">
+                                                <div class="d-flex" style="min-width: 150px;">
+                                                    <input v-model="form.thired_day" type="text" class="form-control"
+                                                        style="min-width: 100px;" placeholder="Day">
+                                                    <input v-model="form.thired_dayFee" type="text"
+                                                        class="form-control ms-2" style="min-width: 100px;"
+                                                        placeholder="Fee">
+                                                </div>
+                                            </td>
+                                            <td style="min-width: 150px;">
+                                                <select v-model="form.payment_type" class="form-select "
+                                                    style="min-width: 150px;">
+                                                    <option value="" disabled selected>Select</option>
+                                                    <option value="online">Online</option>
+                                                    <option value="offline">Offline</option>
+                                                    <option value="both">Offline/Online</option>
+                                                </select>
+                                            </td>
+                                            <td style="min-width: 150px;">
+                                                <div class="d-flex">
+                                                    <input v-model="form.room_number" type="text"
+                                                        class="form-control me-2" style="min-width: 100px;"
+                                                        placeholder="Rom number">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-1 mt-4">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <img width="55" height="55" />
+                    <div class="row form-section mb-2">
+                        <div class="col-md-6">
+                            <label for="mobile" class="form-label mb-0"> For Appoint Mobile</label>
+                            <input v-model="form.appoinment_mobile" type="text" class="form-control" id="mobile">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="mobile" class="form-label mb-0"> For Appoint Mobile (Optional)</label>
+                            <input v-model="form.appoinment_mobileOptional" type="text" class="form-control"
+                                id="mobile">
                         </div>
                     </div>
-                    <div class="col-md-5 mb-2">
-                        <label for="inputFile">Signature </label>
-                        <div class="form-floating mb-3 mb-md-0">
-                            <input class="form-control p-3 px-4" type="file" @change="onFileSelect" />
+                    <div class="row form-section mb-2">
+                        <div class="col-md-5 mb-2 mb-md-0">
+                            <label for="inputFile">Doctor Picture</label>
+                            <div class="form-floating mb-3 mb-md-0">
+                                <input class="form-control p-3 px-4" type="file" @change="onFileSelect" />
+                            </div>
+                        </div>
+                        <div class="col-md-1 mt-1 mt-md-4">
+                            <div class="form-floating mb-3 mb-md-0">
+                                <img width="55" height="55" :src="form.doctor_image" />
+                            </div>
+                        </div>
+                        <div class="col-md-5 mb-0 mb-md-2">
+                            <label for="inputFile">Signature </label>
+                            <div class="form-floating mb-3 mb-md-0">
+                                <input class="form-control p-3 px-4" type="file" @change="onFileSelect1" />
+                            </div>
+                        </div>
+                        <div class="col-md-1 mt-1 mt-md-4">
+                            <div class="form-floating mb-3 mb-md-0">
+                                <img width="55" height="55" :src="form.signature_image" />
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-1 mt-4">
-                        <div class="form-floating mb-3 mb-md-0">
-                            <img width="55" height="55" />
+
+
+                    <div class="row form-section mb-3">
+                        <div class="col-md-12">
+                            <label for="details" class="form-label">Prescription Signature Style</label>
+                            <textarea v-model="form.prescription_signature_style" class="form-control" id="details"
+                                style="white-space: pre-wrap; height: 150px;">
+Dr. Md: Jasim Uddin Nizami
+MBBS (BCS)
+Dhaka Medical College
+    </textarea>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 d-flex justify-content-between">
-                        <button type="button" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-success">Save & View</button>
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button class="btn btn-primary me-3">Save</button>
+                            <button class="btn btn-success">Save & View</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+
+                </form>
+            </div>
         </div>
     </div>
 
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 export default {
     name: "DoctorCreate",
     setup() {
         const currentComponent = ref(false);
+        const form = ref({
+            deparment_category: '',
+            regnum: '',
+            doctorName: '',
+            email: '',
+            age: '',
+            gender: '',
+            details: '',
+            experience: '',
+            symptom: '',
+            mobile: '',
+            mobile_optional: '',
+            visitfee: '600',
+            second_day: '',
+            second_dayFee: '',
+            thired_day: '',
+            thired_dayFee: '',
+            payment_type: '',
+            room_number: '',
+            appoinment_mobile: '',
+            appoinment_mobileOptional: '',
+            doctor_image: 'https://png.pngtree.com/png-vector/20230928/ourmid/pngtree-young-afro-professional-doctor-png-image_10148632.png',
+            signature_image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShe6vu2Hqp4CatuNS5UbOhr6tUGRhU_WZ0sA&s',
+            prescription_signature_style: "",
+        })
+        const rows = reactive([
+            { day: 'Saturday', start: '', end: '', visitLimit: '' },
+        ]);
         const selects = ref([
             { value: "" },
         ]);
+
+
+        const onFileSelect = (event) => {
+            const file = event.target.files[0];
+            if (file.size > 1048576) {
+                Toast.fire({
+                    icon: "warning",
+                    title: "Image must be less than 1 MB!",
+                });
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    form.value.doctor_image = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        const onFileSelect1 = (event) => {
+            const file = event.target.files[0];
+            if (file.size > 1048576) {
+                Toast.fire({
+                    icon: "warning",
+                    title: "Image must be less than 1 MB!",
+                });
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    form.value.signature_image = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        const submitForm = () => {
+            console.log(form.value);
+            console.log(rows);
+            console.log(selects.value)
+        }
+
+
+
+        const addRow = () => {
+            rows.push({ day: 'Saturday', start: '', end: '', visitLimit: '' });
+        };
+        const removeRow = (index) => {
+            if (rows.length > 1) {
+                rows.splice(index, 1);
+            }
+        };
         const addSelect = () => {
             selects.value.push({ value: "" });
         };
@@ -395,11 +366,20 @@ export default {
             selects.value.splice(index, 1);
         };
 
+
+
         return {
             currentComponent,
             selects,
             addSelect,
             removeSelect,
+            rows,
+            addRow,
+            removeRow,
+            form,
+            submitForm,
+            onFileSelect,
+            onFileSelect1
         }
     }
 }
@@ -425,7 +405,19 @@ export default {
     vertical-align: middle;
 }
 
-.input-cell {
+textarea {
+    overflow: hidden;
+    resize: none;
+    font-family: "Arial", sans-serif;
+    font-size: 1px;
+    line-height: 1;
+    white-space: pre-wrap;
+    padding: 10px;
+    text-align: start;
+}
+
+.table_size {
     width: 100%;
+    overflow: auto;
 }
 </style>

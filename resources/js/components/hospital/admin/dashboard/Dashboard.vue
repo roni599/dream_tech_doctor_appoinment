@@ -197,7 +197,7 @@
                 </aside>
             </div>
             <div class="main-content">
-                <section class="section">
+                <section class="section" style="margin-top: -40px;">
                     <router-view name="content"></router-view>
                 </section>
             </div>
