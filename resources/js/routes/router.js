@@ -6,6 +6,8 @@ import Forget from '../components/hospital/admin/auth/Forget.vue';
 import Dashboard from '../components/hospital/admin/dashboard/Dashboard.vue';
 import Doctor from '../components/hospital/admin/dashboard/doctor/Doctor.vue';
 import DoctorCreate from '../components/hospital/admin/dashboard/doctor/DoctorCreate.vue';
+import DoctorView from '../components/hospital/admin/dashboard/doctor/DoctorView.vue';
+
 const routes = [
     { name: 'Login', component: Login, path: '/' },
     { name: 'Register', component: Register, path: '/register' },
@@ -32,6 +34,15 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: DoctorCreate,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/doctor_view',
+                name: 'DoctorView',
+                components: {
+                    default: Dashboard,
+                    content: DoctorView,
                 },
                 meta: { hideMainContent: true },
             },

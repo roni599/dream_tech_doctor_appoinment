@@ -38,6 +38,7 @@ return new class extends Migration
             $table->string('doctor_image')->nullable();
             $table->string('signature_image')->nullable();
             $table->string('prescription_signature_style')->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

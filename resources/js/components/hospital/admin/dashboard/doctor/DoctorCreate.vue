@@ -35,16 +35,16 @@
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
                             <label for="age" class="form-label mb-0">Age</label>
-                            <input v-model="form.age" type="number" class="form-control" id="age">
+                            <input v-model="form.age" type="text" class="form-control" id="age">
                         </div>
                         <div class="col-md-6">
                             <label for="gender" class="form-label mb-0">Gender</label>
                             <select v-model="form.gender" class="form-select form-control"
                                 aria-label="Default select example">
                                 <option selected value="">Open this select menu</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Others">Others</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Others</option>
                             </select>
                         </div>
 
@@ -87,9 +87,9 @@
                             <label for="symptom" class="form-label mb-0">Symptom</label>
                             <select v-model="form.symptom" class="form-select" aria-label="Default select example">
                                 <option selected>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option value="Angina">Angina</option>
+                                <option value="Anaphylaxis">Anaphylaxis</option>
+                                <option value="Ankle sprain">Ankle sprain</option>
                             </select>
                         </div>
                     </div>
@@ -274,11 +274,14 @@ Dhaka Medical College
 </template>
 
 <script>
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import { onMounted, reactive, ref } from 'vue';
 export default {
     name: "DoctorCreate",
     setup() {
         const currentComponent = ref(false);
+        const accessToken = ref('');
         const form = ref({
             deparment_category: '',
             regnum: '',
@@ -343,10 +346,33 @@ export default {
                 reader.readAsDataURL(file);
             }
         };
-        const submitForm = () => {
-            console.log(form.value);
-            console.log(rows);
-            console.log(selects.value)
+        const submitForm = async () => {
+            const payload = new FormData();
+            Object.keys(form.value).forEach((key) => {
+                payload.append(key, form.value[key]);
+            });
+            rows.forEach((row, index) => {
+                Object.keys(row).forEach((key) => {
+                    payload.append(`rows[${index}][${key}]`, row[key]);
+                });
+            });
+            selects.value.forEach((select, index) => {
+                payload.append(`selects[${index}]`, select.value);
+            });
+
+            try {
+                const response = await axios.post('/api/auth/hospital-doctor/store', payload);
+                console.log(response)
+                if (response.data && response.data.message && response.status === 201) {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success",
+                        draggable: true
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error.response?.data || error.message);
+            }
         }
 
 
@@ -365,9 +391,9 @@ export default {
         const removeSelect = (index) => {
             selects.value.splice(index, 1);
         };
-
-
-
+        onMounted(() => {
+            accessToken.value = Cookies.get('access_token');
+        })
         return {
             currentComponent,
             selects,
@@ -379,7 +405,8 @@ export default {
             form,
             submitForm,
             onFileSelect,
-            onFileSelect1
+            onFileSelect1,
+            accessToken
         }
     }
 }
