@@ -155,4 +155,14 @@ class DoctorController extends Controller
             'doctor' => $doctor,
         ], 200);
     }
+    public function viewDoctor($doctor_id)
+    {
+
+        $doctor = Doctor::find($doctor_id);
+        if (!$doctor) {
+            return response()->json(['message' => 'Doctor not found'], 404);
+        }
+
+        return response()->json(['message' => 'Doctor Data retrive successfully', 'doctor' => $doctor], 200);
+    }
 }

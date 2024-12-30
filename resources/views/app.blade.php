@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 
 <head>
     <meta charset="utf-8">
@@ -24,19 +24,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="./build/assets/app-CihLgQpI.css">
 </head>
 
 <body class="antialiased">
     <div id="app"></div>
     @vite('resources/js/app.js')
-    <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/app.min.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/custom.js') }}"></script>
-    <script src="{{ asset('hospital/backend/app/assets/bundles/apexcharts/apexcharts.min.js') }}"></script>
+    {{-- <script src="{{ asset('hospital/backend/app/assets/bundles/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/page/index.js') }}"></script>
-    <script src="{{ asset('hospital/backend/app/assets/js/page/ion-icons.js') }}"></script>
+    <script src="{{ asset('hospital/backend/app/assets/js/page/ion-icons.js') }}"></script> --}}
 </body>
 
-</html> --}}
+</html>

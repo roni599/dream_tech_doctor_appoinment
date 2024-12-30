@@ -39,7 +39,7 @@ class Doctor extends Model
     ];
 
     protected $casts = [
-        'specialist' => 'array',
-        'schedule' => 'array',
+        'Specialist' => 'array',
+        'Schedule' => 'array',
     ];
 }

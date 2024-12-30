@@ -47,12 +47,20 @@
                         <p class="mb-0 text-muted">{{ doctor.deparment_category }}</p>
                     </div>
                     <div class="d-flex align-items-center">
-                        <router-link to="/doctor_view" class="btn btn-outline-primary me-2">
+                        <router-link :to="{ name: 'DoctorView', params: { id: doctor.id } }"
+                            class="btn btn-outline-primary me-2">
                             <i class="fa-solid fa-eye"></i>
                         </router-link>
-                        <button class="btn btn-outline-warning me-2">
-                            <i class="fa-solid fa-pen-to-square"></i>
+                        <!-- <button class="btn btn-outline-warning me-2" @click="generateAndCopyLink(doctor.id)">
+                            <i class="fa-solid fa-copy"></i>
+                        </button> -->
+                        <button class="btn btn-outline-warning me-2 copy-button" @click="generateAndCopyLink(doctor.id)"
+                            @mouseenter="onHover($event, doctor.id)" @mouseleave="hoveredButton = null">
+                            <i class="fa-solid fa-copy"></i>
                         </button>
+                        <div v-if="hoveredButton === doctor.id" :style="tooltipStyle" class="custom-tooltip below">
+                            {{ copymessage }}
+                        </div>
                         <button class="btn btn-outline-danger me-2" @click="deleteDoctor(doctor.id)">
                             <i class="fa-solid fa-trash"></i>
                         </button>
@@ -84,6 +92,32 @@ export default {
     setup() {
         const currentComponent = shallowRef(null);
         const doctors = ref([]);
+        const hoveredButton = ref(null);
+        const tooltipStyle = ref({});
+        const copymessage=ref('Copy link address')
+
+        const onHover = (event, id) => {
+            copymessage.value='Copy link address';
+            hoveredButton.value = id;
+            const buttonRect = event.target.getBoundingClientRect();
+            tooltipStyle.value = {
+                position: "absolute",
+                top: `${buttonRect.bottom + window.scrollY - 85}px`,
+                left: `${buttonRect.left + buttonRect.width / 2 - 230}px`,
+                transform: "translateX(-90%)",
+            };
+        };
+
+        const generateAndCopyLink = async (id) => {
+            const currentHost = window.location.origin;
+            const generatedLink = `${currentHost}/doctorview/${id}`;
+            try {
+                await navigator.clipboard.writeText(generatedLink);
+                copymessage.value='copied';
+            } catch (error) {
+                console.error("Failed to copy:", error);
+            }
+        };
 
         const componentLoad = (componentvalue) => {
             if (componentvalue === "DoctorCreate") {
@@ -168,7 +202,12 @@ export default {
             fetchDoctor,
             doctors,
             updateStatus,
-            deleteDoctor
+            deleteDoctor,
+            tooltipStyle,
+            onHover,
+            generateAndCopyLink,
+            hoveredButton,
+            copymessage
         };
     },
 };
@@ -248,5 +287,26 @@ export default {
         flex: 1 0 auto;
         margin-bottom: 0;
     }
+}
+
+/* Add pointer cursor */
+.copy-button {
+    cursor: pointer;
+}
+
+.custom-tooltip {
+    background-color: #000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 0.9;
+
+    /* Adjust horizontal position */
+    transform: translateX(-60%);
+    /* Moves tooltip further to the left */
 }
 </style>

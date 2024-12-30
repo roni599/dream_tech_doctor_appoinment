@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <!-- Check if doctors array is empty -->
-        <div v-if="doctors.length  === 0" class="alert alert-info text-center">
+        <div v-if="doctors.length === 0" class="alert alert-info text-center">
             All doctors are inactive.So Go doctor list and active doctor
         </div>
 
@@ -51,7 +51,7 @@ export default {
         const doctors = ref([]);
         const fetchDoctor = async () => {
             const response = await axios.get("/api/auth/hospital-doctor/active-doctor");
-            if (response.data && response.status===200) {
+            if (response.data && response.status === 200) {
                 doctors.value = response.data;
             }
         };

@@ -307,8 +307,13 @@ export default {
             signature_image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShe6vu2Hqp4CatuNS5UbOhr6tUGRhU_WZ0sA&s',
             prescription_signature_style: "",
         })
-        const rows = reactive([
-            { day: 'Saturday', start: '', end: '', visitLimit: '' },
+        const rows = ref([
+            {
+                day: 'Saturday',
+                start: '',
+                end: '',
+                visitLimit: ''
+            },
         ]);
         const selects = ref([
             { value: "" },
@@ -351,7 +356,7 @@ export default {
             Object.keys(form.value).forEach((key) => {
                 payload.append(key, form.value[key]);
             });
-            rows.forEach((row, index) => {
+            rows.value.forEach((row, index) => {
                 Object.keys(row).forEach((key) => {
                     payload.append(`rows[${index}][${key}]`, row[key]);
                 });
@@ -378,7 +383,7 @@ export default {
 
 
         const addRow = () => {
-            rows.push({ day: 'Saturday', start: '', end: '', visitLimit: '' });
+            rows.value.push({ day: 'Saturday', start: '', end: '', visitLimit: '' });
         };
         const removeRow = (index) => {
             if (rows.length > 1) {

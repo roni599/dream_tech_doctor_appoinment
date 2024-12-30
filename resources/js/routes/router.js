@@ -8,10 +8,13 @@ import Doctor from '../components/hospital/admin/dashboard/doctor/Doctor.vue';
 import DoctorCreate from '../components/hospital/admin/dashboard/doctor/DoctorCreate.vue';
 import DoctorView from '../components/hospital/admin/dashboard/doctor/DoctorView.vue';
 
+import DoctorviewOffline from '../components/hospital/admin/dashboard/doctor/DoctorviewOffline.vue';
+
 const routes = [
     { name: 'Login', component: Login, path: '/' },
     { name: 'Register', component: Register, path: '/register' },
     { name: 'Forget', component: Forget, path: '/forget' },
+    { name: 'DoctorviewOffline', component: DoctorviewOffline, path: '/doctorview/:id' },
 
 
     {
@@ -38,7 +41,7 @@ const routes = [
                 meta: { hideMainContent: true },
             },
             {
-                path: '/doctor_view',
+                path: '/doctor_view/:id',
                 name: 'DoctorView',
                 components: {
                     default: Dashboard,
