@@ -33,8 +33,8 @@ Route::group([
     Route::get('/hospital-doctor', [DoctorController::class, 'index']);
     Route::post('/hospital-doctor/store', [DoctorController::class, 'store']);
     Route::post('/hospital-doctor/update', [DoctorController::class, 'update']);
-    Route::post('/hospital-doctor/change-status', [DoctorController::class, 'changeStatus']);
     Route::post('/hospital-doctor/delete-doctor', [DoctorController::class, 'deleteDoctor']);
+    Route::post('/hospital-doctor/change-status', [DoctorController::class, 'changeStatus']);
     Route::get('/hospital-doctor/active-doctor', [DoctorController::class, 'activeDoctor']);
     Route::get('/hospital-doctor/dactive-doctor', [DoctorController::class, 'dactiveDoctor']);
     Route::get('/hospital-doctor/doctor-view/{doctor_id}', [DoctorController::class, 'viewDoctor']);

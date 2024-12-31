@@ -26,6 +26,7 @@ class DoctorController extends Controller
     }
     public function store(Request $request)
     {
+       
         // return response()->json($request->all());
         // $request->validate([
         //     'deparment_category' => 'required|string|max:255',
@@ -169,6 +170,34 @@ class DoctorController extends Controller
 
     public function update(Request $request)
     {
+        // $request->validate([
+        //      'doctor_id'=> 'required',
+        //     'deparment_category' => 'required|string|max:255',
+        //     'regnum' => 'required|string|max:255',
+        //     'doctorName' => 'required|string|max:255',
+        //     'email' => 'nullable|email|max:255',
+        //     'age' => 'nullable|string',
+        //     'gender' => 'required|string|in:male,female,other',
+        //     'details' => 'nullable|string',
+        //     'experience' => 'nullable|string',
+        //     'rows' => 'nullable|array',
+        //     'selects' => 'nullable|array',
+        //     'symptom' => 'nullable|string',
+        //     'mobile' => 'required|string|max:15',
+        //     'mobile_optional' => 'nullable|string|max:15',
+        //     'visitfee' => 'required|string|min:0',
+        //     'second_day' => 'nullable|string',
+        //     'second_dayFee' => 'nullable|string',
+        //     'thired_day' => 'nullable|string',
+        //     'thired_dayFee' => 'nullable|string',
+        //     'payment_type' => 'nullable|string|max:255',
+        //     'room_number' => 'nullable|string|max:255',
+        //     'appoinment_mobile' => 'nullable|string|max:15',
+        //     'appoinment_mobileOptional' => 'nullable|string|max:15',
+        //     'doctor_image' => 'nullable|string',
+        //     'signature_image' => 'nullable|string',
+        //     'prescription_signature_style' => 'nullable|string',
+        // ]);
         $doctor_id = $request->doctor_id;
         $doctor = Doctor::findOrFail($doctor_id);
 
