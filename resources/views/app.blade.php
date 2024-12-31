@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('hospital/backend/app/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('hospital/backend/app/assets/css/components.css') }}">
     <link rel="stylesheet" href="{{ asset('hospital/backend/app/assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('hospital/backend/app/assets/bundles/prism/prism.css') }}">
 
     <link rel="stylesheet" href="{{ asset('hospital/backend/app/assets/bundles/ionicons/css/ionicons.min.css') }}">
     <link rel="stylesheet"
@@ -32,6 +33,7 @@
     <script src="{{ asset('hospital/backend/app/assets/js/app.min.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/custom.js') }}"></script>
+    <script src="{{ asset('hospital/backend/app/assets/bundles/prism/prism.js') }}"></script>
     {{-- <script src="{{ asset('hospital/backend/app/assets/bundles/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/page/index.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/page/ion-icons.js') }}"></script> --}}

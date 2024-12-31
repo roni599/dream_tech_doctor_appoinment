@@ -22,25 +22,26 @@
             <div class="row mb-3">
                 <div class="col-md-6 mb-3">
                     <label for="department" class="form-label">Department/Category</label>
-                    <select id="department" class="form-select">
+                    <select v-model="departmentFilter" id="department" class="form-select">
                         <option value="" selected>Choose...</option>
-                        <option value="1">Cardiology</option>
-                        <option value="2">Neurology</option>
+                        <option v-for="(department, index) in uniqueDepartments" :key="index" :value="department">
+                            {{ department }}
+                        </option>
                     </select>
                 </div>
                 <div class="col-md-6">
                     <label for="doctor" class="form-label">Doctor</label>
-                    <select id="doctor" class="form-select">
+                    <select v-model="doctorFilter" id="doctor" class="form-select">
                         <option value="" selected>Choose...</option>
-                        <option value="1">Dr. Jasim</option>
-                        <option value="2">Dr. Rahman</option>
+                        <option v-for="doctorName in doctors" :key="doctorName.id" :value="doctorName.doctorName">{{
+                            doctorName.doctorName }}</option>
                     </select>
                 </div>
             </div>
-            <div v-for="doctor in doctors" :key="doctor.id" class="list-group">
+            <div v-for="doctor in filteredDoctors" :key="doctor.id" class="list-group">
                 <div class="doctor-card d-flex align-items-center">
                     <div class="doctor-avatar me-3">
-                        <img :src="doctor.signature_image" alt="" width="60px" height="60px" />
+                        <img v-if="doctor.doctor_image" :src="doctor.doctor_image" alt="" width="60px" height="60px" />
                     </div>
                     <div class="flex-grow-1">
                         <h5 class="mb-1">{{ doctor.doctorName }}</h5>
@@ -51,9 +52,10 @@
                             class="btn btn-outline-primary me-2">
                             <i class="fa-solid fa-eye"></i>
                         </router-link>
-                        <!-- <button class="btn btn-outline-warning me-2" @click="generateAndCopyLink(doctor.id)">
-                            <i class="fa-solid fa-copy"></i>
-                        </button> -->
+                        <router-link :to="{ name: 'DoctorEdit', params: { id: doctor.id } }"
+                            class="btn btn-outline-warning me-2">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </router-link>
                         <button class="btn btn-outline-warning me-2 copy-button" @click="generateAndCopyLink(doctor.id)"
                             @mouseenter="onHover($event, doctor.id)" @mouseleave="hoveredButton = null">
                             <i class="fa-solid fa-copy"></i>
@@ -81,7 +83,7 @@
 </template>
 
 <script>
-import { ref, reactive, shallowRef, markRaw, onMounted } from "vue";
+import { ref, shallowRef, markRaw, onMounted, computed } from "vue";
 import DoctorCreate from "./DoctorCreate.vue";
 import DoctorActive from "./DoctorActive.vue";
 import DoctorInactive from "./DoctorInactive.vue";
@@ -94,16 +96,40 @@ export default {
         const doctors = ref([]);
         const hoveredButton = ref(null);
         const tooltipStyle = ref({});
-        const copymessage=ref('Copy link address')
+        const copymessage = ref('Copy link address');
+        const departmentFilter = ref('');
+        const doctorFilter = ref('');
+
+
+        const uniqueDepartments = computed(() => {
+            return [...new Set(doctors.value.map((doctor) => doctor.deparment_category))];
+        });
+
+        const filteredDoctors = computed(() => {
+            return doctors.value.filter((doctor) => {
+                const matchesDepartment = departmentFilter.value ? doctor.deparment_category.toLowerCase().includes(departmentFilter.value.toLowerCase()) : true;
+                const matchesDoctor = doctorFilter.value ? doctor.doctorName.toLowerCase().includes(doctorFilter.value.toLowerCase()) : true;
+                return matchesDepartment && matchesDoctor;
+            });
+        });
 
         const onHover = (event, id) => {
-            copymessage.value='Copy link address';
+            copymessage.value = 'Copy link address';
             hoveredButton.value = id;
             const buttonRect = event.target.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            let leftOffset = buttonRect.left + buttonRect.width / 2 - 280;
+            const additionalOffset = 20;
+            leftOffset += additionalOffset;
+            if (viewportWidth <= 768) {
+                copymessage.value = 'Copy link address';
+                leftOffset = buttonRect.left + buttonRect.width / 2 - 30 + additionalOffset;
+            }
+
             tooltipStyle.value = {
                 position: "absolute",
                 top: `${buttonRect.bottom + window.scrollY - 85}px`,
-                left: `${buttonRect.left + buttonRect.width / 2 - 230}px`,
+                left: `${leftOffset}px`,
                 transform: "translateX(-90%)",
             };
         };
@@ -113,12 +139,15 @@ export default {
             const generatedLink = `${currentHost}/doctorview/${id}`;
             try {
                 await navigator.clipboard.writeText(generatedLink);
-                copymessage.value='copied';
+                copymessage.value = 'copied';
+                setTimeout(() => {
+                    copymessage.value = '';
+                    tooltipStyle.value = { display: 'none' };
+                }, 5000);
             } catch (error) {
                 console.error("Failed to copy:", error);
             }
         };
-
         const componentLoad = (componentvalue) => {
             if (componentvalue === "DoctorCreate") {
                 currentComponent.value = markRaw(DoctorCreate);
@@ -207,7 +236,11 @@ export default {
             onHover,
             generateAndCopyLink,
             hoveredButton,
-            copymessage
+            copymessage,
+            departmentFilter,
+            doctorFilter,
+            filteredDoctors,
+            uniqueDepartments
         };
     },
 };
@@ -289,10 +322,10 @@ export default {
     }
 }
 
-/* Add pointer cursor */
 .copy-button {
     cursor: pointer;
 }
+
 
 .custom-tooltip {
     background-color: #000;
@@ -304,9 +337,13 @@ export default {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     opacity: 0.9;
-
-    /* Adjust horizontal position */
     transform: translateX(-60%);
-    /* Moves tooltip further to the left */
+}
+
+@media (max-width: 768px) {
+    .custom-tooltip {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
 }
 </style>

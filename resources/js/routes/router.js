@@ -9,6 +9,7 @@ import DoctorCreate from '../components/hospital/admin/dashboard/doctor/DoctorCr
 import DoctorView from '../components/hospital/admin/dashboard/doctor/DoctorView.vue';
 
 import DoctorviewOffline from '../components/hospital/admin/dashboard/doctor/DoctorviewOffline.vue';
+import DoctorEdit from '../components/hospital/admin/dashboard/doctor/DoctorEdit.vue';
 
 const routes = [
     { name: 'Login', component: Login, path: '/' },
@@ -46,6 +47,15 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: DoctorView,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/doctoredit/:id',
+                name: 'DoctorEdit',
+                components: {
+                    default: Dashboard,
+                    content: DoctorEdit,
                 },
                 meta: { hideMainContent: true },
             },

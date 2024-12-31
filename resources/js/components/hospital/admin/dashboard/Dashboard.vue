@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <div class="main-wrapper main-wrapper-1">
+        <div class="main-wrapper main-wrapper-1 mt-5">
             <div class="navbar-bg"></div>
             <nav class="navbar navbar-expand-lg main-navbar sticky">
                 <div class="form-inline me-auto">
@@ -97,7 +97,8 @@
                         </div>
                     </li>
                     <li class="dropdown dropdown-list-toggle"><a href="#" data-bs-toggle="dropdown"
-                            class="nav-link notification-toggle nav-link-lg"><i class="fa-regular fa-bell text-muted"></i>
+                            class="nav-link notification-toggle nav-link-lg"><i
+                                class="fa-regular fa-bell text-muted"></i>
                         </a>
                         <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
                             <div class="dropdown-header">
@@ -150,7 +151,7 @@
                     </li>
                     <li class="dropdown"><a href="#" data-bs-toggle="dropdown"
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image"
-                                src="../../../../../../public/hospital/backend/app/assets/img/user.png"
+                                src="https://static.vecteezy.com/system/resources/previews/019/900/322/non_2x/happy-young-cute-illustration-face-profile-png.png"
                                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
                         <div class="dropdown-menu dropdown-menu-right pullDown">
                             <div class="dropdown-title">Hello Sarah Smith</div>
@@ -191,13 +192,14 @@
                         </li>
 
                         <li class="dropdown">
-                            <router-link to="/doctor" href="#" class="menu-toggle nav-link has-dropdown"><i class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
+                            <router-link to="/doctor" href="#" class="menu-toggle nav-link has-dropdown"><i
+                                    class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
                         </li>
                     </ul>
                 </aside>
             </div>
             <div class="main-content">
-                <section class="section" style="margin-top: -40px;">
+                <section class="section" style="margin-top: -80px;">
                     <router-view name="content"></router-view>
                 </section>
             </div>

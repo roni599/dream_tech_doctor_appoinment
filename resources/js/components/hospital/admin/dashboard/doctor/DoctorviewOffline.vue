@@ -15,10 +15,10 @@
         <div class="profile">
             <div class="doctor-symtop">
                 <div class="row d-flex justify-between align-items-center">
-                    <div class="col-md-3 text-center mb-3">
+                    <div class="col-md-4 text-center mb-3">
                         <img v-if="doctor.doctor_image" :src="doctor.doctor_image" alt="Doctor" class="doctor-image">
                     </div>
-                    <div class="col-md-9 doctor-details">
+                    <div class="col-md-8 doctor-details">
                         <h4 class="fw-bold">{{ doctor.doctorName }}</h4>
                         <div>
                             <template v-for="(item, index) in splitExperience" :key="index">

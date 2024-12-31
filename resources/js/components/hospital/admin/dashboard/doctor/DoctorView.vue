@@ -2,10 +2,10 @@
     <div class="profile-card mt-4">
         <div class="doctor-symtop">
             <div class="row d-flex justify-between align-items-center">
-                <div class="col-md-3 text-center">
-                    <img :src="doctor.doctor_image" alt="Doctor" class="doctor-image">
+                <div class="col-md-4 text-center">
+                    <img v-if="doctor.doctor_image" :src="doctor.doctor_image" alt="Doctor" class="doctor-image">
                 </div>
-                <div class="col-md-9 doctor-details">
+                <div class="col-md-8 doctor-details">
                     <h4 class="fw-bold">{{ doctor.doctorName }}</h4>
                     <div>
                         <template v-for="(item, index) in splitExperience" :key="index">
@@ -32,10 +32,10 @@
         <table class="table table-bordered mt-4">
             <thead class="table-primary">
                 <tr>
-                    <th style="height: 30px;">Days</th>
-                    <th style="height: 30px;">Start Time</th>
-                    <th style="height: 30px;">End Time</th>
-                    <th style="height: 30px;">Visit Fee</th>
+                    <th style="height: 30px; background-color: #0cbfde; color: white;">Days</th>
+                    <th style="height: 30px; background-color: #0cbfde; color: white;">Start Time</th>
+                    <th style="height: 30px; background-color: #0cbfde; color: white;">End Time</th>
+                    <th style="height: 30px; background-color: #0cbfde; color: white;">Visit Fee</th>
                 </tr>
             </thead>
             <tbody>
@@ -117,8 +117,8 @@ export default {
 
 .doctor-image {
     border-radius: 50%;
-    width: 320px;
-    height: 320px;
+    width: 300px;
+    height: 300px;
     object-fit: cover;
 }
 

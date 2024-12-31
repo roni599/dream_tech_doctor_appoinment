@@ -270,7 +270,6 @@ Dhaka Medical College
             </div>
         </div>
     </div>
-
 </template>
 
 <script>

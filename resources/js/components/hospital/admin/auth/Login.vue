@@ -76,14 +76,12 @@ export default {
         const login = async () => {
             try {
                 const response = await axios.post('/api/auth/login', loginForm.value);
-                console.log(response.data);
                 if (response.data && response.data.access_token) {
                     Cookies.set('access_token', response.data.access_token, {
                         secure: true,
                         sameSite: 'Strict',
                     });
                     router.push({ name: 'Dashboard' });
-                    console.error('Access token not found in the response');
                 }
             } catch (error) {
                 errors.value = error.response.data.errors;

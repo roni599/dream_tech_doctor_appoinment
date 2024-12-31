@@ -32,6 +32,7 @@ Route::group([
 
     Route::get('/hospital-doctor', [DoctorController::class, 'index']);
     Route::post('/hospital-doctor/store', [DoctorController::class, 'store']);
+    Route::post('/hospital-doctor/update', [DoctorController::class, 'update']);
     Route::post('/hospital-doctor/change-status', [DoctorController::class, 'changeStatus']);
     Route::post('/hospital-doctor/delete-doctor', [DoctorController::class, 'deleteDoctor']);
     Route::get('/hospital-doctor/active-doctor', [DoctorController::class, 'activeDoctor']);
