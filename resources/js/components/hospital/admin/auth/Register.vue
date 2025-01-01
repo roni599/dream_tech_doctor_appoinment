@@ -198,8 +198,8 @@ export default {
             const selectedDivisionName = hospitalRegForm.value.division;
             const division = divisions.value.find((div) => div.name === selectedDivisionName);
             filteredDistricts.value = division ? division.districts : [];
-            hospitalRegForm.value.district = ""; // Reset district
-            filteredSubDistricts.value = []; // Reset sub-district
+            hospitalRegForm.value.district = "";
+            filteredSubDistricts.value = [];
         };
 
         // Handle District Change
@@ -207,7 +207,7 @@ export default {
             const selectedDistrictName = hospitalRegForm.value.district;
             const district = filteredDistricts.value.find((dist) => dist.name === selectedDistrictName);
             filteredSubDistricts.value = district ? district.subDistricts : [];
-            hospitalRegForm.value.sub_district = ""; // Reset sub-district
+            hospitalRegForm.value.sub_district = ""; 
         };
 
 

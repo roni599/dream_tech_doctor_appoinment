@@ -106,6 +106,7 @@ export default {
         onMounted(() => {
             doctor_id.value = route.params.id;
             doctorView();
+            
         });
         return {
             doctorView,

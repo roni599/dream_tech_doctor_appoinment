@@ -195,6 +195,10 @@
                             <router-link to="/doctor" href="#" class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
                         </li>
+                        <li class="dropdown">
+                            <router-link to="/appoinment_create" href="#" class="menu-toggle nav-link has-dropdown"><i
+                                    class="fa-solid fa-calendar-check"></i><span>Appoinment</span></router-link>
+                        </li>
                     </ul>
                 </aside>
             </div>
@@ -203,25 +207,33 @@
                     <router-view name="content"></router-view>
                 </section>
             </div>
-            <footer class="main-footer">
+            <!-- <footer class="main-footer">
                 <div class="footer-left">
                     Copyright &copy; 2019 <div class="bullet"></div> Design By <a href="#">Redstar</a>
                 </div>
                 <div class="footer-right">
                 </div>
-            </footer>
+            </footer> -->
         </div>
     </div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 computed
 export default {
     name: 'Dashboard',
     setup() {
-        return {
-        }
+        
+        onBeforeMount(() => {
+            const styleLink = document.createElement("link");
+            styleLink.rel = "stylesheet";
+            styleLink.href = "/hospital/backend/app/assets/css/style.css";
+            document.head.appendChild(styleLink);
+
+            styleLink.onload = () => console.log("style.css loaded successfully.");
+            styleLink.onerror = () => console.error("Error loading style.css");
+        });
     }
 }
 </script>
