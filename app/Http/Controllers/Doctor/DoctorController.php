@@ -4,11 +4,22 @@ namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class DoctorController extends Controller
 {
+    public function hospitalAll()
+    {
+
+        $hospitalNames = User::pluck('hospital_name');
+        $doctorDepartment = Doctor::distinct()->pluck('deparment_category')->toArray();
+        return response()->json([
+            'hospitalNames' => $hospitalNames,
+            'doctorDepartments' => $doctorDepartment,
+        ], 200);
+    }
     public function index()
     {
         $doctor = Doctor::all();
@@ -26,7 +37,7 @@ class DoctorController extends Controller
     }
     public function store(Request $request)
     {
-       
+
         // return response()->json($request->all());
         // $request->validate([
         //     'deparment_category' => 'required|string|max:255',

@@ -30,6 +30,7 @@ Route::group([
     Route::get('me', [AuthController::class, 'me']);
 
 
+    Route::get('/hospital',[DoctorController::class,'hospitalAll']);
     Route::get('/hospital-doctor', [DoctorController::class, 'index']);
     Route::post('/hospital-doctor/store', [DoctorController::class, 'store']);
     Route::post('/hospital-doctor/update', [DoctorController::class, 'update']);

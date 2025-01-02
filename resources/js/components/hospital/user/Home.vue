@@ -3,10 +3,10 @@
         <header>
             <nav class="navbar navbar-expand-lg custom-navbar">
                 <div class="container-fluid">
-                    <a class="navbar-brand bg-white d-flex align-items-center" href="#">
+                    <router-link to="/" class="navbar-brand bg-white d-flex align-items-center">
                         <img src="../../../../../public/hospital/backend/app/assets/images/doctor_appoinment_logo.png"
                             alt="Logo">
-                    </a>
+                    </router-link>
                     <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -14,6 +14,7 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav mx-auto">
+                            <li class="nav-item"><router-link to="/" class="nav-link">Home</router-link></li>
                             <li class="nav-item"><a class="nav-link" href="#">Hospital</a></li>
                             <li class="nav-item"><a class="nav-link" href="#">Doctor</a></li>
                             <li class="nav-item"><a class="nav-link" href="#">Symptoms</a></li>
@@ -32,7 +33,7 @@
             </nav>
         </header>
 
-        <main>
+        <main v-if="!hideMainContent">
             <section>
                 <div class="row align-items-center py-3 mx-5">
                     <div class="col-md-3 text-center text-md-start">
@@ -108,18 +109,43 @@
                         <div class="row mb-3">
                             <p class="doctor_text_color text-center p-1">Doctor</p>
                             <div class="seler_tag mb-2">
-                                <label for="symptoms">Symptoms</label>
+                                <label for="symptoms">Department</label>
                                 <select class="form-select" aria-label="Default select example">
                                     <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option v-for="hospital in doctorDepartments" :key="hospital.id" :value="hospital">
+                                        {{
+                                            hospital }}</option>
+                                </select>
+                            </div>
+                            <div class="seler_tag mb-2">
+                                <label for="symptoms">Symptoms</label>
+                                <div class="selected-box mb-2">
+                                    <span v-for="(symptom, index) in symptoms" :key="index" class="badge bg-info me-2">
+                                        {{ symptom }}
+                                        <button type="button" class="btn-close ms-2" aria-label="Close"
+                                            @click="removeSymptom(index)"></button>
+                                    </span>
+                                </div>
+                                <select class="form-select" v-model="selectedOption" @change="addSymptom">
+                                    <option value="" disabled selected>Open this select menu</option>
+                                    <option value="One">One</option>
+                                    <option value="Two">Two</option>
+                                    <option value="Three">Three</option>
                                 </select>
                             </div>
                             <div class="specialist mb-2">
                                 <label for="specialist">Specialist</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>Open this select menu</option>
+                                <div class="selected-box mb-2">
+                                    <span v-for="(symptom, index) in Specialist" :key="index"
+                                        class="badge bg-info me-2">
+                                        {{ symptom }}
+                                        <button type="button" class="btn-close ms-2" aria-label="Close"
+                                            @click="removeSpecialist(index)"></button>
+                                    </span>
+                                </div>
+                                <select class="form-select" v-model="selectedSpecilist" @change="addSpecialist"
+                                    aria-label="Default select example">
+                                    <option value="" disabled selected>Open this select menu</option>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
                                     <option value="3">Three</option>
@@ -149,13 +175,7 @@
                             <div class="divison_district mb-2">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <!-- <select class="form-select" aria-label="Default select example">
-                                            <option selected>Division</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select> -->
-                                        <select v-model="hospitalRegForm.division" @change="onDivisionChange"
+                                        <select v-model="hospitalDoctor.division" @change="onDivisionChange"
                                             class="form-select" aria-label="Default select example">
                                             <option value="" disabled selected>Select Division</option>
                                             <option v-for="division in divisions" :key="division.id"
@@ -165,13 +185,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <!-- <select class="form-select" aria-label="Default select example">
-                                            <option selected>District</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select> -->
-                                        <select v-model="hospitalRegForm.district" @change="onDistrictChange"
+                                        <select v-model="hospitalDoctor.district" @change="onDistrictChange"
                                             class="form-select" aria-label="Default select example">
                                             <option value="" disabled selected>Select District</option>
                                             <option v-for="district in filteredDistricts" :key="district.name"
@@ -183,13 +197,7 @@
                                 </div>
                             </div>
                             <div class="specialist mb-2">
-                                <!-- <select class="form-select" aria-label="Default select example">
-                                    <option selected>Sub District</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select> -->
-                                <select v-model="hospitalRegForm.sub_district" class="form-select"
+                                <select v-model="hospitalDoctor.sub_district" class="form-select"
                                     aria-label="Default select example">
                                     <option value="" disabled selected>Select Sub-District</option>
                                     <option v-for="subDistrict in filteredSubDistricts" :key="subDistrict"
@@ -203,9 +211,8 @@
                                 <label for="specialist">Hospital</label>
                                 <select class="form-select" aria-label="Default select example">
                                     <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option v-for="hospital in hospitals" :key="hospital.id" :value="hospital">{{
+                                        hospital }}</option>
                                 </select>
                             </div>
                             <div class="searchbutton text-center mb-3">
@@ -216,9 +223,27 @@
                         <div class="row">
                             <p class="doctor_text_color text-center p-1">Pathology</p>
                             <div class="seler_tag mb-2">
+                                <div class="seler_tag mb-2">
+                                    <label for="symptoms">Department</label>
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>Open this select menu</option>
+                                        <option v-for="hospital in doctorDepartments" :key="hospital.id"
+                                            :value="hospital">{{
+                                                hospital }}</option>
+                                    </select>
+                                </div>
                                 <label for="symptoms">Symptoms</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>Open this select menu</option>
+                                <div class="selected-box mb-2">
+                                    <span v-for="(symptom, index) in pathologySpecialist" :key="index"
+                                        class="badge bg-info me-2">
+                                        {{ symptom }}
+                                        <button type="button" class="btn-close ms-2" aria-label="Close"
+                                            @click="removepathologySpecialist(index)"></button>
+                                    </span>
+                                </div>
+                                <select class="form-select" aria-label="Default select example"
+                                    v-model="selectedPathologySpecilist" @change="addPathologySpecialist">
+                                    <option value="" disabled>Open this select menu</option>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
                                     <option value="3">Three</option>
@@ -227,29 +252,35 @@
                             <div class="divison_district mb-2">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option selected>Division</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                        <select v-model="hospitalPathology.division" @change="onPathologyDivisionChange"
+                                            class="form-select" aria-label="Default select example">
+                                            <option value="" disabled selected>Select Division</option>
+                                            <option v-for="division in divisions" :key="division.id"
+                                                :value="division.name">
+                                                {{ division.name }}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option selected>District</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                        <select v-model="hospitalPathology.district" @change="onPathologyDistrictChange"
+                                            class="form-select" aria-label="Default select example">
+                                            <option value="" disabled selected>Select District</option>
+                                            <option v-for="district in filteredPathologydDistricts" :key="district.name"
+                                                :value="district.name">
+                                                {{ district.name }}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="specialist mb-2">
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>Sub District</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select v-model="hospitalPathology.sub_district" class="form-select"
+                                    aria-label="Default select example">
+                                    <option value="" disabled selected>Select Sub-District</option>
+                                    <option v-for="subDistrict in filteredPathologySubDistricts" :key="subDistrict"
+                                        :value="subDistrict">
+                                        {{ subDistrict }}
+                                    </option>
                                 </select>
                             </div>
 
@@ -257,9 +288,8 @@
                                 <label for="specialist">Hospital</label>
                                 <select class="form-select" aria-label="Default select example">
                                     <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option v-for="hospital in hospitals" :key="hospital.id" :value="hospital">{{
+                                        hospital }}</option>
                                 </select>
                             </div>
                             <div class="searchbutton text-center mb-3">
@@ -284,27 +314,25 @@
                                                 <div class="doctor_profile text-center text-md-start text-justify">
                                                     <h5 class="mb-0">{{ doctor.doctorName }}</h5>
                                                     <div>
-                                                        <p v-for="(exp, i) in splitExperience(doctor.experience)"
-                                                            :key="i" class="mb-0">
-                                                            {{ exp }}
+                                                        <p v-for="(line, i) in splitExperience(doctor.details)" :key="i"
+                                                            class="mb-0">
+                                                            {{ line }}
                                                         </p>
                                                     </div>
+
                                                     <p class="fw-bold mb-0">Specialist</p>
                                                     <span v-for="(specialist, index) in doctor.Specialist" :key="index">
                                                         {{ specialist }}<span
                                                             v-if="index !== doctor.Specialist.length - 1">, </span>
                                                     </span>
-                                                    <p class="fw-bold mb-0">Proposer</p>
-                                                    <p class="mb-0">Department of {{ doctor.deparment_category }}</p>
-                                                    <p class="mb-0">{{ doctor.details }}</p>
-                                                    <p class="mb-0">{{ doctor.mobile }}</p>
+                                                    <p class="mb-0">{{ doctor.appoinment_mobile }}</p>
                                                 </div>
                                             </div>
                                             <div
                                                 class="doctorview_appoinment d-flex flex-column flex-md-row justify-content-between align-items-center mt-3">
                                                 <div class="doctor_view mb-2 mb-md-0 ms-md-3">
                                                     <router-link
-                                                        :to="{ name: 'DoctorviewOffline', params: { id: doctor.id } }"
+                                                        :to="{ name: 'DoctorappoinmentView', params: { id: doctor.id } }"
                                                         class="btn btn-sm btn-info text-white rounded-pill">Doctor
                                                         View</router-link>
                                                 </div>
@@ -345,7 +373,7 @@
                 </div>
             </section>
         </main>
-
+        <router-view name="content"></router-view>
         <footer>
             <div class="text-center py-0">
                 <!-- Download Links -->
@@ -384,78 +412,188 @@
 import axios from 'axios';
 import { onMounted, ref, computed } from 'vue';
 import divisions from '../../Helpers/Address';
-import Cookies from 'js-cookie';
+import { useRoute } from 'vue-router';
 export default {
     name: "Home",
     setup() {
-        const hospitalRegForm = ref({
+        const route = useRoute();
+
+        const selectedOption = ref("");
+        const symptoms = ref([]);
+
+        const selectedSpecilist = ref("");
+        const Specialist = ref([]);
+
+        const selectedPathologySpecilist = ref("");
+        const pathologySpecialist = ref([]);
+
+
+        const doctorDepartments = ref([]);
+        const hospitalDoctor = ref({
             hospital_name: '',
-            reg_number: '',
-            establish: '',
-            country: '',
             division: '',
             district: '',
             sub_district: '',
-            location_details: '',
-            mobile_number_1: '',
-            mobile_number_2: '',
-            email: '',
-            admin_name: '',
-            admin_mobile: '',
-            admin_email: '',
-            password: '',
-            re_password: '',
-            logo: null,
-            front_picture: null,
-            otp: ''
+
         })
+
+        const hospitalPathology = ref({
+            hospital_name: '',
+            division: '',
+            district: '',
+            sub_district: '',
+        })
+
+
         const doctors = ref([]);
+        const hospitals = ref([]);
+
         const filteredDistricts = ref([]);
         const filteredSubDistricts = ref([]);
-        const access_token = ref('');
 
-        const onDivisionChange = () => {
-            const selectedDivisionName = hospitalRegForm.value.division;
+        const filteredPathologydDistricts = ref([]);
+        const filteredPathologySubDistricts = ref([]);
+
+        const addSymptom = () => {
+            if (
+                selectedOption.value &&
+                !symptoms.value.includes(selectedOption.value)
+            ) {
+                symptoms.value.push(selectedOption.value);
+            }
+            selectedOption.value = "";
+        };
+
+        const addSpecialist = () => {
+            if (
+                selectedSpecilist.value &&
+                !Specialist.value.includes(selectedSpecilist.value)
+            ) {
+                Specialist.value.push(selectedSpecilist.value);
+            }
+            selectedSpecilist.value = "";
+        };
+
+        const addPathologySpecialist = () => {
+            if (
+                selectedPathologySpecilist.value &&
+                !pathologySpecialist.value.includes(selectedPathologySpecilist.value)
+            ) {
+                pathologySpecialist.value.push(selectedPathologySpecilist.value);
+            }
+            selectedPathologySpecilist.value = "";
+        };
+
+
+        const removeSymptom = (index) => {
+            symptoms.value.splice(index, 1);
+        };
+        const removeSpecialist = (index) => {
+            Specialist.value.splice(index, 1);
+        };
+
+        const removepathologySpecialist = (index) => {
+            pathologySpecialist.value.splice(index, 1);
+        };
+
+        const updateDivisionChange = (target, filteredDistricts, filteredSubDistricts) => {
+            const selectedDivisionName = target.value.division;
             const division = divisions.value.find((div) => div.name === selectedDivisionName);
             filteredDistricts.value = division ? division.districts : [];
-            hospitalRegForm.value.district = "";
+            target.value.district = "";
             filteredSubDistricts.value = [];
         };
 
-        const onDistrictChange = () => {
-            const selectedDistrictName = hospitalRegForm.value.district;
+        const updateDistrictChange = (target, filteredDistricts, filteredSubDistricts) => {
+            const selectedDistrictName = target.value.district;
             const district = filteredDistricts.value.find((dist) => dist.name === selectedDistrictName);
             filteredSubDistricts.value = district ? district.subDistricts : [];
-            hospitalRegForm.value.sub_district = "";
+            target.value.sub_district = "";
         };
+
+        const onDivisionChange = () => updateDivisionChange(hospitalDoctor, filteredDistricts, filteredSubDistricts);
+        const onDistrictChange = () => updateDistrictChange(hospitalDoctor, filteredDistricts, filteredSubDistricts);
+
+        const onPathologyDivisionChange = () => updateDivisionChange(hospitalPathology, filteredPathologydDistricts, filteredPathologySubDistricts);
+        const onPathologyDistrictChange = () => updateDistrictChange(hospitalPathology, filteredPathologydDistricts, filteredPathologySubDistricts);
 
         const fetchDoctor = async () => {
             const response = await axios.get('/api/auth/hospital-doctor');
-            console.log(response.data);
             doctors.value = response.data;
         }
 
         const fetchHospital = async () => {
-            const response = await axios.get('/api/auth/me', {
-                headers: {
-                    'Authorization': `Bearer ${access_token}`
-                }
-            })
-            console.log(response)
+            const response = await axios.get('/api/auth/hospital');
+            if (response.data && response.status === 200) {
+                hospitals.value = response.data.hospitalNames;
+                doctorDepartments.value = response.data.doctorDepartments
+            }
         }
         const splitExperience = (experience) => {
-            return (experience || "")
-                .split(".")
+            const formattedExperience = (experience || "")
+                .split(",")
                 .map((item) => item.trim())
                 .filter((item) => item.length > 0);
+
+            const groupedLines = [];
+            let firstLine = [];
+            let currentLine = [];
+
+            for (let i = 0; i < formattedExperience.length; i++) {
+                const item = formattedExperience[i];
+
+                if (firstLine.length < 3) {
+                    if (item.length > 4) {
+                        if (firstLine.length > 0) {
+                            groupedLines.push(firstLine.join(", "));
+                        }
+                        groupedLines.push(item);
+                        firstLine = [];
+                        currentLine = formattedExperience.slice(i + 1);
+                        break;
+                    } else {
+                        firstLine.push(item);
+                    }
+                }
+
+                if (firstLine.length === 3 || i === formattedExperience.length - 1) {
+                    groupedLines.push(firstLine.join(", "));
+                    currentLine = formattedExperience.slice(i + 1);
+                    break;
+                }
+            }
+            let tempLine = [];
+            currentLine.forEach((item) => {
+                if (item.length > 11) {
+                    if (tempLine.length > 0) {
+                        groupedLines.push(tempLine.join(", "));
+                        tempLine = [];
+                    }
+                    groupedLines.push(item);
+                } else {
+                    tempLine.push(item);
+                    if (tempLine.length === 3) {
+                        groupedLines.push(tempLine.join(", "));
+                        tempLine = [];
+                    }
+                }
+            });
+            if (tempLine.length > 0) {
+                groupedLines.push(tempLine.join(", "));
+            }
+
+            return groupedLines;
         };
+
+        const hideMainContent = computed(() => route.meta.hideMainContent);
         onMounted(async () => {
             await fetchDoctor();
             fetchHospital();
-            access_token.value = Cookies.get('access_token');
+
         })
         return {
-            access_token,
+            hideMainContent,
+            doctorDepartments,
             fetchHospital,
             doctors,
             divisions,
@@ -464,7 +602,28 @@ export default {
             filteredSubDistricts,
             onDivisionChange,
             onDistrictChange,
-            hospitalRegForm
+            hospitalDoctor,
+            hospitalPathology,
+            hospitals,
+            onPathologyDistrictChange,
+            onPathologyDivisionChange,
+            filteredPathologySubDistricts,
+            filteredPathologydDistricts,
+
+            selectedOption,
+            symptoms,
+            addSymptom,
+            removeSymptom,
+
+            addSpecialist,
+            selectedSpecilist,
+            Specialist,
+            removeSpecialist,
+
+            selectedPathologySpecilist,
+            pathologySpecialist,
+            addPathologySpecialist,
+            removepathologySpecialist,
         }
     }
 }

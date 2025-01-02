@@ -27,8 +27,8 @@
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -39,11 +39,12 @@
     <script src="{{ asset('hospital/backend/app/assets/js/app.min.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/custom.js') }}"></script>
-    <script src="{{ asset('hospital/backend/app/assets/js/page/index.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/js/page/ion-icons.js') }}"></script>
+
+    {{-- <script src="{{ asset('hospital/backend/app/assets/js/page/index.js') }}"></script> --}}
     {{-- <script src="{{ asset('hospital/backend/app/assets/bundles/prism/prism.js') }}"></script>
     <script src="{{ asset('hospital/backend/app/assets/bundles/apexcharts/apexcharts.min.js') }}"></script> --}}
-      {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
 
 </body>
 
