@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Doctor\DoctorController;
+use App\Http\Controllers\SpecialistController;
+use App\Http\Controllers\SymptomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +32,7 @@ Route::group([
     Route::get('me', [AuthController::class, 'me']);
 
 
-    Route::get('/hospital',[DoctorController::class,'hospitalAll']);
+    Route::get('/hospital', [DoctorController::class, 'hospitalAll']);
     Route::get('/hospital-doctor', [DoctorController::class, 'index']);
     Route::post('/hospital-doctor/store', [DoctorController::class, 'store']);
     Route::post('/hospital-doctor/update', [DoctorController::class, 'update']);
@@ -40,4 +42,12 @@ Route::group([
     Route::get('/hospital-doctor/dactive-doctor', [DoctorController::class, 'dactiveDoctor']);
     Route::get('/hospital-doctor/doctor-view/{doctor_id}', [DoctorController::class, 'viewDoctor']);
 
+    Route::get('/symptoms', [SymptomController::class, 'index']);
+    Route::post('/symptoms/store', [SymptomController::class, 'store']);
+    Route::get('symtom/symtomeditdata/{id}', [SymptomController::class, 'symtomEditData']);
+    Route::post('/symtom/symtomedit', [SymptomController::class, 'symtomEdit']);
+    Route::post('/symtom/symtomdelete', [SymptomController::class, 'delete']);
+
+    Route::get('/specialist', [SpecialistController::class, 'index']);
+    Route::post('/specialist/store', [SpecialistController::class, 'store']);
 });

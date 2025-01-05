@@ -13,6 +13,10 @@ import DoctorView from '../components/hospital/admin/dashboard/doctor/DoctorView
 import DoctorviewOffline from '../components/hospital/admin/dashboard/doctor/DoctorviewOffline.vue';
 import DoctorEdit from '../components/hospital/admin/dashboard/doctor/DoctorEdit.vue';
 import AppoinmentCreate from '../components/hospital/admin/dashboard/appoinment/AppoinmentCreate.vue';
+import Symtom from '../components/hospital/admin/dashboard/options/symtom/Symtom.vue';
+import SymtomEdit from '../components/hospital/admin/dashboard/options/symtom/SymtomEdit.vue';
+import Specialist from '../components/hospital/admin/dashboard/options/specialist/Specialist.vue';
+import Experience from '../components/hospital/admin/dashboard/options/experience/Experience.vue';
 
 const routes = [
     {
@@ -85,6 +89,42 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: AppoinmentCreate,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/symtom',
+                name: 'Symtom',
+                components: {
+                    default: Dashboard,
+                    content: Symtom,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/specialist',
+                name: 'Specialist',
+                components: {
+                    default: Dashboard,
+                    content: Specialist,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/experience',
+                name: 'Experience',
+                components: {
+                    default: Dashboard,
+                    content: Experience,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/symtomEdit/:id',
+                name: 'SymtomEdit',
+                components: {
+                    default: Dashboard,
+                    content: SymtomEdit,
                 },
                 meta: { hideMainContent: true },
             },

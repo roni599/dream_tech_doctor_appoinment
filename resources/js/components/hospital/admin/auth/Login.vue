@@ -81,6 +81,10 @@ export default {
                         secure: true,
                         sameSite: 'Strict',
                     });
+                    Cookies.set('user_id', response.data.user_id, {
+                        secure: true,
+                        sameSite: 'Strict',
+                    });
                     router.push({ name: 'Dashboard' });
                 }
             } catch (error) {

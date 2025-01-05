@@ -190,7 +190,16 @@
                             <router-link to="/hospital_dashboard" href="index.html" class="nav-link"><i
                                     class="fa-solid fa-desktop text-muted"></i><span>Dashboard</span></router-link>
                         </li>
-
+                        <li class="dropdown" style="cursor: pointer;">
+                            <a class="menu-toggle nav-link has-dropdown"><i
+                                    class="fa-solid fa-layer-group"></i><span>Options</span></a>
+                            <ul class="dropdown-menu">
+                                <li><router-link to="/symtom" class="nav-link" href="chat.html">Symtoms</router-link>
+                                </li>
+                                <li><router-link to="/specialist" class="nav-link">Specialist</router-link></li>
+                                <li><router-link to="/experience" class="nav-link">Experience</router-link></li>
+                            </ul>
+                        </li>
                         <li class="dropdown">
                             <router-link to="/doctor" href="#" class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
@@ -224,15 +233,11 @@ computed
 export default {
     name: 'Dashboard',
     setup() {
-        
         onBeforeMount(() => {
             const styleLink = document.createElement("link");
             styleLink.rel = "stylesheet";
             styleLink.href = "/hospital/backend/app/assets/css/style.css";
             document.head.appendChild(styleLink);
-
-            styleLink.onload = () => console.log("style.css loaded successfully.");
-            styleLink.onerror = () => console.error("Error loading style.css");
         });
     }
 }
