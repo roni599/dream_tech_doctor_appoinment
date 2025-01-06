@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div v-if="doctors.length >0">
+        <div v-if="doctors.length>0">
             <div v-for="doctor in doctors" :key="doctor.id" class="list-group">
                 <div class="doctor-card d-flex align-items-center">
                     <div class="doctor-avatar me-3">

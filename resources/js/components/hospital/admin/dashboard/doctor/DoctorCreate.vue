@@ -54,9 +54,18 @@
                             <label for="details" class="form-label mb-0">Details</label>
                             <input v-model="form.details" class="form-control" id="details" />
                         </div>
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <label for="experience" class="form-label mb-0">Experience</label>
                             <input v-model="form.experience" type="text" class="form-control" id="experience">
+                        </div> -->
+                        <div class="col-md-6">
+                            <label for="gender" class="form-label mb-0">Experience</label>
+                            <select v-model="form.experience" class="form-select form-control"
+                                aria-label="Default select example">
+                                <option selected value="">Open this select menu</option>
+                                <option v-for="experience in experiences" :key="experience.id"
+                                    :value="experience.experience">{{ experience.experience }}</option>
+                            </select>
                         </div>
 
                     </div>
@@ -67,9 +76,8 @@
                                 <select class="form-select flex-grow-1 me-2" v-model="item.value"
                                     aria-label="Default select example">
                                     <option selected disabled value="">Open this select menu</option>
-                                    <option value="Cardiology">Cardiology</option>
-                                    <option value="Rheumatic ">Rheumatic</option>
-                                    <option value="Fever">Fever</option>
+                                    <option v-for="specialist in specialists" :key="specialist.id"
+                                        :value="specialist.specialist">{{ specialist.specialist }}</option>
                                 </select>
                                 <div class="d-flex">
                                     <button type="button" class="btn btn-success me-1"
@@ -85,12 +93,22 @@
                     <div class="row form-section mb-2">
                         <div class="col-md-12">
                             <label for="symptom" class="form-label mb-0">Symptom</label>
-                            <select v-model="form.symptom" class="form-select" aria-label="Default select example">
-                                <option selected>Open this select menu</option>
-                                <option value="Angina">Angina</option>
-                                <option value="Anaphylaxis">Anaphylaxis</option>
-                                <option value="Ankle sprain">Ankle sprain</option>
-                            </select>
+                            <div v-for="(item, index) in symptom" :key="index" class="d-flex align-items-center mt-2">
+                                <select class="form-select flex-grow-1 me-2" v-model="item.value"
+                                    aria-label="Default select example">
+                                    <option value="" disabled selected>Open this select menu</option>
+                                    <option v-for="symptom in symtoms" :key="symptom.id" :value="symptom.symptom">{{
+                                        symptom.symptom }}</option>
+                                </select>
+                                <div class="d-flex">
+                                    <button type="button" class="btn btn-success me-1"
+                                        v-if="index === symptom.length - 1" @click="addSymtom">+
+                                    </button>
+                                    <button type="button" class="btn btn-danger" v-if="symptom.length > 1"
+                                        @click="removeSymptom(index)"> -
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row form-section mb-2">
@@ -281,6 +299,9 @@ export default {
     setup() {
         const currentComponent = ref(false);
         const accessToken = ref('');
+        const experiences = ref([]);
+        const specialists = ref([]);
+        const symtoms = ref([]);
         const form = ref({
             deparment_category: '',
             regnum: '',
@@ -315,6 +336,9 @@ export default {
             },
         ]);
         const selects = ref([
+            { value: "" },
+        ]);
+        const symptom = ref([
             { value: "" },
         ]);
 
@@ -364,6 +388,10 @@ export default {
                 payload.append(`selects[${index}]`, select.value);
             });
 
+            symptom.value.forEach((symptom, index) => {
+                payload.append(`symptom[${index}]`, symptom.value);
+            });
+
             try {
                 const response = await axios.post('/api/auth/hospital-doctor/store', payload);
                 console.log(response)
@@ -389,18 +417,79 @@ export default {
                 rows.splice(index, 1);
             }
         };
+
         const addSelect = () => {
             selects.value.push({ value: "" });
         };
+
         const removeSelect = (index) => {
             selects.value.splice(index, 1);
         };
-        onMounted(() => {
+
+        const addSymtom = () => {
+            symptom.value.push({ value: "" });
+        };
+
+        const removeSymptom = (index) => {
+            symptom.value.splice(index, 1);
+        };
+
+        const fetchExperience = async () => {
+            try {
+                const response = await axios.get(`/api/auth/experience`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken.value}`,
+                    },
+                })
+                if (response.data && response.status === 200) {
+                    experiences.value = response.data;
+                }
+            } catch (error) {
+
+            }
+        }
+
+        const fetchSpecialist = async () => {
+            try {
+                const response = await axios.get('/api/auth/specialist', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken.value}`
+                    }
+                });
+                if (response.data && response.status === 200) {
+                    specialists.value = response.data;
+                }
+            } catch (error) {
+
+            }
+        }
+
+        const fetchSymtom = async () => {
+            try {
+                const response = await axios.get('/api/auth/symptoms', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken.value}`
+                    }
+                });
+                if (response.data && response.status === 200) {
+                    symtoms.value = response.data;
+                }
+            } catch (error) {
+                console.log(error.response)
+            }
+        }
+        onMounted(async () => {
             accessToken.value = Cookies.get('access_token');
+            await fetchExperience();
+            await fetchSpecialist();
+            await fetchSymtom();
         })
         return {
             currentComponent,
             selects,
+            symptom,
+            addSymtom,
+            removeSymptom,
             addSelect,
             removeSelect,
             rows,
@@ -410,7 +499,10 @@ export default {
             submitForm,
             onFileSelect,
             onFileSelect1,
-            accessToken
+            accessToken,
+            experiences,
+            specialists,
+            symtoms
         }
     }
 }

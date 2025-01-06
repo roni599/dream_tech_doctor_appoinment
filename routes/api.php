@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Doctor\DoctorController;
+use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\SpecialistController;
 use App\Http\Controllers\SymptomController;
 use Illuminate\Http\Request;
@@ -44,10 +46,26 @@ Route::group([
 
     Route::get('/symptoms', [SymptomController::class, 'index']);
     Route::post('/symptoms/store', [SymptomController::class, 'store']);
-    Route::get('symtom/symtomeditdata/{id}', [SymptomController::class, 'symtomEditData']);
+    Route::get('/symtom/symtomeditdata/{id}', [SymptomController::class, 'symtomEditData']);
     Route::post('/symtom/symtomedit', [SymptomController::class, 'symtomEdit']);
     Route::post('/symtom/symtomdelete', [SymptomController::class, 'delete']);
 
     Route::get('/specialist', [SpecialistController::class, 'index']);
     Route::post('/specialist/store', [SpecialistController::class, 'store']);
+    Route::get('/specialist/specialistditdata/{id}', [SpecialistController::class, 'specialistEditData']);
+    Route::post('/specialist/specialistedit', [SpecialistController::class, 'specialistEdit']);
+    Route::post('/specialist/specialistdelete', [SpecialistController::class, 'delete']);
+
+    Route::get('/experience', [ExperienceController::class, 'index']);
+    Route::post('/experience/store', [ExperienceController::class, 'store']);
+    Route::get('/experience/experiencedata/{id}', [ExperienceController::class, 'experienceEditData']);
+    Route::post('/experience/experienceedit', [ExperienceController::class, 'experiencetEdit']);
+    Route::post('/experience/experiencedelete', [ExperienceController::class, 'delete']);
 });
+
+Route::get('home/hospital-doctor',[HomeController::class,'doctorshow']);
+Route::get('home/hospital',[HomeController::class,'hospitalAll']);
+Route::get('home/symptoms', [HomeController::class, 'symptoms']);
+Route::get('home/specialist', [HomeController::class, 'specialist']);
+
+Route::post('/home/doctorsearch',[HomeController::class,'doctorSearch']);

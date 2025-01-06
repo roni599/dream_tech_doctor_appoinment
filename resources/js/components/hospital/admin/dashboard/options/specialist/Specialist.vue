@@ -11,7 +11,7 @@
             </div>
         </div>
         <div v-show="!currentComponent" class="allFeature">
-            <div class="row mb-3">
+            <div class="row mb-1">
                 <div class="col-md-12 mb-3">
                     <label for="department" class="form-label mb-0">Specialist</label>
                     <select id="department" class="form-select">
@@ -19,17 +19,20 @@
                     </select>
                 </div>
             </div>
-            <div class="list-group">
-                <div class="doctor-card d-flex align-items-center">
-                    <div class="doctor-avatar me-3">
-                        <!-- <img  alt="" width="60px" height="60px" /> -->
-                    </div>
-                    <div class="flex-grow-1">
-                        <h5 class="mb-1"></h5>
-                        <p class="mb-0 text-muted"></p>
-                    </div>
-                    <div class="d-flex align-items-center">
 
+            <div v-for="symtom in specialists" :key="symtom.id" class="list-group">
+                <div class="doctor-card d-flex justify-content-between align-items-center p-3">
+                    <span>
+                        {{ symtom.specialist }}
+                    </span>
+                    <div class="d-flex ms-auto">
+                        <router-link :to="{ name: 'SpecialistEdit', params: { id: symtom.id } }"
+                            class="btn btn-outline-warning me-2">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </router-link>
+                        <button class="btn btn-outline-danger" @click="deleteSpecialist(symtom.id)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -39,12 +42,16 @@
 </template>
 
 <script>
-import { markRaw, shallowRef } from 'vue';
+import { markRaw, onMounted, ref, shallowRef } from 'vue';
 import SpecialistCreate from './SpecialistCreate.vue';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 export default {
     name: "Specialist",
     setup() {
+        const access_token = ref('');
         const currentComponent = shallowRef(null);
+        const specialists = ref([]);
         const componentLoad = (componentvalue) => {
             if (componentvalue === "SpecialistCreate") {
                 currentComponent.value = markRaw(SpecialistCreate);
@@ -52,14 +59,114 @@ export default {
         };
         const anotherLoad = () => {
             currentComponent.value = null;
+            fetchSpecialist();
         };
+
+        const fetchSpecialist = async () => {
+            try {
+                const response = await axios.get('/api/auth/specialist', {
+                    headers: {
+                        'Authorization': `Bearer ${access_token.value}`
+                    }
+                });
+                if (response.data && response.status === 200) {
+                    specialists.value = response.data;
+                }
+            } catch (error) {
+
+            }
+        }
+
+        const deleteSpecialist = async (id) => {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const response = await axios.post('/api/auth/specialist/specialistdelete', { id }, {
+                            headers: {
+                                'Authorization': `Bearer ${access_token.value}`
+                            }
+                        })
+                        if (response.data && response.status === 200) {
+                            fetchSpecialist();
+                            Swal.fire({
+                                title: response.data.message,
+                                icon: "success",
+                                draggable: true
+                            });
+                        }
+                    } catch (error) {
+                        console.error(error.response);
+                    }
+                }
+            });
+        }
+        onMounted(() => {
+            access_token.value = Cookies.get('access_token');
+            fetchSpecialist()
+        })
         return {
             currentComponent,
             componentLoad,
-            anotherLoad
+            anotherLoad,
+            specialists,
+            deleteSpecialist
         }
     }
 }
 </script>
 
-<style></style>
+<style scoped>
+.doctor-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.doctor-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.doctor-card ul li {
+    text-decoration: none;
+    list-style: none;
+}
+
+@media (max-width: 768px) {
+    .doctor-card {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .doctor-avatar {
+        margin-bottom: 10px;
+    }
+
+    .d-flex.align-items-center {
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 5px;
+    }
+}
+</style>

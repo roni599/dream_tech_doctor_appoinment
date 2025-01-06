@@ -38,44 +38,51 @@
                     </select>
                 </div>
             </div>
-            <div v-for="doctor in filteredDoctors" :key="doctor.id" class="list-group">
-                <div class="doctor-card d-flex align-items-center">
-                    <div class="doctor-avatar me-3">
-                        <img v-if="doctor.doctor_image" :src="doctor.doctor_image" alt="" width="60px" height="60px" />
-                    </div>
-                    <div class="flex-grow-1">
-                        <h5 class="mb-1">{{ doctor.doctorName }}</h5>
-                        <p class="mb-0 text-muted">{{ doctor.deparment_category }}</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <router-link :to="{ name: 'DoctorView', params: { id: doctor.id } }"
-                            class="btn btn-outline-primary me-2">
-                            <i class="fa-solid fa-eye"></i>
-                        </router-link>
-                        <router-link :to="{ name: 'DoctorEdit', params: { id: doctor.id } }"
-                            class="btn btn-outline-warning me-2">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </router-link>
-                        <button class="btn btn-outline-warning me-2 copy-button" @click="generateAndCopyLink(doctor.id)"
-                            @mouseenter="onHover($event, doctor.id)" @mouseleave="hoveredButton = null">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
-                        <div v-if="hoveredButton === doctor.id" :style="tooltipStyle" class="custom-tooltip below">
-                            {{ copymessage }}
+            <div v-if="doctors" class="exit">
+                <div v-for="doctor in filteredDoctors" :key="doctor.id" class="list-group">
+                    <div class="doctor-card d-flex align-items-center">
+                        <div class="doctor-avatar me-3">
+                            <img v-if="doctor.doctor_image" :src="doctor.doctor_image" alt="" width="60px"
+                                height="60px" />
                         </div>
-                        <button class="btn btn-outline-danger me-2" @click="deleteDoctor(doctor.id)">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                        <div class="dropdown">
-                            <select class="form-select border border-success text-success custom-select"
-                                aria-label="Status select" v-model="doctor.status"
-                                @change="updateStatus(doctor.id, doctor.status)">
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">{{ doctor.doctorName }}</h5>
+                            <p class="mb-0 text-muted">{{ doctor.deparment_category }}</p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <router-link :to="{ name: 'DoctorView', params: { id: doctor.id } }"
+                                class="btn btn-outline-primary me-2">
+                                <i class="fa-solid fa-eye"></i>
+                            </router-link>
+                            <router-link :to="{ name: 'DoctorEdit', params: { id: doctor.id } }"
+                                class="btn btn-outline-warning me-2">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </router-link>
+                            <button class="btn btn-outline-warning me-2 copy-button"
+                                @click="generateAndCopyLink(doctor.id)" @mouseenter="onHover($event, doctor.id)"
+                                @mouseleave="hoveredButton = null">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                            <div v-if="hoveredButton === doctor.id" :style="tooltipStyle" class="custom-tooltip below">
+                                {{ copymessage }}
+                            </div>
+                            <button class="btn btn-outline-danger me-2" @click="deleteDoctor(doctor.id)">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                            <div class="dropdown">
+                                <select class="form-select border border-success text-success custom-select"
+                                    aria-label="Status select" v-model="doctor.status"
+                                    @change="updateStatus(doctor.id, doctor.status)">
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div v-else class="exitCheck text-center">
+                <h3>No Doctor Found</h3>
             </div>
         </div>
     </div>
@@ -88,10 +95,11 @@ import DoctorCreate from "./DoctorCreate.vue";
 import DoctorActive from "./DoctorActive.vue";
 import DoctorInactive from "./DoctorInactive.vue";
 import axios from "axios";
-
+import Cookies from "js-cookie";
 export default {
     name: "Doctor-vue",
     setup() {
+        const access_token = ref('');
         const currentComponent = shallowRef(null);
         const doctors = ref([]);
         const hoveredButton = ref(null);
@@ -99,6 +107,7 @@ export default {
         const copymessage = ref('Copy link address');
         const departmentFilter = ref('');
         const doctorFilter = ref('');
+        const experiences = ref([]);
 
 
         const uniqueDepartments = computed(() => {
@@ -164,7 +173,11 @@ export default {
 
         const fetchDoctor = async () => {
             try {
-                const response = await axios.get("/api/auth/hospital-doctor");
+                const response = await axios.get("/api/auth/hospital-doctor", {
+                    headers: {
+                        Authorization: `Bearer ${access_token.value}`,
+                    },
+                });
                 if (response.data && response.status === 200) {
                     doctors.value = response.data;
                 }
@@ -176,10 +189,18 @@ export default {
 
         const updateStatus = async (doctorId, status) => {
             try {
-                const response = await axios.post("/api/auth/hospital-doctor/change-status", {
-                    doctorId,
-                    status: status === "0" ? 0 : 1,
-                });
+                const response = await axios.post("/api/auth/hospital-doctor/change-status",
+                    {
+                        doctorId,
+                        status: status === "0" ? 0 : 1,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${access_token.value}`,
+                        },
+                    }
+                );
+
                 if (response.data && response.data.message && response.status === 201) {
                     fetchDoctor();
                     Swal.fire({
@@ -204,9 +225,13 @@ export default {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
-                        const response = await axios.post('/api/auth/hospital-doctor/delete-doctor', {
-                            doctorId
-                        })
+                        const response = await axios.post('/api/auth/hospital-doctor/delete-doctor', { doctorId, },
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${access_token.value}`,
+                                },
+                            }
+                        );
                         if (response.data && response.data.message && response.status === 200) {
                             fetchDoctor();
                             Swal.fire({
@@ -221,8 +246,25 @@ export default {
                 }
             });
         }
+
+        const fetchExperience = async () => {
+            try {
+                const response = await axios.get(`/api/auth/experience`, {
+                    headers: {
+                        Authorization: `Bearer ${access_token.value}`,
+                    },
+                })
+                if (response.data && response.status === 200) {
+                    experiences.value = response.data;
+                }
+            } catch (error) {
+
+            }
+        }
         onMounted(async () => {
+            access_token.value = Cookies.get('access_token');
             await fetchDoctor();
+            await fetchExperience();
         });
         return {
             currentComponent,
@@ -240,7 +282,8 @@ export default {
             departmentFilter,
             doctorFilter,
             filteredDoctors,
-            uniqueDepartments
+            uniqueDepartments,
+            experiences,
         };
     },
 };

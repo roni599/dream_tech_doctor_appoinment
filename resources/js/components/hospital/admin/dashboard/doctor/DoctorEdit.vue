@@ -71,12 +71,12 @@
                         <div class="row form-section mb-2">
                             <div class="col-md-12">
                                 <label for="specialist" class="form-label mb-0">Specialist</label>
-                                <div v-for="(item, index) in selects" :key="index"
+                                <div v-for="(item, index) in selects" :key="item.id"
                                     class="d-flex align-items-center mt-2">
                                     <select class="form-select flex-grow-1 me-2" v-model="item.value"
                                         aria-label="Default select example">
                                         <option selected disabled value="">Open this select menu</option>
-                                        <option v-for="item in selects" :key="item.value" :value="item.value">{{
+                                        <option v-for="item in selects" :key="item.id" :value="item.value">{{
                                             item.value }}</option>
 
                                     </select>
@@ -94,12 +94,23 @@
                         <div class="row form-section mb-2">
                             <div class="col-md-12">
                                 <label for="symptom" class="form-label mb-0">Symptom</label>
-                                <select v-model="form.symptom" class="form-select" aria-label="Default select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="Angina">Angina</option>
-                                    <option value="Anaphylaxis">Anaphylaxis</option>
-                                    <option value="Ankle sprain">Ankle sprain</option>
-                                </select>
+                                <div v-for="(item, index) in symptom" :key="index"
+                                    class="d-flex align-items-center mt-2">
+                                    <select class="form-select flex-grow-1 me-2" v-model="item.value"
+                                        aria-label="Default select example">
+                                        <option value="" disabled selected>Open this select menu</option>
+                                        <option v-for="item in symptom" :key="item.id" :value="item.value">{{
+                                            item.value }}</option>
+                                    </select>
+                                    <div class="d-flex">
+                                        <button type="button" class="btn btn-success me-1"
+                                            v-if="index === symptom.length - 1" @click="addSymtom">+
+                                        </button>
+                                        <button type="button" class="btn btn-danger" v-if="symptom.length > 1"
+                                            @click="removeSymptom(index)"> -
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row form-section mb-2">
@@ -335,6 +346,10 @@ export default {
             { value: "" },
         ]);
 
+        const symptom = ref([
+            { value: "" },
+        ]);
+
 
         const onFileSelect = (event) => {
             const file = event.target.files[0];
@@ -410,6 +425,15 @@ export default {
             selects.value.splice(index, 1);
         };
 
+        const addSymtom = () => {
+            symptom.value.push({ value: "" });
+        };
+
+        const removeSymptom = (index) => {
+            symptom.value.splice(index, 1);
+        };
+
+
         const doctorView = async () => {
             const response = await axios.get(`/api/auth/hospital-doctor/doctor-view/${doctor_id.value}`)
             if (response.data && response.data.message && response.status == 200) {
@@ -423,7 +447,10 @@ export default {
                 form.value.gender = doctor.value.gender
                 form.value.details = doctor.value.details
                 form.value.experience = doctor.value.experience
+
                 selects.value = doctor.value.Specialist.map(specialist => ({ value: specialist }));
+                symptom.value = doctor.value.symptom.map(symptom => ({ value: symptom }));
+
                 form.value.mobile = doctor.value.mobile
                 form.value.mobile_optional = doctor.value.mobile_optional
                 form.value.visitfee = doctor.value.visitfee
@@ -481,8 +508,11 @@ export default {
             doctor_id,
             currentComponent,
             selects,
+            symptom,
             addSelect,
             removeSelect,
+            addSymtom,
+            removeSymptom,
             rows,
             addRow,
             removeRow,

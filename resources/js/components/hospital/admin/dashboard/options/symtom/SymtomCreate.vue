@@ -49,7 +49,7 @@ export default {
                         icon: "success",
                         draggable: true
                     });
-                    form.value = '';
+                    form.value.symptom = '';
                 }
             } catch (error) { }
         };

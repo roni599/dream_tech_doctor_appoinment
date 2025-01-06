@@ -16,8 +16,9 @@ import AppoinmentCreate from '../components/hospital/admin/dashboard/appoinment/
 import Symtom from '../components/hospital/admin/dashboard/options/symtom/Symtom.vue';
 import SymtomEdit from '../components/hospital/admin/dashboard/options/symtom/SymtomEdit.vue';
 import Specialist from '../components/hospital/admin/dashboard/options/specialist/Specialist.vue';
+import SpecialistEdit from '../components/hospital/admin/dashboard/options/specialist/SpecialistEdit.vue';
 import Experience from '../components/hospital/admin/dashboard/options/experience/Experience.vue';
-
+import ExperienceEdit from '../components/hospital/admin/dashboard/options/experience/ExperienceEdit.vue';
 const routes = [
     {
         path: '/',
@@ -125,6 +126,24 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: SymtomEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/specialistEdit/:id',
+                name: 'SpecialistEdit',
+                components: {
+                    default: Dashboard,
+                    content: SpecialistEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/experienceEdit/:id',
+                name: 'ExperienceEdit',
+                components: {
+                    default: Dashboard,
+                    content: ExperienceEdit,
                 },
                 meta: { hideMainContent: true },
             },

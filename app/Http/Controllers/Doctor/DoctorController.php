@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Doctor;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class DoctorController extends Controller
@@ -22,8 +23,12 @@ class DoctorController extends Controller
     }
     public function index()
     {
-        $doctor = Doctor::all();
-        return response()->json($doctor, 200);
+        $user = Auth::user();
+        if ($user) {
+            $doctor = Doctor::all();
+            return response()->json($doctor, 200);
+        }
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
     public function activeDoctor()
     {
@@ -135,6 +140,8 @@ class DoctorController extends Controller
             'signature_image' => $doctor_signatureImageURL,
             'prescription_signature_style' => $request->prescription_signature_style,
         ]);
+        $user_id = 9;
+        $doctor->users()->attach($user_id);
 
         return response()->json(['message' => 'Doctor created successfully', 'doctor' => $doctor], 201);
     }

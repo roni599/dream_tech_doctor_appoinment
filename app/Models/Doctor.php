@@ -41,5 +41,10 @@ class Doctor extends Model
     protected $casts = [
         'Specialist' => 'array',
         'Schedule' => 'array',
+        'symptom' => 'array',
     ];
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_doctor')->withTimestamps();
+    }
 }

@@ -42,9 +42,17 @@ export default {
                         Authorization: `Bearer ${access_token.value}`,
                     },
                 })
-                console.log(response)
-            } catch (error) {
+                if (response.data && response.status === 201) {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success",
+                        draggable: true
+                    });
+                    form.value.specialist = '';
+                }
 
+            } catch (error) {
+                console.log(error.response)
             }
         }
         onMounted(() => {
