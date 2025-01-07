@@ -36,6 +36,7 @@ class Doctor extends Model
         'doctor_image',
         'signature_image',
         'prescription_signature_style',
+        'user_id'
     ];
 
     protected $casts = [
@@ -43,6 +44,10 @@ class Doctor extends Model
         'Schedule' => 'array',
         'symptom' => 'array',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_doctor')->withTimestamps();

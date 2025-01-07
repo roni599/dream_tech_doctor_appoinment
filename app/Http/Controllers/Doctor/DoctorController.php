@@ -43,6 +43,8 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
 
+        $user = Auth::user();
+
         // return response()->json($request->all());
         // $request->validate([
         //     'deparment_category' => 'required|string|max:255',
@@ -72,78 +74,82 @@ class DoctorController extends Controller
         //     'prescription_signature_style' => 'nullable|string',
         // ]);
 
-        $doctor_imageName = '';
-        $imageURL = '';
-        if ($request->doctor_image) {
-            $position = strpos($request->doctor_image, ';');
-            $sub = substr($request->doctor_image, 0, $position);
-            $ext = explode('/', $sub)[1];
-            $doctor_imageName = rand(1, 1000) . '_' . $request->doctorName . '.' . $ext;
-            $image = str_replace('data:image/' . $ext . ';base64,', '', $request->doctor_image);
-            $image = str_replace(' ', '+', $image);
+        if ($user) {
+            $doctor_imageName = '';
+            $imageURL = '';
+            if ($request->doctor_image) {
+                $position = strpos($request->doctor_image, ';');
+                $sub = substr($request->doctor_image, 0, $position);
+                $ext = explode('/', $sub)[1];
+                $doctor_imageName = rand(1, 1000) . '_' . $request->doctorName . '.' . $ext;
+                $image = str_replace('data:image/' . $ext . ';base64,', '', $request->doctor_image);
+                $image = str_replace(' ', '+', $image);
 
-            $imagePath = public_path('backend/images/doctor_image/' . $doctor_imageName);
-            if (!File::isDirectory(public_path('backend/images/doctor_image'))) {
-                File::makeDirectory(public_path('backend/images/doctor_image'), 0755, true, true);
+                $imagePath = public_path('backend/images/doctor_image/' . $doctor_imageName);
+                if (!File::isDirectory(public_path('backend/images/doctor_image'))) {
+                    File::makeDirectory(public_path('backend/images/doctor_image'), 0755, true, true);
+                }
+                File::put($imagePath, base64_decode($image));
+                $imageURL = url('backend/images/doctor_image/' . $doctor_imageName);
             }
-            File::put($imagePath, base64_decode($image));
-            $imageURL = url('backend/images/doctor_image/' . $doctor_imageName);
-        }
 
 
-        $doctor_signatureImageName = '';
-        $doctor_signatureImageURL = '';
+            $doctor_signatureImageName = '';
+            $doctor_signatureImageURL = '';
 
-        if ($request->signature_image) {
-            $position = strpos($request->signature_image, ';');
-            $sub = substr($request->signature_image, 0, $position);
-            $ext = explode('/', $sub)[1];
-            $doctor_signatureImageName = rand(1, 1000) . '_' . $request->doctorName . '.' . $ext;
-            $image = str_replace('data:image/' . $ext . ';base64,', '', $request->signature_image);
-            $image = str_replace(' ', '+', $image);
+            if ($request->signature_image) {
+                $position = strpos($request->signature_image, ';');
+                $sub = substr($request->signature_image, 0, $position);
+                $ext = explode('/', $sub)[1];
+                $doctor_signatureImageName = rand(1, 1000) . '_' . $request->doctorName . '.' . $ext;
+                $image = str_replace('data:image/' . $ext . ';base64,', '', $request->signature_image);
+                $image = str_replace(' ', '+', $image);
 
-            $imagePath = public_path('backend/images/doctor_signatureimage/' . $doctor_signatureImageName);
-            if (!File::isDirectory(public_path('backend/images/doctor_signatureimage'))) {
-                File::makeDirectory(public_path('backend/images/doctor_signatureimage'), 0755, true, true);
+                $imagePath = public_path('backend/images/doctor_signatureimage/' . $doctor_signatureImageName);
+                if (!File::isDirectory(public_path('backend/images/doctor_signatureimage'))) {
+                    File::makeDirectory(public_path('backend/images/doctor_signatureimage'), 0755, true, true);
+                }
+                File::put($imagePath, base64_decode($image));
+                $doctor_signatureImageURL = url('backend/images/doctor_signatureimage/' . $doctor_signatureImageName);
             }
-            File::put($imagePath, base64_decode($image));
-            $doctor_signatureImageURL = url('backend/images/doctor_signatureimage/' . $doctor_signatureImageName);
+
+            $schedule = json_encode($request->rows);
+            $specialist = json_encode($request->selects);
+
+            $doctor = Doctor::create([
+                'deparment_category' => $request->deparment_category,
+                'regnum' => $request->regnum,
+                'doctorName' => $request->doctorName,
+                'email' => $request->email,
+                'age' => $request->age,
+                'gender' => $request->gender,
+                'details' => $request->details,
+                'experience' => $request->experience,
+                'Specialist' => $request->selects,
+                'Shedule' => $schedule,
+                'symptom' => $request->symptom,
+                'mobile' => $request->mobile,
+                'mobile_optional' => $request->mobile_optional,
+                'visitfee' => $request->visitfee,
+                'second_day' => $request->second_day,
+                'second_dayFee' => $request->second_dayFee,
+                'thired_day' => $request->thired_day,
+                'thired_dayFee' => $request->thired_dayFee,
+                'payment_type' => $request->payment_type,
+                'room_number' => $request->room_number,
+                'appoinment_mobile' => $request->appoinment_mobile,
+                'appoinment_mobileOptional' => $request->appoinment_mobileOptional,
+                'doctor_image' => $imageURL,
+                'signature_image' => $doctor_signatureImageURL,
+                'prescription_signature_style' => $request->prescription_signature_style,
+                'user_id' => $user->id,
+            ]);
+            $user_id = 9;
+            $doctor->users()->attach($user_id);
+
+            return response()->json(['message' => 'Doctor created successfully', 'doctor' => $doctor], 201);
         }
-
-        $schedule = json_encode($request->rows);
-        $specialist = json_encode($request->selects);
-
-        $doctor = Doctor::create([
-            'deparment_category' => $request->deparment_category,
-            'regnum' => $request->regnum,
-            'doctorName' => $request->doctorName,
-            'email' => $request->email,
-            'age' => $request->age,
-            'gender' => $request->gender,
-            'details' => $request->details,
-            'experience' => $request->experience,
-            'Specialist' => $request->selects,
-            'Shedule' => $schedule,
-            'symptom' => $request->symptom,
-            'mobile' => $request->mobile,
-            'mobile_optional' => $request->mobile_optional,
-            'visitfee' => $request->visitfee,
-            'second_day' => $request->second_day,
-            'second_dayFee' => $request->second_dayFee,
-            'thired_day' => $request->thired_day,
-            'thired_dayFee' => $request->thired_dayFee,
-            'payment_type' => $request->payment_type,
-            'room_number' => $request->room_number,
-            'appoinment_mobile' => $request->appoinment_mobile,
-            'appoinment_mobileOptional' => $request->appoinment_mobileOptional,
-            'doctor_image' => $imageURL,
-            'signature_image' => $doctor_signatureImageURL,
-            'prescription_signature_style' => $request->prescription_signature_style,
-        ]);
-        $user_id = 9;
-        $doctor->users()->attach($user_id);
-
-        return response()->json(['message' => 'Doctor created successfully', 'doctor' => $doctor], 201);
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     public function changeStatus(Request $request)

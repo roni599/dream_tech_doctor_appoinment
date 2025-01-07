@@ -194,6 +194,7 @@
                             <a class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-layer-group"></i><span>Options</span></a>
                             <ul class="dropdown-menu">
+                                <li><router-link to="/department-category" class="nav-link">Department/Category</router-link></li>
                                 <li><router-link to="/symtom" class="nav-link" href="chat.html">Symtoms</router-link>
                                 </li>
                                 <li><router-link to="/specialist" class="nav-link">Specialist</router-link></li>

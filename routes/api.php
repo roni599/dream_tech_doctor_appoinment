@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\Home\HomeController;
@@ -61,11 +62,18 @@ Route::group([
     Route::get('/experience/experiencedata/{id}', [ExperienceController::class, 'experienceEditData']);
     Route::post('/experience/experienceedit', [ExperienceController::class, 'experiencetEdit']);
     Route::post('/experience/experiencedelete', [ExperienceController::class, 'delete']);
+
+    Route::get('/department',[DepartmentController::class,'index']);
+    Route::post('/department/store',[DepartmentController::class,'store']);
+    Route::get('/department/department-editdata/{id}', [DepartmentController::class, 'departmentEditData']);
+    Route::post('/department/department-edit', [DepartmentController::class, 'departmentEdit']);
+    Route::post('/department/departmentdelete', [DepartmentController::class, 'delete']);
 });
 
 Route::get('home/hospital-doctor',[HomeController::class,'doctorshow']);
 Route::get('home/hospital',[HomeController::class,'hospitalAll']);
 Route::get('home/symptoms', [HomeController::class, 'symptoms']);
 Route::get('home/specialist', [HomeController::class, 'specialist']);
-
-Route::post('/home/doctorsearch',[HomeController::class,'doctorSearch']);
+Route::get('home/department',[HomeController::class,'department']);
+Route::post('/home/search-doctors',[HomeController::class,'searchDoctors']);
+Route::post('/home/search-pathology',[HomeController::class,'searchPathology']);

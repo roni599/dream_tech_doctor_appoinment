@@ -393,7 +393,12 @@ export default {
             });
 
             try {
-                const response = await axios.post('/api/auth/hospital-doctor/store', payload);
+                const response = await axios.post('/api/auth/hospital-doctor/store', payload, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken.value}`
+                    }
+                });
+
                 console.log(response)
                 if (response.data && response.data.message && response.status === 201) {
                     Swal.fire({

@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-center align-items-center">
-        <div class="card w-100" style="max-width: 1230px">
+        <div class="card w-100" style="width: 1300px;">
             <div class="card-header mt-2">
                 <h5 class="card-title">Symptom Create</h5>
             </div>

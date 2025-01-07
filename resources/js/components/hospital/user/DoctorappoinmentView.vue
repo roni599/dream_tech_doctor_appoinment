@@ -118,7 +118,6 @@ export default {
         const doctorView = async () => {
             const response = await axios.get(`/api/auth/hospital-doctor/doctor-view/${doctor_id.value}`)
             if (response.data && response.data.message && response.status == 200) {
-                console.log(response.data.doctor);
                 doctor.value = response.data.doctor;
                 let jsonString = response.data.doctor.Shedule
                 doctor_shedules.value = JSON.parse(jsonString);

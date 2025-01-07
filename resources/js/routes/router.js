@@ -19,6 +19,8 @@ import Specialist from '../components/hospital/admin/dashboard/options/specialis
 import SpecialistEdit from '../components/hospital/admin/dashboard/options/specialist/SpecialistEdit.vue';
 import Experience from '../components/hospital/admin/dashboard/options/experience/Experience.vue';
 import ExperienceEdit from '../components/hospital/admin/dashboard/options/experience/ExperienceEdit.vue';
+import Department from '../components/hospital/admin/dashboard/options/department/Department.vue';
+import DepartmentEdit from '../components/hospital/admin/dashboard/options/department/DepartmentEdit.vue';
 const routes = [
     {
         path: '/',
@@ -121,6 +123,15 @@ const routes = [
                 meta: { hideMainContent: true },
             },
             {
+                path: '/department-category',
+                name: 'Department',
+                components: {
+                    default: Dashboard,
+                    content: Department,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
                 path: '/symtomEdit/:id',
                 name: 'SymtomEdit',
                 components: {
@@ -144,6 +155,15 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: ExperienceEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/departmentEdit/:id',
+                name: 'DepartmentEdit',
+                components: {
+                    default: Dashboard,
+                    content: DepartmentEdit,
                 },
                 meta: { hideMainContent: true },
             },

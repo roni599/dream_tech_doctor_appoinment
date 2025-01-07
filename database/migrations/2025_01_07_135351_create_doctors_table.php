@@ -38,7 +38,9 @@ return new class extends Migration
             $table->string('doctor_image')->nullable();
             $table->string('signature_image')->nullable();
             $table->string('prescription_signature_style')->nullable();
-            $table->boolean('status')->default(false);
+            $table->boolean('status')->default(true);
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

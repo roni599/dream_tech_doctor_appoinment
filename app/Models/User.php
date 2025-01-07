@@ -80,6 +80,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
+    }
     public function doctors()
     {
         return $this->belongsToMany(Doctor::class, 'user_doctor')->withTimestamps();
@@ -95,5 +99,10 @@ class User extends Authenticatable implements JWTSubject
     public function experiences()
     {
         return $this->hasMany(Experience::class);
+    }
+
+    public function department()
+    {
+        return $this->hasMany(Department::class);
     }
 }

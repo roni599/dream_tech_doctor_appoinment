@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-center align-items-center">
-        <div class="card" style="width: 1230px;">
+        <div class="card" style="width: 1300px;">
             <div class="card-header mt-2">
                 <h5 class="card-title">Experience Create</h5>
             </div>
