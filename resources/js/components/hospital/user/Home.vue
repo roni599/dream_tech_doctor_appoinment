@@ -24,7 +24,8 @@
                             <li class="nav-item"><a class="nav-link" href="#">Ambulance</a></li>
                         </ul>
                         <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link" href="#">Login</a></li>
+                            <li class="nav-item"><router-link to="/login" class="nav-link" href="#">Login</router-link>
+                            </li>
                             <li class="nav-item"><a class="nav-link" href="#">Sign Up</a></li>
                             <li class="nav-item"><a class="nav-link fw-bold" href="#">Hospital</a></li>
                         </ul>
@@ -114,7 +115,8 @@
                                     <select v-model="hospitalDoctor.department_name" class="form-select"
                                         aria-label="Default select example">
                                         <option value="" disabled selected>Open this select menu</option>
-                                        <option v-for="hospital in alldepartments" :key="hospital.id" :value="hospital">
+                                        <option v-for="hospital in alldepartments" :key="hospital.id"
+                                            :value="hospital.department_category">
                                             {{ hospital.department_category }}</option>
                                     </select>
                                 </div>
@@ -237,7 +239,8 @@
                                             aria-label="Default select example">
                                             <option value="" disabled selected>Open this select menu</option>
                                             <option v-for="hospital in alldepartments" :key="hospital.id"
-                                                :value="hospital">{{hospital.department_category }}</option>
+                                                :value="hospital.department_category">{{ hospital.department_category }}
+                                            </option>
                                         </select>
                                     </div>
                                     <label for="symptoms">Symptoms</label>
@@ -642,6 +645,7 @@ export default {
         }
 
         const doctorSearch = async () => {
+            console.log(hospitalDoctor.value)
             const payload = {
                 ...Object.fromEntries(
                     Object.entries(hospitalDoctor.value).filter(
@@ -653,6 +657,7 @@ export default {
             };
             try {
                 const response = await axios.post('/api/home/search-doctors', payload);
+                console.log(response)
                 if (response.data && response.status === 200) {
                     if (response.data.doctors && response.data.doctors.length > 0) {
                         doctors.value = response.data.doctors;
@@ -682,6 +687,7 @@ export default {
             };
             try {
                 const response = await axios.post('/api/home/search-pathology', payload);
+                console.log(response)
                 if (response.data && response.status === 200) {
                     if (response.data.doctors && response.data.doctors.length > 0) {
                         doctors.value = response.data.doctors;

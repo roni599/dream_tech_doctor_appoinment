@@ -73,7 +73,6 @@ export default {
                     specialists.value = response.data;
                 }
             } catch (error) {
-
             }
         }
 

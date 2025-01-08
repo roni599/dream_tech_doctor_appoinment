@@ -49,9 +49,11 @@
 
 <script>
 import { onMounted, ref } from 'vue';
+import Cookies from 'js-cookie';
 export default {
     name: "DoctorInactive",
     setup() {
+        const access_token = ref('');
         const currentComponent = ref(false);
         const doctors = ref([]);
 
@@ -96,7 +98,12 @@ export default {
         };
 
         const fetchDoctor = async () => {
-            const response = await axios.get("/api/auth/hospital-doctor/dactive-doctor");
+            const response = await axios.get("/api/auth/hospital-doctor/dactive-doctor", {
+                headers: {
+                    'Authorization': `Bearer ${access_token.value}`,
+                },
+            });
+
             if (response.data && response.status === 200) {
                 doctors.value = response.data;
             }
@@ -104,10 +111,19 @@ export default {
 
         const updateStatus = async (doctorId, status) => {
             try {
-                const response = await axios.post("/api/auth/hospital-doctor/change-status", {
-                    doctorId,
-                    status: status === "0" ? 0 : 1,
-                });
+                const response = await axios.post(
+                    "/api/auth/hospital-doctor/change-status",
+                    {
+                        doctorId,
+                        status: status === "0" ? 0 : 1,
+                    },
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${access_token.value}`,
+                        },
+                    }
+                );
+
                 if (response.data && response.data.message && response.status === 201) {
                     fetchDoctor();
                     Swal.fire({
@@ -133,9 +149,14 @@ export default {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
-                        const response = await axios.post('/api/auth/hospital-doctor/delete-doctor', {
-                            doctorId
-                        })
+                        const response = await axios.post('/api/auth/hospital-doctor/delete-doctor',
+                            { doctorId },
+                            {
+                                headers: {
+                                    'Authorization': `Bearer ${access_token.value}`,
+                                },
+                            }
+                        );
                         if (response.data && response.data.message && response.status === 200) {
                             fetchDoctor();
                             Swal.fire({
@@ -152,6 +173,7 @@ export default {
         }
 
         onMounted(async () => {
+            access_token.value = Cookies.get('access_token');
             await fetchDoctor();
         });
         return {

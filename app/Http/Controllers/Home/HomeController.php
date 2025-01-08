@@ -47,7 +47,6 @@ class HomeController extends Controller
 
     public function searchDoctors(Request $request)
     {
-
         $query = Doctor::query();
         $query->join('users', 'doctors.user_id', '=', 'users.id');
         if ($request->has('department_name') && $request->input('department_name') != '') {
@@ -112,6 +111,7 @@ class HomeController extends Controller
 
     public function searchPathology(Request $request)
     {
+        return response()->json($request->all());
         $query = Doctor::query();
         $query->join('users', 'doctors.user_id', '=', 'users.id');
         if ($request->has('department_name') && $request->input('department_name') != '') {
@@ -155,5 +155,13 @@ class HomeController extends Controller
             'success' => true,
             'doctors' => $doctors,
         ], 200);
+    }
+    public function viewDoctor($doctor_id)
+    {
+        $doctor = Doctor::find($doctor_id);
+        if (!$doctor) {
+            return response()->json(['message' => 'Doctor not found'], 404);
+        }
+        return response()->json(['message' => 'Doctor Data retrive successfully', 'doctor' => $doctor], 200);
     }
 }

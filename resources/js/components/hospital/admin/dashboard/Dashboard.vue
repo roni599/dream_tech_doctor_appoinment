@@ -163,7 +163,7 @@
                                 Settings
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="auth-login.html" class="dropdown-item has-icon text-danger"> <i
+                            <a @click="logout" class="dropdown-item has-icon text-danger" style="cursor: pointer;"> <i
                                     class="fas fa-sign-out-alt"></i>
                                 Logout
                             </a>
@@ -194,7 +194,8 @@
                             <a class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-layer-group"></i><span>Options</span></a>
                             <ul class="dropdown-menu">
-                                <li><router-link to="/department-category" class="nav-link">Department/Category</router-link></li>
+                                <li><router-link to="/department-category"
+                                        class="nav-link">Department/Category</router-link></li>
                                 <li><router-link to="/symtom" class="nav-link" href="chat.html">Symtoms</router-link>
                                 </li>
                                 <li><router-link to="/specialist" class="nav-link">Specialist</router-link></li>
@@ -229,19 +230,38 @@
 </template>
 
 <script>
-import { computed, onBeforeMount } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
+import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
 computed
 export default {
     name: 'Dashboard',
     setup() {
+        const router = useRouter();
         onBeforeMount(() => {
             const styleLink = document.createElement("link");
             styleLink.rel = "stylesheet";
             styleLink.href = "/hospital/backend/app/assets/css/style.css";
             document.head.appendChild(styleLink);
         });
+        const clearAllCookies = () => {
+            const allCookies = Cookies.get();
+            Object.keys(allCookies).forEach((cookieName) => {
+                Cookies.remove(cookieName);
+            });
+        };
+
+        const logout = () => {
+            clearAllCookies();
+            router.push({ name: 'Login' });
+        };
+        return {
+            logout,
+        }
     }
 }
 </script>
 
-<style></style>
+<style scoped>
+
+</style>

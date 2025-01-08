@@ -7,9 +7,7 @@
         </div>
         <div class="doctor-card d-flex flex-column flex-md-row justify-content-center  align-items-center p-4 gap-md-5">
             <div class="text-center">
-                <img class="mb-2 img-fluid"
-                    :src="doctor.doctor_image"
-                    alt="Doctor Image">
+                <img class="mb-2 img-fluid" :src="doctor.doctor_image" alt="Doctor Image">
                 <p>Reg. No: 2132134</p>
             </div>
             <div class="mx-4 text-md-start">
@@ -75,7 +73,7 @@
             </div>
             <table class="table table-bordered table-striped table-hover">
                 <thead class="table-primary">
-                    <tr >
+                    <tr>
                         <th class="bg-info text-white">Days</th>
                         <th class="bg-info text-white">Start Time</th>
                         <th class="bg-info text-white">End Time</th>
@@ -116,7 +114,7 @@ export default {
         const doctor_shedules = ref([]);
 
         const doctorView = async () => {
-            const response = await axios.get(`/api/auth/hospital-doctor/doctor-view/${doctor_id.value}`)
+            const response = await axios.get(`/api/home/hospital-doctor/doctor-view/${doctor_id.value}`)
             if (response.data && response.data.message && response.status == 200) {
                 doctor.value = response.data.doctor;
                 let jsonString = response.data.doctor.Shedule

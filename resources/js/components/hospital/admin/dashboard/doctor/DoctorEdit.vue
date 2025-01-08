@@ -299,9 +299,11 @@ Dhaka Medical College
 <script>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import Cookies from 'js-cookie';
 export default {
     name: 'DoctorEdit',
     setup() {
+        const access_token = ref('');
         const route = useRoute();
         const doctor_id = ref('');
         const doctor = ref({});
@@ -397,7 +399,12 @@ export default {
             });
 
             try {
-                const response = await axios.post('/api/auth/hospital-doctor/update', payload);
+                const response = await axios.post('/api/auth/hospital-doctor/update', payload, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token.value}`
+                    }
+                });
+
                 console.log(response)
                 if (response.data && response.data.message && response.status === 200) {
                     Swal.fire({
@@ -435,7 +442,12 @@ export default {
 
 
         const doctorView = async () => {
-            const response = await axios.get(`/api/auth/hospital-doctor/doctor-view/${doctor_id.value}`)
+            const response = await axios.get(`/api/auth/hospital-doctor/doctor-view/${doctor_id.value}`, {
+                headers: {
+                    'Authorization': `Bearer ${access_token.value}`,
+                },
+            });
+
             if (response.data && response.data.message && response.status == 200) {
                 doctor.value = response.data.doctor;
                 form.value.doctor_id = doctor.value.id;
@@ -501,6 +513,7 @@ export default {
 
 
         onMounted(() => {
+            access_token.value = Cookies.get('access_token');
             doctor_id.value = route.params.id;
             doctorView()
         });

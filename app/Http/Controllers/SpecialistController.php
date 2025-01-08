@@ -11,7 +11,7 @@ class SpecialistController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if($user){
+        if ($user) {
             $specalist = Specialist::where('user_id', $user->id)->get();
             return response()->json($specalist, 200);
         }
@@ -37,8 +37,15 @@ class SpecialistController extends Controller
     {
         $user = Auth::user();
         if ($user) {
-            $specialist = Specialist::findOrfail($id);
-            return response()->json($specialist, 200);
+            $specialist = Specialist::find($id);
+            if ($specialist) {
+                return response()->json($specialist, 200);
+            } else {
+                return response()->json([
+                    'message' => 'No specialist found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json('unauthorized');
     }
@@ -51,17 +58,24 @@ class SpecialistController extends Controller
                 'id' => 'required|exists:specialists,id'
             ]);
 
-            $specialist = Specialist::findOrFail($validated['id']);
-            $specialist->update([
-                'specialist' => $validated['specialist']
-            ]);
-            return response()->json(
-                [
-                    'message' => 'Specialist updated successfully.',
-                    'specialist' => $specialist
-                ],
-                200
-            );
+            $specialist = Specialist::find($validated['id']);
+            if ($specialist) {
+                $specialist->update([
+                    'specialist' => $validated['specialist']
+                ]);
+                return response()->json(
+                    [
+                        'message' => 'Specialist updated successfully.',
+                        'specialist' => $specialist
+                    ],
+                    200
+                );
+            } else {
+                return response()->json([
+                    'message' => 'No specialist found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }
@@ -72,9 +86,17 @@ class SpecialistController extends Controller
             $validated = $request->validate([
                 'id' => 'required|exists:specialists,id'
             ]);
-            $specialist = Specialist::findOrFail($validated['id']);
-            $specialist->delete();
-            return response()->json(['message' => 'Specialist deleted successfully.'], 200);
+            $specialist = Specialist::find($validated['id']);
+            if($specialist){
+                $specialist->delete();
+                return response()->json(['message' => 'Specialist deleted successfully.'], 200);
+            }
+            else{
+                return response()->json([
+                    'message' => 'No specialist found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }

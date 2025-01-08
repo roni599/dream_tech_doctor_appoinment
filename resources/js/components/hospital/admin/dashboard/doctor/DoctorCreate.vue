@@ -408,7 +408,6 @@ export default {
                     });
                 }
             } catch (error) {
-                console.error('Error:', error.response?.data || error.message);
             }
         }
 
@@ -480,7 +479,6 @@ export default {
                     symtoms.value = response.data;
                 }
             } catch (error) {
-                console.log(error.response)
             }
         }
         onMounted(async () => {

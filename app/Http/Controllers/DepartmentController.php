@@ -10,8 +10,12 @@ class DepartmentController extends Controller
 {
     public function index()
     {
-        $department = Department::all();
-        return response()->json($department, 200);
+        $user = Auth::user();
+        if ($user) {
+            $department = Department::all();
+            return response()->json($department, 200);
+        }
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
     public function store(Request $request)
     {
@@ -33,8 +37,15 @@ class DepartmentController extends Controller
     {
         $user = Auth::user();
         if ($user) {
-            $department = Department::findOrfail($id);
-            return response()->json($department, 200);
+            $department = Department::find($id);
+            if ($department) {
+                return response()->json($department, 200);
+            } else {
+                return response()->json([
+                    'message' => 'No Department Category found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json('unauthorized');
     }
@@ -47,17 +58,24 @@ class DepartmentController extends Controller
                 'id' => 'required|exists:departments,id'
             ]);
 
-            $department = Department::findOrFail($validated['id']);
-            $department->update([
-                'department_category' => $validated['department_category']
-            ]);
-            return response()->json(
-                [
-                    'message' => 'Department Category updated successfully.',
-                    'department' => $department
-                ],
-                200
-            );
+            $department = Department::find($validated['id']);
+            if ($department) {
+                $department->update([
+                    'department_category' => $validated['department_category']
+                ]);
+                return response()->json(
+                    [
+                        'message' => 'Department Category updated successfully.',
+                        'department' => $department
+                    ],
+                    200
+                );
+            } else {
+                return response()->json([
+                    'message' => 'No Department Category found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }
@@ -68,9 +86,16 @@ class DepartmentController extends Controller
             $validated = $request->validate([
                 'id' => 'required|exists:departments,id'
             ]);
-            $department = Department::findOrFail($validated['id']);
-            $department->delete();
-            return response()->json(['message' => 'department deleted successfully.'], 200);
+            $department = Department::find($validated['id']);
+            if ($department) {
+                $department->delete();
+                return response()->json(['message' => 'department deleted successfully.'], 200);
+            } else {
+                return response()->json([
+                    'message' => 'No Department Category found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }

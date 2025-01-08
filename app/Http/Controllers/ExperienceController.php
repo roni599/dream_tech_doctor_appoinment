@@ -11,8 +11,12 @@ class ExperienceController extends Controller
 {
     public function index()
     {
-        $experience = Experience::all();
-        return response()->json($experience, 200);
+        $user = Auth::user();
+        if ($user) {
+            $experience = Experience::all();
+            return response()->json($experience, 200);
+        }
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
     public function store(Request $request)
     {
@@ -40,17 +44,24 @@ class ExperienceController extends Controller
                 'id' => 'required|exists:experiences,id'
             ]);
 
-            $experience = Experience::findOrFail($validated['id']);
-            $experience->update([
-                'experience' => $validated['experience']
-            ]);
-            return response()->json(
-                [
-                    'message' => 'Experience updated successfully.',
-                    'experience' => $experience
-                ],
-                200
-            );
+            $experience = Experience::find($validated['id']);
+            if ($experience) {
+                $experience->update([
+                    'experience' => $validated['experience']
+                ]);
+                return response()->json(
+                    [
+                        'message' => 'Experience updated successfully.',
+                        'experience' => $experience
+                    ],
+                    200
+                );
+            } else {
+                return response()->json([
+                    'message' => 'No experience found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }
@@ -72,9 +83,16 @@ class ExperienceController extends Controller
             $validated = $request->validate([
                 'id' => 'required|exists:experiences,id'
             ]);
-            $experience = Experience::findOrFail($validated['id']);
-            $experience->delete();
-            return response()->json(['message' => 'Experience deleted successfully.'], 200);
+            $experience = Experience::find($validated['id']);
+            if ($experience) {
+                $experience->delete();
+                return response()->json(['message' => 'Experience deleted successfully.'], 200);
+            } else {
+                return response()->json([
+                    'message' => 'No experience found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }

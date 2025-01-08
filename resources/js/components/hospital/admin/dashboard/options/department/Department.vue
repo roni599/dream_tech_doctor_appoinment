@@ -71,7 +71,6 @@ export default {
                     departments.value = response.data;
                 }
             } catch (error) {
-
             }
         }
 

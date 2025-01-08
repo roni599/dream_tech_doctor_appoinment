@@ -182,7 +182,6 @@ export default {
                     doctors.value = response.data;
                 }
             } catch (error) {
-                console.log(error)
             }
         };
 

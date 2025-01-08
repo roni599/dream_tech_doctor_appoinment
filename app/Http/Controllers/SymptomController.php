@@ -38,8 +38,15 @@ class SymptomController extends Controller
     {
         $user = Auth::user();
         if ($user) {
-            $symtom = Symptom::findOrfail($id);
-            return response()->json($symtom, 200);
+            $symtom = Symptom::find($id);
+            if ($symtom) {
+                return response()->json($symtom, 200);
+            } else {
+                return response()->json([
+                    'message' => 'No Sytom found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json('unauthorized');
     }
@@ -52,17 +59,24 @@ class SymptomController extends Controller
                 'id' => 'required|exists:symptoms,id'
             ]);
 
-            $symptom = Symptom::findOrFail($validated['id']);
-            $symptom->update([
-                'symptom' => $validated['symptom']
-            ]);
-            return response()->json(
-                [
-                    'message' => 'Symptom updated successfully.',
-                    'symtom' => $symptom
-                ],
-                200
-            );
+            $symptom = Symptom::find($validated['id']);
+            if ($symptom) {
+                $symptom->update([
+                    'symptom' => $validated['symptom']
+                ]);
+                return response()->json(
+                    [
+                        'message' => 'Symptom updated successfully.',
+                        'symtom' => $symptom
+                    ],
+                    200
+                );
+            } else {
+                return response()->json([
+                    'message' => 'No Sytom found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }
@@ -74,9 +88,16 @@ class SymptomController extends Controller
             $validated = $request->validate([
                 'id' => 'required|exists:symptoms,id'
             ]);
-            $symptom = Symptom::findOrFail($validated['id']);
-            $symptom->delete();
-            return response()->json(['message' => 'Symptom deleted successfully.'], 200);
+            $symptom = Symptom::find($validated['id']);
+            if ($symptom) {
+                $symptom->delete();
+                return response()->json(['message' => 'Symptom deleted successfully.'], 200);
+            } else {
+                return response()->json([
+                    'message' => 'No Sytom found to related this id',
+                    'status' => 404,
+                ]);
+            }
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }

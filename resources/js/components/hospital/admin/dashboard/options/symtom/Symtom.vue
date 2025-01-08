@@ -68,7 +68,6 @@ export default {
                     symtoms.value = response.data;
                 }
             } catch (error) {
-                console.log(error.response)
             }
         }
         const anotherLoad = () => {

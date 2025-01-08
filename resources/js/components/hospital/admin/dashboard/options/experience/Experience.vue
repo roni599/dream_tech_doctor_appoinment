@@ -70,7 +70,6 @@ export default {
                     experiences.value = response.data;
                 }
             } catch (error) {
-                console.log(error)
             }
         }
         const deleteExperience = async (id) => {
