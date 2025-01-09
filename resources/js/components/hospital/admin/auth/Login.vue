@@ -50,8 +50,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -86,9 +84,25 @@ export default {
                         sameSite: 'Strict',
                     });
                     router.push({ name: 'Dashboard' });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Successfully Logged in!"
+                    });
                 }
             } catch (error) {
                 errors.value = error.response.data.errors;
+                if (error.response && error.response.data.errors) {
+                    this.errors = error.response.data.errors;
+                    Toast.fire({
+                        icon: "warning",
+                        title: "Invalid email or password"
+                    });
+                } else {
+                    Toast.fire({
+                        icon: "error",
+                        title: "An error occurred. Please try again later."
+                    });
+                }
             }
         }
         return {

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -109,7 +110,7 @@ class AuthController extends Controller
 
     public function signup(Request $request)
     {
-
+        return response()->json($request->all());
         // $validated = $request->validate([
         //     'hospital_name' => 'required|string|max:255',
         //     'reg_number' => 'required|string|max:255',
@@ -217,9 +218,12 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+        try {
+            auth()->logout();
+            return response()->json(['message' => 'Successfully logged out']);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to log out'], 500);
+        }
     }
 
     /**

@@ -206,10 +206,17 @@
                             <router-link to="/doctor" href="#" class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
                         </li>
-                        <li class="dropdown">
-                            <router-link to="/appoinment_create" href="#" class="menu-toggle nav-link has-dropdown"><i
-                                    class="fa-solid fa-calendar-check"></i><span>Appoinment</span></router-link>
+                        <li class="dropdown" style="cursor: pointer;">
+                            <a class="menu-toggle nav-link has-dropdown"><i class="fa-solid fa-calendar-check"></i><span>Appoinment</span></a>
+                            <ul class="dropdown-menu">
+                                <li><router-link to="/appoinment_view" class="nav-link"
+                                        href="chat.html">Appoinment-View</router-link>
+                                </li>
+                                <li><router-link to="/appoinment_details"
+                                        class="nav-link">Appoinment-Details</router-link></li>
+                            </ul>
                         </li>
+
                     </ul>
                 </aside>
             </div>
@@ -233,11 +240,13 @@
 import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 computed
 export default {
     name: 'Dashboard',
     setup() {
         const router = useRouter();
+        const access_token = ref('');
         onBeforeMount(() => {
             const styleLink = document.createElement("link");
             styleLink.rel = "stylesheet";
@@ -251,10 +260,33 @@ export default {
             });
         };
 
-        const logout = () => {
-            clearAllCookies();
-            router.push({ name: 'Login' });
+        const logout = async () => {
+            try {
+                const response = await axios.post(
+                    '/api/auth/logout',
+                    {},
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${access_token.value}`
+                        }
+                    }
+                );
+                if (response.data && response.status === 200) {
+                    clearAllCookies();
+                    router.push({ name: 'Login' });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Successfully Logged Out!"
+                    });
+                }
+            } catch (error) {
+                console.log(error.response ? error.response.data : error.message);
+            }
         };
+
+        onMounted(() => {
+            access_token.value = Cookies.get('access_token');
+        })
         return {
             logout,
         }
@@ -262,6 +294,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

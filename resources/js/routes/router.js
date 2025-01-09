@@ -12,7 +12,8 @@ import DoctorCreate from '../components/hospital/admin/dashboard/doctor/DoctorCr
 import DoctorView from '../components/hospital/admin/dashboard/doctor/DoctorView.vue';
 import DoctorviewOffline from '../components/hospital/admin/dashboard/doctor/DoctorviewOffline.vue';
 import DoctorEdit from '../components/hospital/admin/dashboard/doctor/DoctorEdit.vue';
-import AppoinmentCreate from '../components/hospital/admin/dashboard/appoinment/AppoinmentCreate.vue';
+import AppoinmentView from '../components/hospital/admin/dashboard/appoinment/AppoinmentView.vue';
+import AppoinmentDetails from '../components/hospital/admin/dashboard/appoinment/AppoinmentDetails.vue';
 import Symtom from '../components/hospital/admin/dashboard/options/symtom/Symtom.vue';
 import SymtomEdit from '../components/hospital/admin/dashboard/options/symtom/SymtomEdit.vue';
 import Specialist from '../components/hospital/admin/dashboard/options/specialist/Specialist.vue';
@@ -87,11 +88,20 @@ const routes = [
             },
 
             {
-                path: '/appoinment_create',
-                name: 'AppoinmentCreate',
+                path: '/appoinment_view',
+                name: 'AppoinmentView',
                 components: {
                     default: Dashboard,
-                    content: AppoinmentCreate,
+                    content: AppoinmentView,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/appoinment_details',
+                name: 'AppoinmentDetails',
+                components: {
+                    default: Dashboard,
+                    content: AppoinmentDetails,
                 },
                 meta: { hideMainContent: true },
             },

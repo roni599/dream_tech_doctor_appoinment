@@ -87,11 +87,10 @@ class SpecialistController extends Controller
                 'id' => 'required|exists:specialists,id'
             ]);
             $specialist = Specialist::find($validated['id']);
-            if($specialist){
+            if ($specialist) {
                 $specialist->delete();
                 return response()->json(['message' => 'Specialist deleted successfully.'], 200);
-            }
-            else{
+            } else {
                 return response()->json([
                     'message' => 'No specialist found to related this id',
                     'status' => 404,
