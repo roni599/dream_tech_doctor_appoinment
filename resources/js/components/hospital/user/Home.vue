@@ -657,7 +657,6 @@ export default {
             };
             try {
                 const response = await axios.post('/api/home/search-doctors', payload);
-                console.log(response)
                 if (response.data && response.status === 200) {
                     if (response.data.doctors && response.data.doctors.length > 0) {
                         doctors.value = response.data.doctors;

@@ -20,26 +20,25 @@
                     </div>
                     <div class="col-md-8 doctor-details">
                         <h4 class="fw-bold">{{ doctor.doctorName }}</h4>
-                        <div>
-                            <template v-for="(item, index) in splitExperience" :key="index">
-                                <p>{{ item }}</p>
-                            </template>
+                        <div class="mb-2">
+                            <p v-for="(line) in splitExperience(doctor.details)" :key="line.id" class="mb-0">
+                                {{ line }}
+                            </p>
                         </div>
-                        <p><strong>Specialist: </strong>
+                        <p class="mb-1"><strong>Specialist: </strong><br>
                             <span v-for="(specialist, index) in doctor.Specialist" :key="index">
                                 {{ specialist }}<span v-if="index !== doctor.Specialist.length - 1">, </span>
                             </span>
                         </p>
-                        <p><strong>Proposer:</strong> Department of {{ doctor.deparment_category }}</p>
-                        <p>{{ doctor.details }}</p>
-                        <p>Reg. No: <strong>{{ doctor.regnum }}</strong></p>
+                        <p class="mb-2"><strong>Proposer:</strong><br> Department of {{ doctor.deparment_category }}</p>
+                        <p class="mb-1">Reg. No: <strong>{{ doctor.regnum }}</strong></p>
                         <p><strong>Contact:</strong> {{ doctor.mobile }}</p>
                     </div>
                 </div>
                 <hr>
                 <h5>Symptom</h5>
                 <ul class="symptom-list">
-                    <li v-for="symtom in spliteSymtoms" :key="symtom.id">{{ symtom }}</li>
+                    <li v-for="symtom in symptoms" :key="symtom.id">{{ symtom }}</li>
                 </ul>
             </div>
             <table class="table table-bordered mt-4">
@@ -81,39 +80,85 @@ export default {
         const doctor_id = ref('');
         const doctor = ref({});
         const doctor_shedules = ref([]);
+        const symptoms = ref([]);
         const doctorView = async () => {
-            const response = await axios.get(`/api/auth/hospital-doctor/doctor-view/${doctor_id.value}`)
+            const response = await axios.get(`/api/auth/hospital-doctor/doctor-viewoffline/${doctor_id.value}`)
             console.log(response.data.doctor);
             if (response.data && response.data.message && response.status == 200) {
                 doctor.value = response.data.doctor;
+                symptoms.value = response.data.doctor.symptom;
                 let jsonString = response.data.doctor.Shedule
                 doctor_shedules.value = JSON.parse(jsonString);
             }
         }
 
-        const splitExperience = computed(() => {
-            const experience = doctor.value.experience || '';
-            return experience
-                .split('.')
-                .map(item => item.trim())
-                .filter(item => item.length > 0);
-        });
+        const splitExperience = (experience) => {
+            const formattedExperience = (experience || "")
+                .split(",")
+                .map((item) => item.trim())
+                .filter((item) => item.length > 0);
 
-        const spliteSymtoms = computed(() => {
-            const symtoms = doctor.value.symptom || '';
-            return symtoms.split('.').map(item => item.trim()).filter(item => item.length > 0)
-        })
+            const groupedLines = [];
+            let firstLine = [];
+            let currentLine = [];
+
+            for (let i = 0; i < formattedExperience.length; i++) {
+                const item = formattedExperience[i];
+
+                if (firstLine.length < 3) {
+                    if (item.length > 4) {
+                        if (firstLine.length > 0) {
+                            groupedLines.push(firstLine.join(", "));
+                        }
+                        groupedLines.push(item);
+                        firstLine = [];
+                        currentLine = formattedExperience.slice(i + 1);
+                        break;
+                    } else {
+                        firstLine.push(item);
+                    }
+                }
+
+                if (firstLine.length === 3 || i === formattedExperience.length - 1) {
+                    groupedLines.push(firstLine.join(", "));
+                    currentLine = formattedExperience.slice(i + 1);
+                    break;
+                }
+            }
+            let tempLine = [];
+            currentLine.forEach((item) => {
+                if (item.length > 11) {
+                    if (tempLine.length > 0) {
+                        groupedLines.push(tempLine.join(", "));
+                        tempLine = [];
+                    }
+                    groupedLines.push(item);
+                } else {
+                    tempLine.push(item);
+                    if (tempLine.length === 3) {
+                        groupedLines.push(tempLine.join(", "));
+                        tempLine = [];
+                    }
+                }
+            });
+            if (tempLine.length > 0) {
+                groupedLines.push(tempLine.join(", "));
+            }
+
+            return groupedLines;
+        };
+
         onMounted(() => {
             doctor_id.value = route.params.id;
             doctorView();
-            
+
         });
         return {
             doctorView,
             doctor,
             splitExperience,
-            spliteSymtoms,
-            doctor_shedules
+            doctor_shedules,
+            symptoms
         }
     }
 }

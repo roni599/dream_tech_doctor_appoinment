@@ -201,6 +201,16 @@ class DoctorController extends Controller
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
+    public function viewDoctorOffline($doctor_id)
+    {
+        $doctor = Doctor::find($doctor_id);
+        if (!$doctor) {
+            return response()->json(['message' => 'Doctor not found'], 404);
+        }
+
+        return response()->json(['message' => 'Doctor Data retrive successfully', 'doctor' => $doctor], 200);
+    }
+
     public function update(Request $request)
     {
         // $request->validate([

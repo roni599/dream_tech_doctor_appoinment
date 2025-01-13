@@ -44,6 +44,7 @@ Route::group([
     Route::get('/hospital-doctor/active-doctor', [DoctorController::class, 'activeDoctor']);
     Route::get('/hospital-doctor/dactive-doctor', [DoctorController::class, 'dactiveDoctor']);
     Route::get('/hospital-doctor/doctor-view/{doctor_id}', [DoctorController::class, 'viewDoctor']);
+    Route::get('/hospital-doctor/doctor-viewoffline/{doctor_id}', [DoctorController::class, 'viewDoctorOffline']);
 
     
     Route::get('/symptoms', [SymptomController::class, 'index']);

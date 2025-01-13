@@ -4,7 +4,7 @@
             <div v-for="doctor in doctors" :key="doctor.id" class="list-group">
                 <div class="doctor-card d-flex align-items-center">
                     <div class="doctor-avatar me-3">
-                        <img :src="doctor.signature_image" alt="" width="60px" height="60px" />
+                        <img :src="doctor.doctor_image" alt="" width="60px" height="60px" />
                     </div>
                     <div class="flex-grow-1">
                         <h5 class="mb-1">{{ doctor.doctorName }}</h5>
