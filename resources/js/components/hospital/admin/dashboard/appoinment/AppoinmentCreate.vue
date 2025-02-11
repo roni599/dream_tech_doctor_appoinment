@@ -1,125 +1,141 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between"
-                        style="background-color: #f6f6f6; color: #a0b1bf; font-weight: bold;">
-                        <div>
-                            <h6 class="text-center">Appointment</h6>
-                        </div>
-                        <div class="align-items-center">
-                            <p class="align-items-center"><i
-                                    class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle align-items-center"></i>
-                            </p>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <!-- Main Card -->
+                    <div
+                        :class="{ 'col-lg-8': form.payment === 'Discount' || form.payment === 'Free', 'col-lg-12': !(form.payment === 'Discount' || form.payment === 'Free') }">
+                        <div class="card w-100">
+                            <div class="card-header d-flex justify-content-between"
+                                style="background-color: #f6f6f6; color: #a0b1bf; font-weight: bold;">
+                                <h6 class="text-center">Appointment</h6>
+                                <!-- <p><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle"></i></p> -->
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-1 text-center">
+                                    <span class="section-title">S.L No:</span>
+                                    <span class="badge badge-custom ms-2">102</span>
+                                </div>
+                                <div class="mb-2 text-center">
+                                    <p class="mb-0"><strong>Visit Date:</strong> 10/08/2024</p>
+                                    <p class="mb-0"><strong>Department/Category:</strong> Cardiologist</p>
+                                    <p class="mb-0"><strong>Doctor:</strong> Dr. Md. Jasim Uddin</p>
+                                </div>
+                                <form>
+                                    <div class="mb-2">
+                                        <label for="patientMobile" class="form-label mb-0">Patient Mobile/Mail</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="patientMobile"
+                                                placeholder="patient mobile/mail">
+                                            <button class="btn btn-danger" type="button">✔</button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="patientName" class="form-label mb-0">Patient Name</label>
+                                        <input type="text" class="form-control" id="patientName"
+                                            placeholder="patient name">
+                                    </div>
+                                    <div class="row mb-0 g-2">
+                                        <div class="col-md-6">
+                                            <label for="gender" class="form-label mb-0">Gender</label>
+                                            <select class="form-select" id="gender">
+                                                <option selected value="" disabled>Select an option</option>
+                                                <option>Male</option>
+                                                <option>Female</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="age" class="form-label mb-0">Age</label>
+                                            <input type="number" class="form-control" id="age" placeholder="age">
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mt-1">
+                                        <div class="col-md-6">
+                                            <label for="visitTime" class="form-label mb-0">Visit Time</label>
+                                            <select class="form-select" id="visitTime">
+                                                <option selected value="" disabled>Select an option</option>
+                                                <option>Morning</option>
+                                                <option>Afternoon</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="payment" class="form-label mb-0">Payment</label>
+                                            <select v-model="form.payment" class="form-select" id="payment">
+                                                <option selected value="" disabled>Select an option</option>
+                                                <option>Paid</option>
+                                                <option>Unpaid</option>
+                                                <option>Discount</option>
+                                                <option>Free</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2 mt-3">
+                                        <label for="remenance" class="form-label mb-0">Remenance</label>
+                                        <input type="text" class="form-control" id="remenance" placeholder="remenance">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label mb-0">Description</label>
+                                        <textarea class="form-control" id="description" rows="3"
+                                            placeholder="description"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-custom w-100">Submit</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="mb-1 text-center">
-                            <span class="section-title">S.L No:</span>
-                            <span class="badge badge-custom ms-2">11</span>
+
+                    <!-- Extra Section (Discount/Free) -->
+                    <div class="col-lg-4" v-if="form.payment === 'Discount' || form.payment === 'Free'">
+                        <div class="form-section" v-if="form.payment === 'Discount'">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h6 class="text-center">Discount</h6>
+                                <span><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle"
+                                        style="cursor: pointer;" @click="hideContent"></i></span>
+                            </div>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="fee" class="form-label mb-0">Fee</label>
+                                    <div class="input-group">
+                                        <input type="text" v-model="fee" class="form-control" id="fee"
+                                            placeholder="Fee">
+                                        <input type="text" v-model="amount" class="form-control" placeholder="Discount">
+                                        <input type="text" v-model="percentage" class="form-control" readonly
+                                            placeholder="%">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reference" class="form-label mb-0">Reference</label>
+                                    <input type="text" class="form-control" id="reference" placeholder="reference">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="narration" class="form-label mb-0">Narration</label>
+                                    <textarea class="form-control" id="narration" rows="3"
+                                        placeholder="narration"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-custom w-100">Ok</button>
+                            </form>
                         </div>
-                        <div class="mb-2 text-center">
-                            <p class="mb-0"><strong>Visit Date:</strong> 10/08/2024</p>
-                            <p class="mb-0"><strong>Department/Category:</strong> Cardiologist</p>
-                            <p class="mb-0"><strong>Doctor:</strong> Dr. Md. Jasim Uddin</p>
+
+                        <div class="form-section mt-3" v-if="form.payment === 'Free'">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h6 class="text-center">Free</h6>
+                                <span><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle" @click="hideContent" style="cursor: pointer;"></i></span>
+                            </div>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="referenceFree" class="form-label mb-0">Reference</label>
+                                    <input type="text" class="form-control" id="referenceFree" placeholder="reference">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="narrationFree" class="form-label mb-0">Narration</label>
+                                    <textarea class="form-control" id="narrationFree" rows="3"
+                                        placeholder="narration"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-custom w-100">Ok</button>
+                            </form>
                         </div>
-                        <form>
-                            <div class="mb-2">
-                                <label for="patientMobile" class="form-label mb-0">Patient Mobile/Mail</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="patientMobile">
-                                    <button class="btn btn-danger" type="button">✔</button>
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <label for="patientName" class="form-label mb-0">Patient Name</label>
-                                <input type="text" class="form-control" id="patientName">
-                            </div>
-                            <div class="row mb-0 g-2">
-                                <div class="col-md-6">
-                                    <label for="gender" class="form-label mb-0">Gender</label>
-                                    <select class="form-select" id="gender">
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="age" class="form-label mb-0">Age</label>
-                                    <input type="number" class="form-control" id="age">
-                                </div>
-                            </div>
-                            <div class="row g-2 mt-1">
-                                <div class="col-md-6">
-                                    <label for="visitTime" class="form-label mb-0">Visit Time</label>
-                                    <select class="form-select" id="visitTime">
-                                        <option>Morning</option>
-                                        <option>Afternoon</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="payment" class="form-label mb-0">Payment</label>
-                                    <select class="form-select" id="payment">
-                                        <option>Paid</option>
-                                        <option>Unpaid</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mb-2 mt-3">
-                                <label for="remenance" class="form-label mb-0">Remenance</label>
-                                <input type="text" class="form-control" id="remenance">
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label mb-0">Description</label>
-                                <textarea class="form-control" id="description" rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-custom w-100">Submit</button>
-                        </form>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="form-section">
-                    <div class="d-flex justify-content-between mb-3">
-                        <h6 class="text-center">Discount</h6>
-                        <span><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle"></i></span>
-                    </div>
-                    <form>
-                        <div class="mb-3">
-                            <label for="fee" class="form-label mb-0">Fee</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="fee">
-                                <input type="text" class="form-control" placeholder="Amount">
-                                <input type="text" class="form-control" placeholder="%">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="reference" class="form-label mb-0">Reference</label>
-                            <input type="text" class="form-control" id="reference">
-                        </div>
-                        <div class="mb-3">
-                            <label for="narration" class="form-label mb-0">Narration</label>
-                            <textarea class="form-control" id="narration" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-custom w-100">Ok</button>
-                    </form>
-                </div>
-                <div class="form-section mt-3">
-                    <div class="d-flex justify-content-between mb-3">
-                        <h6 class="text-center">Free</h6>
-                        <span><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle"></i></span>
-                    </div>
-                    <form>
-                        <div class="mb-3">
-                            <label for="referenceFree" class="form-label mb-0">Reference</label>
-                            <input type="text" class="form-control" id="referenceFree">
-                        </div>
-                        <div class="mb-3">
-                            <label for="narrationFree" class="form-label mb-0">Narration</label>
-                            <textarea class="form-control" id="narrationFree" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-custom w-100">Ok</button>
-                    </form>
                 </div>
             </div>
         </div>
@@ -128,10 +144,39 @@
 </template>
 
 <script>
+import { ref, computed } from 'vue';
+
 export default {
     name: "AppoinmentCreate",
     setup() {
-        return {};
+        const form = ref({
+            payment: '',
+        })
+        const fee = ref('');
+        const amount = ref('');
+
+        const percentage = computed(() => {
+            if (fee.value && amount.value) {
+                const percentage = (amount.value / fee.value) * 100;
+                return (fee.value - (fee.value * percentage / 100)).toFixed(2) + ' Tk';
+            }
+            return "";
+        });
+
+        const hideContent = () => {
+            if (form.value.payment === 'Discount') {
+                form.value.payment = '';
+            } else if (form.value.payment === 'Free') {
+                form.value.payment = '';
+            }
+        };
+        return {
+            form,
+            fee,
+            amount,
+            percentage,
+            hideContent
+        };
     },
 };
 </script>
@@ -176,5 +221,9 @@ export default {
 .Appointment-text {
     color: #8c8794;
     font-weight: bold;
+}
+
+.card {
+    transition: width 0.3s ease-in-out;
 }
 </style>

@@ -168,7 +168,7 @@ export default {
         };
         const anotherLoad = () => {
             currentComponent.value = null;
-            fetchDoctor()
+            fetchDoctor();
         };
 
         const fetchDoctor = async () => {

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div
-            class="header-buttons d-flex flex-wrap justify-content-start justify-content-center justify-content-md-start mb-4">
+            class="header-buttons d-flex flex-wrap justify-content-start justify-content-center justify-content-md-start mb-2">
             <button @click="anotherLoad" class="btn btn-primary mb-2">Appoint View</button>
             <button @click="componentLoad('AppoinmentCreate')" class="btn btn-info text-white mb-2">New Appoint</button>
         </div>
@@ -28,13 +28,17 @@
                         </select>
                     </div>
                     <div class="filter-item">
+                        <label for="patientMobile" class="form-label mb-0">Visit date</label>
+                        <input type="date" class="form-control"/>
+                    </div>
+                    <div class="filter-item">
                         <label for="patientMobile" class="form-label mb-0">Appointment</label>
                         <div class="appoint-number">102</div>
                     </div>
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <h5 class="text-start">12/08/2028</h5>
-                </div>
+                </div> -->
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>

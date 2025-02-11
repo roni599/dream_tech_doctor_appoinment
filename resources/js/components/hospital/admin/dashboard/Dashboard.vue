@@ -200,6 +200,7 @@
                                 </li>
                                 <li><router-link to="/specialist" class="nav-link">Specialist</router-link></li>
                                 <li><router-link to="/experience" class="nav-link">Experience</router-link></li>
+                                <li><router-link to="/experience" class="nav-link">Room Number</router-link></li>
                             </ul>
                         </li>
                         <li class="dropdown">

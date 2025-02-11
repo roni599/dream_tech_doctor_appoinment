@@ -18,24 +18,24 @@
                         </div>
                         <div class="col-md-6">
                             <label for="department" class="form-label mb-0">Reg Number</label>
-                            <input v-model="form.regnum" type="text" class="form-control" id="reg-number">
+                            <input v-model="form.regnum" type="text" class="form-control" id="reg-number" placeholder="Reg number">
                         </div>
                     </div>
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
                             <label for="department" class="form-label mb-0">Doctor Name</label>
-                            <input v-model="form.doctorName" type="text" class="form-control" id="reg-number">
+                            <input v-model="form.doctorName" type="text" class="form-control" id="reg-number" placeholder="Dr. name">
                         </div>
                         <div class="col-md-6">
                             <label for="email" class="form-label mb-0">E-Mail</label>
-                            <input v-model="form.email" type="email" class="form-control" id="email">
+                            <input v-model="form.email" type="email" class="form-control" id="email" placeholder="@gmail.com">
                         </div>
                     </div>
 
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
                             <label for="age" class="form-label mb-0">Age</label>
-                            <input v-model="form.age" type="text" class="form-control" id="age">
+                            <input v-model="form.age" type="text" class="form-control" id="age" placeholder="Age">
                         </div>
                         <div class="col-md-6">
                             <label for="gender" class="form-label mb-0">Gender</label>
@@ -52,7 +52,7 @@
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
                             <label for="details" class="form-label mb-0">Details</label>
-                            <input v-model="form.details" class="form-control" id="details" />
+                            <input v-model="form.details" class="form-control" id="details" placeholder="Details" />
                         </div>
                         <!-- <div class="col-md-6">
                             <label for="experience" class="form-label mb-0">Experience</label>
@@ -114,11 +114,11 @@
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
                             <label for="mobile" class="form-label mb-0">Mobile</label>
-                            <input v-model="form.mobile" type="text" class="form-control" id="mobile">
+                            <input v-model="form.mobile" type="text" class="form-control" id="mobile" placeholder="+880">
                         </div>
                         <div class="col-md-6">
                             <label for="mobile" class="form-label mb-0">Optional Mobile</label>
-                            <input v-model="form.mobile_optional" type="text" class="form-control" id="mobile">
+                            <input v-model="form.mobile_optional" type="text" class="form-control" id="mobile" placeholder="+880">
                         </div>
                     </div>
                     <div class="row form-section mb-2">
@@ -147,11 +147,11 @@
                                                 </select>
                                             </td>
                                             <td style="min-width: 150px;">
-                                                <input v-model="row.start" type="text" class="fw-6 form-control"
+                                                <input v-model="row.start" type="time" class="fw-6 form-control"
                                                     placeholder="Start Time">
                                             </td>
                                             <td style="min-width: 150px;">
-                                                <input v-model="row.end" type="text" class="form-control"
+                                                <input v-model="row.end" type="time" class="form-control"
                                                     placeholder="End Time">
                                             </td>
                                             <td style="min-width: 150px;">
@@ -232,12 +232,12 @@
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
                             <label for="mobile" class="form-label mb-0"> For Appoint Mobile</label>
-                            <input v-model="form.appoinment_mobile" type="text" class="form-control" id="mobile">
+                            <input v-model="form.appoinment_mobile" type="text" class="form-control" id="mobile" placeholder="+880">
                         </div>
                         <div class="col-md-6">
                             <label for="mobile" class="form-label mb-0"> For Appoint Mobile (Optional)</label>
                             <input v-model="form.appoinment_mobileOptional" type="text" class="form-control"
-                                id="mobile">
+                                id="mobile" placeholder="+880">
                         </div>
                     </div>
                     <div class="row form-section mb-2">
@@ -264,17 +264,11 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="row form-section mb-3">
                         <div class="col-md-12">
                             <label for="details" class="form-label">Prescription Signature Style</label>
                             <textarea v-model="form.prescription_signature_style" class="form-control" id="details"
-                                style="white-space: pre-wrap; height: 150px;">
-Dr. Md: Jasim Uddin Nizami
-MBBS (BCS)
-Dhaka Medical College
-    </textarea>
+                                style="white-space: pre-wrap; height: 150px; color: gray;"></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -283,7 +277,6 @@ Dhaka Medical College
                             <button class="btn btn-success">Save & View</button>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
@@ -325,7 +318,9 @@ export default {
             appoinment_mobileOptional: '',
             doctor_image: 'https://png.pngtree.com/png-vector/20230928/ourmid/pngtree-young-afro-professional-doctor-png-image_10148632.png',
             signature_image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShe6vu2Hqp4CatuNS5UbOhr6tUGRhU_WZ0sA&s',
-            prescription_signature_style: "",
+            prescription_signature_style: `Dr. Md: Jasim Uddin Nizami
+MBBS (BCS)
+Dhaka Medical College`
         })
         const rows = ref([
             {
@@ -410,8 +405,6 @@ export default {
             } catch (error) {
             }
         }
-
-
 
         const addRow = () => {
             rows.value.push({ day: 'Saturday', start: '', end: '', visitLimit: '' });
