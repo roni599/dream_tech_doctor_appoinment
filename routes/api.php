@@ -5,6 +5,8 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\ReferenceController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SpecialistController;
 use App\Http\Controllers\SymptomController;
 use Illuminate\Http\Request;
@@ -64,6 +66,19 @@ Route::group([
     Route::get('/experience/experiencedata/{id}', [ExperienceController::class, 'experienceEditData']);
     Route::post('/experience/experienceedit', [ExperienceController::class, 'experiencetEdit']);
     Route::post('/experience/experiencedelete', [ExperienceController::class, 'delete']);
+
+    Route::get('/roomlist', [RoomController::class, 'index']);
+    Route::get('/roomlist/available', [RoomController::class, 'availableRoom']);
+    Route::post('/room/store', [RoomController::class, 'store']);
+    Route::get('/room/roomlistdata/{id}', [RoomController::class, 'roomlistEditData']);
+    Route::post('/room/roomlistedit', [RoomController::class, 'roomlistEdit']);
+    Route::post('/room/roomdelete', [RoomController::class, 'delete']);
+
+    Route::get('/reference', [ReferenceController::class, 'index']);
+    Route::post('/reference/store', [ReferenceController::class, 'store']);
+    Route::get('/reference/referencedata/{id}', [ReferenceController::class, 'referenceEditData']);
+    Route::post('/reference/referenceedit', [ReferenceController::class, 'referenceEdit']);
+    Route::post('/reference/referencedelete', [ReferenceController::class, 'delete']);
 
     Route::get('/department',[DepartmentController::class,'index']);
     Route::post('/department/store',[DepartmentController::class,'store']);

@@ -33,15 +33,15 @@
                     <th style="height: 30px; background-color: #0cbfde; color: white;">Days</th>
                     <th style="height: 30px; background-color: #0cbfde; color: white;">Start Time</th>
                     <th style="height: 30px; background-color: #0cbfde; color: white;">End Time</th>
-                    <th style="height: 30px; background-color: #0cbfde; color: white;">Visit Fee</th>
+                    <!-- <th style="height: 30px; background-color: #0cbfde; color: white;">Visit Limit</th> -->
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="doctorshedule in doctor_shedules" :key="doctorshedule.id">
                     <td>{{ doctorshedule.day }}</td>
-                    <td>{{ doctorshedule.start }}</td>
-                    <td>{{ doctorshedule.end }}</td>
-                    <td>{{ doctorshedule.visitLimit }}</td>
+                    <td>{{ convertTo12HourFormat(doctorshedule.start) }}</td>
+                    <td>{{ convertTo12HourFormat(doctorshedule.end) }}</td>
+                    <!-- <td>{{ doctorshedule.visitLimit }}</td> -->
                 </tr>
             </tbody>
         </table>
@@ -62,12 +62,13 @@ import Cookies from 'js-cookie';
 export default {
     name: 'DoctorView',
     setup() {
-        const route = useRoute();
         const access_token = ref('');
         const doctor_id = ref('');
         const doctor = ref({});
         const doctor_shedules = ref([]);
         const symptoms = ref([]);
+        const route = useRoute();
+        doctor_id.value = route.params.id;
 
         const doctorView = async () => {
             const response = await axios.get(`/api/auth/hospital-doctor/doctor-view/${doctor_id.value}`, {
@@ -144,6 +145,13 @@ export default {
         //     const symtoms = doctor.value.symptom || '';
         //     return symtoms.split(',').map(item => item.trim()).filter(item => item.length > 0)
         // })
+        const convertTo12HourFormat = (time) => {
+            let [hours, minutes] = time.split(':');
+            hours = parseInt(hours);
+            const period = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            return `${hours}:${minutes} ${period}`;
+        };
         onMounted(() => {
             access_token.value = Cookies.get('access_token');
             doctor_id.value = route.params.id;
@@ -155,7 +163,8 @@ export default {
             splitExperience,
             // spliteSymtoms,
             doctor_shedules,
-            symptoms
+            symptoms,
+            convertTo12HourFormat
         }
     }
 }

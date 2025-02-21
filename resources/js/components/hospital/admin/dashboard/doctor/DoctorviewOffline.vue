@@ -47,7 +47,7 @@
                         <th style="height: 30px; background-color: #0cbfde; color: white;">Days</th>
                         <th style="height: 30px; background-color: #0cbfde; color: white;">Start Time</th>
                         <th style="height: 30px; background-color: #0cbfde; color: white;">End Time</th>
-                        <th style="height: 30px; background-color: #0cbfde; color: white;">Visit Fee</th>
+                        <!-- <th style="height: 30px; background-color: #0cbfde; color: white;">Visit Limit</th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +55,7 @@
                         <td>{{ doctorshedule.day }}</td>
                         <td>{{ doctorshedule.start }}</td>
                         <td>{{ doctorshedule.end }}</td>
-                        <td>{{ doctorshedule.visitLimit }}</td>
+                        <!-- <td>{{ doctorshedule.visitLimit }}</td> -->
                     </tr>
                 </tbody>
             </table>

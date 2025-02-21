@@ -22,6 +22,12 @@ import Experience from '../components/hospital/admin/dashboard/options/experienc
 import ExperienceEdit from '../components/hospital/admin/dashboard/options/experience/ExperienceEdit.vue';
 import Department from '../components/hospital/admin/dashboard/options/department/Department.vue';
 import DepartmentEdit from '../components/hospital/admin/dashboard/options/department/DepartmentEdit.vue';
+import Roomlist from '../components/hospital/admin/dashboard/options/room/Roomlist.vue';
+import RoomlistEdit from '../components/hospital/admin/dashboard/options/room/RoomlistEdit.vue';
+
+import RferenceList from '../components/hospital/admin/dashboard/options/reference/RferenceList.vue';
+import ReferenceEdit from '../components/hospital/admin/dashboard/options/reference/ReferenceEdit.vue';
+
 const routes = [
     {
         path: '/',
@@ -133,6 +139,51 @@ const routes = [
                 meta: { hideMainContent: true },
             },
             {
+                path: '/experienceEdit/:id',
+                name: 'ExperienceEdit',
+                components: {
+                    default: Dashboard,
+                    content: ExperienceEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/reference',
+                name: 'RferenceList',
+                components: {
+                    default: Dashboard,
+                    content: RferenceList,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/reference-edit/:id',
+                name: 'ReferenceEdit',
+                components: {
+                    default: Dashboard,
+                    content: ReferenceEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/room',
+                name: 'Roomlist',
+                components: {
+                    default: Dashboard,
+                    content: Roomlist,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/roomlist-edit/:id',
+                name: 'RoomlistEdit',
+                components: {
+                    default: Dashboard,
+                    content: RoomlistEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
                 path: '/department-category',
                 name: 'Department',
                 components: {
@@ -156,15 +207,6 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: SpecialistEdit,
-                },
-                meta: { hideMainContent: true },
-            },
-            {
-                path: '/experienceEdit/:id',
-                name: 'ExperienceEdit',
-                components: {
-                    default: Dashboard,
-                    content: ExperienceEdit,
                 },
                 meta: { hideMainContent: true },
             },

@@ -13,7 +13,7 @@ class ExperienceController extends Controller
     {
         $user = Auth::user();
         if ($user) {
-            $experience = Experience::all();
+            $experience = Experience::where('user_id',$user->id)->get();
             return response()->json($experience, 200);
         }
         return response()->json(['error' => 'Unauthorized'], 401);
@@ -70,8 +70,8 @@ class ExperienceController extends Controller
     {
         $user = Auth::user();
         if ($user) {
-            $experience = Experience::findOrfail($id);
-            return response()->json($experience, 200);
+            $room_number = Experience::findOrfail($id);
+            return response()->json($room_number, 200);
         }
         return response()->json('unauthorized');
     }

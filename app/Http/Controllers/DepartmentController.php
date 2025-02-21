@@ -12,7 +12,7 @@ class DepartmentController extends Controller
     {
         $user = Auth::user();
         if ($user) {
-            $department = Department::all();
+            $department = Department::where('user_id',$user->id)->get();
             return response()->json($department, 200);
         }
         return response()->json(['error' => 'Unauthorized'], 401);

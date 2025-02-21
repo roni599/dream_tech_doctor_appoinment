@@ -82,12 +82,9 @@ class User extends Authenticatable implements JWTSubject
     }
     public function doctor()
     {
-        return $this->hasOne(Doctor::class);
+        return $this->hasMany(Doctor::class);
     }
-    public function doctors()
-    {
-        return $this->belongsToMany(Doctor::class, 'user_doctor')->withTimestamps();
-    }
+
     public function symtoms()
     {
         return $this->hasMany(Symptom::class);
@@ -101,8 +98,17 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Experience::class);
     }
 
+    public function rooms()
+    {
+        return $this->hasMany(Room::class);
+    }
+
     public function department()
     {
         return $this->hasMany(Department::class);
+    }
+    public function references()
+    {
+        return $this->hasMany(Reference::class);
     }
 }

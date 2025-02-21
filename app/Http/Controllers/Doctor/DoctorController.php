@@ -24,20 +24,28 @@ class DoctorController extends Controller
     {
         $user = Auth::user();
         if ($user) {
-            $doctor = Doctor::all();
+            $doctor = Doctor::where('user_id', $user->id)->get();
             return response()->json($doctor, 200);
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }
     public function activeDoctor()
     {
-        $doctor = Doctor::where('status', 1)->get();
-        return response()->json($doctor, 200);
+        $user = Auth::user();
+        if ($user) {
+            $doctor = Doctor::where('user_id', $user->id)->where('status', 1)->get();
+            return response()->json($doctor, 200);
+        }
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
     public function dactiveDoctor()
     {
-        $doctor = Doctor::where('status', 0)->get();
-        return response()->json($doctor, 200);
+        $user = Auth::user();
+        if ($user) {
+            $doctor = Doctor::where('user_id', $user->id)->where('status', 0)->get();
+            return response()->json($doctor, 200);
+        }
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
     public function store(Request $request)
     {
@@ -143,9 +151,6 @@ class DoctorController extends Controller
                 'prescription_signature_style' => $request->prescription_signature_style,
                 'user_id' => $user->id,
             ]);
-            $user_id = 9;
-            $doctor->users()->attach($user_id);
-
             return response()->json(['message' => 'Doctor created successfully', 'doctor' => $doctor], 201);
         }
         return response()->json(['error' => 'Unauthorized'], 401);
@@ -213,6 +218,7 @@ class DoctorController extends Controller
 
     public function update(Request $request)
     {
+        // return response()->json($request->all());
         // $request->validate([
         //      'doctor_id'=> 'required',
         //     'deparment_category' => 'required|string|max:255',

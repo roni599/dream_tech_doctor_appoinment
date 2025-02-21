@@ -213,10 +213,10 @@ export default {
 
         const onFileSelect = (event) => {
             const file = event.target.files[0];
-            if (file.size > 1048576) {
+            if (file.size > 2048576) {
                 Toast.fire({
                     icon: "warning",
-                    title: "Image must be less than 1 MB!",
+                    title: "Image must be less than 2 MB!",
                 });
             } else {
                 const reader = new FileReader();
@@ -228,10 +228,10 @@ export default {
         };
         const onFileSelect2 = (event) => {
             const file = event.target.files[0];
-            if (file.size > 1048576) {
+            if (file.size > 2048576) {
                 Toast.fire({
                     icon: "warning",
-                    title: "Image must be less than 1 MB!",
+                    title: "Image must be less than 2 MB!",
                 });
             } else {
                 const reader = new FileReader();
@@ -244,7 +244,6 @@ export default {
 
         const storeData = async (nextStep) => {
             if (nextStep === 'otpCheck') {
-                console.log(hospitalRegForm.value)
                 hospitalRegForm.value.otp = '';
                 otpText.value = '';
                 try {

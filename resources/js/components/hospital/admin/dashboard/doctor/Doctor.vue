@@ -24,9 +24,8 @@
                     <label for="department" class="form-label">Department/Category</label>
                     <select v-model="departmentFilter" id="department" class="form-select">
                         <option value="" selected>Choose...</option>
-                        <option v-for="(department, index) in uniqueDepartments" :key="index" :value="department">
-                            {{ department }}
-                        </option>
+                        <option v-for="department in departments" :key="department.id"
+                            :value="department.department_category">{{ department.department_category }}</option>
                     </select>
                 </div>
                 <div class="col-md-6">
@@ -38,7 +37,10 @@
                     </select>
                 </div>
             </div>
-            <div v-if="doctors" class="exit">
+            <div v-if="!doctors.length || !filteredDoctors.length" class="exit">
+                <h3 class="text-center">No Doctor Found</h3>
+            </div>
+            <div v-else class="exitCheck text-center">
                 <div v-for="doctor in filteredDoctors" :key="doctor.id" class="list-group">
                     <div class="doctor-card d-flex align-items-center">
                         <div class="doctor-avatar me-3">
@@ -81,9 +83,6 @@
                     </div>
                 </div>
             </div>
-            <div v-else class="exitCheck text-center">
-                <h3>No Doctor Found</h3>
-            </div>
         </div>
     </div>
     <component :is="currentComponent"></component>
@@ -108,11 +107,11 @@ export default {
         const departmentFilter = ref('');
         const doctorFilter = ref('');
         const experiences = ref([]);
+        const departments = ref([]);
 
-
-        const uniqueDepartments = computed(() => {
-            return [...new Set(doctors.value.map((doctor) => doctor.deparment_category))];
-        });
+        // const uniqueDepartments = computed(() => {
+        //     return [...new Set(doctors.value.map((doctor) => doctor.deparment_category))];
+        // });
 
         const filteredDoctors = computed(() => {
             return doctors.value.filter((doctor) => {
@@ -184,7 +183,6 @@ export default {
             } catch (error) {
             }
         };
-
 
         const updateStatus = async (doctorId, status) => {
             try {
@@ -260,10 +258,24 @@ export default {
 
             }
         }
+        const fetchDepartment = async () => {
+            try {
+                const response = await axios.get('/api/auth/department', {
+                    headers: {
+                        'Authorization': `Bearer ${access_token.value}`
+                    }
+                });
+                if (response.data && response.status === 200) {
+                    departments.value = response.data;
+                }
+            } catch (error) {
+            }
+        }
         onMounted(async () => {
             access_token.value = Cookies.get('access_token');
             await fetchDoctor();
             await fetchExperience();
+            await fetchDepartment();
         });
         return {
             currentComponent,
@@ -281,8 +293,9 @@ export default {
             departmentFilter,
             doctorFilter,
             filteredDoctors,
-            uniqueDepartments,
+            // uniqueDepartments,
             experiences,
+            departments
         };
     },
 };

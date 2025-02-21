@@ -8,37 +8,40 @@
                 <form @submit.prevent="submitForm">
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
-                            <label for="department" class="form-label mb-0">Department/Category</label>
+                            <label for="department" class="form-label mb-0 fw-bold">Department/Category</label>
                             <select v-model="form.deparment_category" class="form-select">
                                 <option value="" disabled selected>Select Department</option>
-                                <option value="Medicine">Medicine</option>
-                                <option value="Cardiology">Cardiology</option>
-                                <option value="Hypertension">Hypertension</option>
+                                <option v-for="department in departments" :key="department.id"
+                                    :value="department.department_category">{{ department.department_category }}
+                                </option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="department" class="form-label mb-0">Reg Number</label>
-                            <input v-model="form.regnum" type="text" class="form-control" id="reg-number" placeholder="Reg number">
+                            <label for="department" class="form-label mb-0 fw-bold">Reg Number</label>
+                            <input v-model="form.regnum" type="text" class="form-control" id="reg-number"
+                                placeholder="Reg number">
                         </div>
                     </div>
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
-                            <label for="department" class="form-label mb-0">Doctor Name</label>
-                            <input v-model="form.doctorName" type="text" class="form-control" id="reg-number" placeholder="Dr. name">
+                            <label for="department" class="form-label mb-0 fw-bold">Doctor Name</label>
+                            <input v-model="form.doctorName" type="text" class="form-control" id="reg-number"
+                                placeholder="Dr. name">
                         </div>
                         <div class="col-md-6">
-                            <label for="email" class="form-label mb-0">E-Mail</label>
-                            <input v-model="form.email" type="email" class="form-control" id="email" placeholder="@gmail.com">
+                            <label for="email" class="form-label mb-0 fw-bold">E-Mail</label>
+                            <input v-model="form.email" type="email" class="form-control" id="email"
+                                placeholder="info@gmail.com">
                         </div>
                     </div>
 
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
-                            <label for="age" class="form-label mb-0">Age</label>
+                            <label for="age" class="form-label mb-0 fw-bold">Age</label>
                             <input v-model="form.age" type="text" class="form-control" id="age" placeholder="Age">
                         </div>
                         <div class="col-md-6">
-                            <label for="gender" class="form-label mb-0">Gender</label>
+                            <label for="gender" class="form-label mb-0 fw-bold">Gender</label>
                             <select v-model="form.gender" class="form-select form-control"
                                 aria-label="Default select example">
                                 <option selected value="">Open this select menu</option>
@@ -51,28 +54,30 @@
                     </div>
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
-                            <label for="details" class="form-label mb-0">Details</label>
-                            <input v-model="form.details" class="form-control" id="details" placeholder="Details" />
+                            <label for="details" class="form-label mb-0 fw-bold">Details</label>
+                            <input v-model="form.details" class="form-control" id="details"
+                                placeholder="MBBS, DMU, FCPS, MS,WHO Clinical Polw On Child" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="experience" class="form-label mb-0">Experience</label>
+                            <input v-model="form.experience" type="text" class="form-control" id="experience"
+                                placeholder="experience">
                         </div>
                         <!-- <div class="col-md-6">
-                            <label for="experience" class="form-label mb-0">Experience</label>
-                            <input v-model="form.experience" type="text" class="form-control" id="experience">
-                        </div> -->
-                        <div class="col-md-6">
-                            <label for="gender" class="form-label mb-0">Experience</label>
+                            <label for="gender" class="form-label mb-0 fw-bold">Experience</label>
                             <select v-model="form.experience" class="form-select form-control"
                                 aria-label="Default select example">
                                 <option selected value="">Open this select menu</option>
                                 <option v-for="experience in experiences" :key="experience.id"
                                     :value="experience.experience">{{ experience.experience }}</option>
                             </select>
-                        </div>
+                        </div> -->
 
                     </div>
                     <div class="row form-section mb-2">
                         <div class="col-md-12">
-                            <label for="specialist" class="form-label mb-0">Specialist</label>
-                            <div v-for="(item, index) in selects" :key="index" class="d-flex align-items-center mt-2">
+                            <label for="specialist" class="form-label mb-0 fw-bold">Specialist</label>
+                            <div v-for="(item, index) in selects" :key="index" class="d-flex align-items-center">
                                 <select class="form-select flex-grow-1 me-2" v-model="item.value"
                                     aria-label="Default select example">
                                     <option selected disabled value="">Open this select menu</option>
@@ -92,8 +97,8 @@
                     </div>
                     <div class="row form-section mb-2">
                         <div class="col-md-12">
-                            <label for="symptom" class="form-label mb-0">Symptom</label>
-                            <div v-for="(item, index) in symptom" :key="index" class="d-flex align-items-center mt-2">
+                            <label for="symptom" class="form-label mb-0 fw-bold">Symptom</label>
+                            <div v-for="(item, index) in symptom" :key="index" class="d-flex align-items-center">
                                 <select class="form-select flex-grow-1 me-2" v-model="item.value"
                                     aria-label="Default select example">
                                     <option value="" disabled selected>Open this select menu</option>
@@ -113,17 +118,19 @@
                     </div>
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
-                            <label for="mobile" class="form-label mb-0">Mobile</label>
-                            <input v-model="form.mobile" type="text" class="form-control" id="mobile" placeholder="+880">
+                            <label for="mobile" class="form-label mb-0 fw-bold">Mobile</label>
+                            <input v-model="form.mobile" type="text" class="form-control" id="mobile"
+                                placeholder="+880">
                         </div>
                         <div class="col-md-6">
-                            <label for="mobile" class="form-label mb-0">Optional Mobile</label>
-                            <input v-model="form.mobile_optional" type="text" class="form-control" id="mobile" placeholder="+880">
+                            <label for="mobile" class="form-label mb-0 fw-bold">Optional Mobile</label>
+                            <input v-model="form.mobile_optional" type="text" class="form-control" id="mobile"
+                                placeholder="+880">
                         </div>
                     </div>
                     <div class="row form-section mb-2">
                         <div class="col-md-12">
-                            <label for="mobile" class="form-label mb-0">Shedule</label>
+                            <label for="mobile" class="form-label mb-0 fw-bold">Shedule</label>
                             <div class="table_size">
                                 <table class="table table-bordered  table-hover table-striped">
                                     <thead>
@@ -144,6 +151,9 @@
                                                     <option value="Sunday">Sunday</option>
                                                     <option value="Monday">Monday</option>
                                                     <option value="Tuesday">Tuesday</option>
+                                                    <option value="Wednesday">Wednesday</option>
+                                                    <option value="Thursday">Thursday</option>
+                                                    <option value="Friday">Friday</option>
                                                 </select>
                                             </td>
                                             <td style="min-width: 150px;">
@@ -159,10 +169,10 @@
                                                     placeholder="Visit Limit">
                                             </td>
                                             <td class="text-center">
-                                                <button @click.prevent="addRow"
-                                                    class="btn btn-sm btn-success me-1">+</button>
-                                                <button @click.prevent="removeRow(index)" class="btn btn-sm btn-danger"
-                                                    :disabled="rows.length === 1">-</button>
+                                                <button @click.prevent="addRow" class="btn btn-success me-0"
+                                                    v-if="index === rows.length - 1">+</button>
+                                                <button @click.prevent="removeRow(index)" class="btn btn-danger me-0"
+                                                    :disabled="rows.length === 1" v-if="rows.length > 1">-</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -172,7 +182,7 @@
                     </div>
                     <div class="row form-section mb-2">
                         <div class="col-md-12">
-                            <label for="mobile" class="form-label mb-0">Payment Detals</label>
+                            <label for="mobile" class="form-label mb-0 fw-bold">Payment Detals</label>
                             <div class="table_size">
                                 <table class="table table-bordered  table-hover table-striped ">
                                     <thead>
@@ -218,9 +228,16 @@
                                             </td>
                                             <td style="min-width: 150px;">
                                                 <div class="d-flex">
-                                                    <input v-model="form.room_number" type="text"
+                                                    <!-- <input v-model="form.room_number" type="text"
                                                         class="form-control me-2" style="min-width: 100px;"
-                                                        placeholder="Rom number">
+                                                        placeholder="Rom number"> -->
+                                                    <select v-model="form.room_number" class="form-select Room"
+                                                        style="min-width: 150px;">
+                                                        <option value="" disabled selected>Select Room</option>
+                                                        <option v-for="availableRoom in availableRoomlists"
+                                                            :key="availableRoom.id" :value="availableRoom.room_number">
+                                                            {{ availableRoom.room_number }}</option>
+                                                    </select>
                                                 </div>
                                             </td>
                                         </tr>
@@ -231,18 +248,19 @@
                     </div>
                     <div class="row form-section mb-2">
                         <div class="col-md-6">
-                            <label for="mobile" class="form-label mb-0"> For Appoint Mobile</label>
-                            <input v-model="form.appoinment_mobile" type="text" class="form-control" id="mobile" placeholder="+880">
+                            <label for="mobile" class="form-label mb-0 fw-bold"> For Appoint Mobile</label>
+                            <input v-model="form.appoinment_mobile" type="text" class="form-control" id="mobile"
+                                placeholder="+880">
                         </div>
                         <div class="col-md-6">
-                            <label for="mobile" class="form-label mb-0"> For Appoint Mobile (Optional)</label>
-                            <input v-model="form.appoinment_mobileOptional" type="text" class="form-control"
-                                id="mobile" placeholder="+880">
+                            <label for="mobile" class="form-label mb-0 fw-bold"> For Appoint Mobile (Optional)</label>
+                            <input v-model="form.appoinment_mobileOptional" type="text" class="form-control" id="mobile"
+                                placeholder="+880">
                         </div>
                     </div>
                     <div class="row form-section mb-2">
                         <div class="col-md-5 mb-2 mb-md-0">
-                            <label for="inputFile">Doctor Picture</label>
+                            <label for="inputFile" class="fw-bold">Doctor Picture</label>
                             <div class="form-floating mb-3 mb-md-0">
                                 <input class="form-control p-3 px-4" type="file" @change="onFileSelect" />
                             </div>
@@ -253,7 +271,7 @@
                             </div>
                         </div>
                         <div class="col-md-5 mb-0 mb-md-2">
-                            <label for="inputFile">Signature </label>
+                            <label for="inputFile" class="fw-bold">Signature </label>
                             <div class="form-floating mb-3 mb-md-0">
                                 <input class="form-control p-3 px-4" type="file" @change="onFileSelect1" />
                             </div>
@@ -266,15 +284,20 @@
                     </div>
                     <div class="row form-section mb-3">
                         <div class="col-md-12">
-                            <label for="details" class="form-label">Prescription Signature Style</label>
+                            <label for="details" class="form-label fw-bold">Prescription Signature Style</label>
                             <textarea v-model="form.prescription_signature_style" class="form-control" id="details"
-                                style="white-space: pre-wrap; height: 150px; color: gray;"></textarea>
+                                style="white-space: pre-wrap; height: 150px; color: gray;"
+                                :placeholder="prescription_style"></textarea>
+
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-end">
-                            <button class="btn btn-primary me-3">Save</button>
-                            <button class="btn btn-success">Save & View</button>
+                            <!-- <button class="btn btn-primary me-3">Save</button>
+                            <button class="btn btn-success">Save & View</button> -->
+                            <button type="submit" class="btn btn-primary me-3" name="action" value="save">Save</button>
+                            <button type="submit" class="btn btn-success" name="action" value="save_view">Save &
+                                View</button>
                         </div>
                     </div>
                 </form>
@@ -286,15 +309,18 @@
 <script>
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 export default {
     name: "DoctorCreate",
     setup() {
+        const router = useRouter();
         const currentComponent = ref(false);
         const accessToken = ref('');
         const experiences = ref([]);
         const specialists = ref([]);
         const symtoms = ref([]);
+        const availableRoomlists = ref([]);
         const form = ref({
             deparment_category: '',
             regnum: '',
@@ -318,10 +344,12 @@ export default {
             appoinment_mobileOptional: '',
             doctor_image: 'https://png.pngtree.com/png-vector/20230928/ourmid/pngtree-young-afro-professional-doctor-png-image_10148632.png',
             signature_image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShe6vu2Hqp4CatuNS5UbOhr6tUGRhU_WZ0sA&s',
-            prescription_signature_style: `Dr. Md: Jasim Uddin Nizami
-MBBS (BCS)
-Dhaka Medical College`
+            prescription_signature_style: ""
         })
+        const prescription_style = ref(`Dr. Md: Jasim Uddin Nizami
+MBBS (BCS)
+Dhaka Medical College`)
+        const departments = ref([]);
         const rows = ref([
             {
                 day: 'Saturday',
@@ -369,7 +397,8 @@ Dhaka Medical College`
                 reader.readAsDataURL(file);
             }
         };
-        const submitForm = async () => {
+        const submitForm = async (event) => {
+            const action = event.submitter.value;
             const payload = new FormData();
             Object.keys(form.value).forEach((key) => {
                 payload.append(key, form.value[key]);
@@ -394,8 +423,14 @@ Dhaka Medical College`
                     }
                 });
 
-                console.log(response)
                 if (response.data && response.data.message && response.status === 201) {
+                    // console.log(response.data.doctor.id)
+                    // console.log(action)
+                    if (action === "save_view") {
+                        router.push({ name: "DoctorView", params: { id: response.data.doctor.id } });
+                        resetForm()
+                    }
+                    resetForm()
                     Swal.fire({
                         title: response.data.message,
                         icon: "success",
@@ -410,8 +445,9 @@ Dhaka Medical College`
             rows.value.push({ day: 'Saturday', start: '', end: '', visitLimit: '' });
         };
         const removeRow = (index) => {
-            if (rows.length > 1) {
-                rows.splice(index, 1);
+            if (rows.value.length >= 1) {
+                console.log(rows.value.length)
+                rows.value.splice(index, 1);
             }
         };
 
@@ -430,6 +466,21 @@ Dhaka Medical College`
         const removeSymptom = (index) => {
             symptom.value.splice(index, 1);
         };
+
+        const fetchDepartment = async () => {
+
+            try {
+                const response = await axios.get('/api/auth/department', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken.value}`
+                    }
+                });
+                if (response.data && response.status === 200) {
+                    departments.value = response.data;
+                }
+            } catch (error) {
+            }
+        }
 
         const fetchExperience = async () => {
             try {
@@ -474,11 +525,65 @@ Dhaka Medical College`
             } catch (error) {
             }
         }
+        const fetchAvailableRoom = async () => {
+            try {
+                const response = await axios.get('/api/auth/roomlist/available', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken.value}`
+                    }
+                })
+                if (response.data && response.status === 200) {
+                    availableRoomlists.value = response.data
+                }
+            } catch (error) {
+
+            }
+        }
+        const resetForm = () => {
+            form.value = {
+                deparment_category: '',
+                regnum: '',
+                doctorName: '',
+                email: '',
+                age: '',
+                gender: '',
+                details: '',
+                experience: '',
+                symptom: '',
+                mobile: '',
+                mobile_optional: '',
+                visitfee: '600',
+                second_day: '',
+                second_dayFee: '',
+                thired_day: '',
+                thired_dayFee: '',
+                payment_type: '',
+                room_number: '',
+                appoinment_mobile: '',
+                doctor_image: 'https://png.pngtree.com/png-vector/20230928/ourmid/pngtree-young-afro-professional-doctor-png-image_10148632.png',
+                signature_image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShe6vu2Hqp4CatuNS5UbOhr6tUGRhU_WZ0sA&s',
+                appoinment_mobileOptional: ''
+            };
+
+            rows.value = [
+                {
+                    day: 'Saturday',
+                    start: '',
+                    end: '',
+                    visitLimit: ''
+                }
+            ];
+
+            selects.value = [];
+            symptom.value = [];
+        };
         onMounted(async () => {
             accessToken.value = Cookies.get('access_token');
             await fetchExperience();
             await fetchSpecialist();
             await fetchSymtom();
+            await fetchDepartment();
+            await fetchAvailableRoom();
         })
         return {
             currentComponent,
@@ -498,7 +603,11 @@ Dhaka Medical College`
             accessToken,
             experiences,
             specialists,
-            symtoms
+            symtoms,
+            prescription_style,
+            departments,
+            fetchDepartment,
+            availableRoomlists
         }
     }
 }

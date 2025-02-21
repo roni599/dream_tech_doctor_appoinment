@@ -8,7 +8,7 @@
         <div class="doctor-card d-flex flex-column flex-md-row justify-content-center  align-items-center p-4 gap-md-5">
             <div class="text-center">
                 <img class="mb-2 img-fluid" :src="doctor.doctor_image" alt="Doctor Image">
-                <p>Reg. No: 2132134</p>
+                <p>Reg. No: {{ doctor.regnum }}</p>
             </div>
             <div class="mx-4 text-md-start">
                 <h5>{{ doctor.doctorName }}</h5>
@@ -24,16 +24,17 @@
                 <p class="mb-0">{{ doctor.appoinment_mobile }}</p>
             </div>
         </div>
-        <div class="">
-            <div class="hospital-title d-flex justify-content-center align-items-center">
+        <div class="mb-3" v-for="regnum in RegnumDoctors" :key="regnum.id">
+            <div class="hospital-title d-flex justify-content-center align-items-center mb-3">
                 <div class="hospital_image">
-                    <img src="../../../../../public/hospital/backend/app/assets/images/ibnsina.png" width="100px"
-                        height="100px" alt="">
+                    <img :src="`/hospital/backend/img/users/logo/${regnum.user.logo}`" width="70px" height="70px" alt=""
+                        class="rounded">
                 </div>
-                <div class="hospital_details">
-                    <h2 class="mb-0">Ibna Sina Hospitalet </h2>
-                    <p class="mb-0 font_size_address">House# 68, Road # 15/A, Dhanmondi, Dhaka-1206</p>
-                    <p class="mb-0 font_size_address">01984-994406, 0178344090</p>
+                <div class="ms-3 hospital_details">
+                    <h2 class="mb-0">{{ regnum.user.hospital_name }} </h2>
+                    <p class="mb-0 font_size_address">{{ regnum.user.location_details }}</p>
+                    <p class="mb-0 font_size_address">{{ regnum.user.mobile_number_1 }},{{ regnum.user.mobile_number_2
+                        }}</p>
                 </div>
             </div>
             <table class="table table-bordered table-striped table-hover">
@@ -42,54 +43,20 @@
                         <th class="bg-info text-white">Days</th>
                         <th class="bg-info text-white">Start Time</th>
                         <th class="bg-info text-white">End Time</th>
-                        <th class="bg-info text-white">Visit L</th>
+                        <!-- <th class="bg-info text-white">Visit Lmit</th> -->
                         <th class="bg-info text-white">Appointment</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="doctorshedule in doctor_shedules" :key="doctorshedule.id">
+                    <tr v-for="doctorshedule in regnum.Shedule" :key="doctorshedule.id">
                         <td>{{ doctorshedule.day }}</td>
-                        <td>{{ doctorshedule.start }}</td>
-                        <td>{{ doctorshedule.end }}</td>
-                        <td>{{ doctorshedule.visitLimit }}</td>
+                        <td>{{ convertTo12HourFormat(doctorshedule.start) }}</td>
+                        <td>{{ convertTo12HourFormat(doctorshedule.end) }}</td>
+                        <!-- <td>{{ doctorshedule.visitLimit }}</td> -->
                         <td><a href="#" class="appointment-btn">Appointment</a></td>
                     </tr>
                 </tbody>
 
-            </table>
-        </div>
-
-        <div class="">
-            <div class="hospital-title d-flex justify-content-center align-items-center">
-                <div class="hospital_image">
-                    <img src="../../../../../public/hospital/backend/app/assets/images/ibnsina.png" width="100px"
-                        height="100px" alt="">
-                </div>
-                <div class="hospital_details">
-                    <h2 class="mb-0">Ibna Sina Hospitalet </h2>
-                    <p class="mb-0 font_size_address">House# 68, Road # 15/A, Dhanmondi, Dhaka-1206</p>
-                    <p class="mb-0 font_size_address">01984-994406, 0178344090</p>
-                </div>
-            </div>
-            <table class="table table-bordered table-striped table-hover">
-                <thead class="table-primary">
-                    <tr>
-                        <th class="bg-info text-white">Days</th>
-                        <th class="bg-info text-white">Start Time</th>
-                        <th class="bg-info text-white">End Time</th>
-                        <th class="bg-info text-white">Visit L</th>
-                        <th class="bg-info text-white">Appointment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="doctorshedule in doctor_shedules" :key="doctorshedule.id">
-                        <td>{{ doctorshedule.day }}</td>
-                        <td>{{ doctorshedule.start }}</td>
-                        <td>{{ doctorshedule.end }}</td>
-                        <td>{{ doctorshedule.visitLimit }}</td>
-                        <td><a href="#" class="appointment-btn">Appointment</a></td>
-                    </tr>
-                </tbody>
             </table>
         </div>
         <div class="text-center">
@@ -112,13 +79,21 @@ export default {
         const doctor_id = ref("");
         const doctor = ref({});
         const doctor_shedules = ref([]);
+        const RegnumDoctors = ref([]);
 
         const doctorView = async () => {
             const response = await axios.get(`/api/home/hospital-doctor/doctor-view/${doctor_id.value}`)
             if (response.data && response.data.message && response.status == 200) {
+                console.log(response.data.regnum)
                 doctor.value = response.data.doctor;
                 let jsonString = response.data.doctor.Shedule
                 doctor_shedules.value = JSON.parse(jsonString);
+
+                RegnumDoctors.value = response.data.regnum.map(doctor => ({
+                    ...doctor,
+                    Shedule: doctor.Shedule ? JSON.parse(doctor.Shedule) : []
+                }));
+                console.log(RegnumDoctors.value)
             }
         }
         const splitExperience = (experience) => {
@@ -176,6 +151,13 @@ export default {
 
             return groupedLines;
         };
+        const convertTo12HourFormat = (time) => {
+            let [hours, minutes] = time.split(':');
+            hours = parseInt(hours);
+            const period = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            return `${hours}:${minutes} ${period}`;
+        };
         onMounted(() => {
             doctor_id.value = route.params.id;
             doctorView();
@@ -185,7 +167,9 @@ export default {
             doctor_id,
             doctor,
             splitExperience,
-            doctor_shedules
+            doctor_shedules,
+            RegnumDoctors,
+            convertTo12HourFormat
         };
     },
 };

@@ -44,12 +44,9 @@ class Doctor extends Model
         'Schedule' => 'array',
         'symptom' => 'array',
     ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'user_doctor')->withTimestamps();
     }
 }

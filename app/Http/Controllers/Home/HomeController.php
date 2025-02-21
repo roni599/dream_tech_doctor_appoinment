@@ -14,7 +14,14 @@ class HomeController extends Controller
 {
     public function doctorshow()
     {
-        $doctor = Doctor::with(['users:id'])->get();
+        $doctor = Doctor::with('user')
+            ->whereIn('id', function ($query) {
+                $query->selectRaw('MIN(id)')
+                    ->from('doctors')
+                    ->groupBy('regnum');
+            })
+            ->get();
+
         return response()->json($doctor, 200);
     }
     public function hospitalAll()
@@ -158,10 +165,17 @@ class HomeController extends Controller
     }
     public function viewDoctor($doctor_id)
     {
-        $doctor = Doctor::find($doctor_id);
+        $doctor = Doctor::with('user')->find($doctor_id);
+
         if (!$doctor) {
             return response()->json(['message' => 'Doctor not found'], 404);
         }
-        return response()->json(['message' => 'Doctor Data retrive successfully', 'doctor' => $doctor], 200);
+
+        $regnum = Doctor::with('user')->where('regnum', $doctor->regnum)->get();
+        return response()->json([
+            'message' => 'Doctor Data retrieved successfully',
+            'doctor' => $doctor,
+            'regnum' => $regnum
+        ], 200);
     }
 }

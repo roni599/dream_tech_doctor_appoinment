@@ -151,7 +151,7 @@
                     </li>
                     <li class="dropdown"><a href="#" data-bs-toggle="dropdown"
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image"
-                                src="https://static.vecteezy.com/system/resources/previews/019/900/322/non_2x/happy-young-cute-illustration-face-profile-png.png"
+                                :src="`/hospital/backend/img/users/logo/${hospitals.logo}`"
                                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
                         <div class="dropdown-menu dropdown-menu-right pullDown">
                             <div class="dropdown-title">Hello Sarah Smith</div>
@@ -174,13 +174,12 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrappe">
                     <div class="sidebar-brand bg-info">
-                        <a href="index.html">
+                        <a href="#">
                             <img width="60px" height="auto" alt="image"
-                                src="https://static.vecteezy.com/system/resources/previews/019/900/322/non_2x/happy-young-cute-illustration-face-profile-png.png"
-                                class="" />
+                                :src="`/hospital/backend/img/users/logo/${hospitals.logo}`" class="" />
                             <p class="logo-name bg-info text-white py-3" style="font-size: 12px; line-height: 1.4;">
                                 Admin
-                                <span class="d-block">Md. Jasim Uddin</span>
+                                <span class="d-block">{{ hospitals.hospital_name }}</span>
                             </p>
                         </a>
                     </div>
@@ -200,7 +199,8 @@
                                 </li>
                                 <li><router-link to="/specialist" class="nav-link">Specialist</router-link></li>
                                 <li><router-link to="/experience" class="nav-link">Experience</router-link></li>
-                                <li><router-link to="/experience" class="nav-link">Room Number</router-link></li>
+                                <li><router-link to="/room" class="nav-link">Room Number</router-link></li>
+                                <li><router-link to="/reference" class="nav-link">Reference</router-link></li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -208,7 +208,8 @@
                                     class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
                         </li>
                         <li class="dropdown" style="cursor: pointer;">
-                            <a class="menu-toggle nav-link has-dropdown"><i class="fa-solid fa-calendar-check"></i><span>Appoinment</span></a>
+                            <a class="menu-toggle nav-link has-dropdown"><i
+                                    class="fa-solid fa-calendar-check"></i><span>Appoinment</span></a>
                             <ul class="dropdown-menu">
                                 <li><router-link to="/appoinment_view" class="nav-link"
                                         href="chat.html">Appoinment-View</router-link>
@@ -248,6 +249,7 @@ export default {
     setup() {
         const router = useRouter();
         const access_token = ref('');
+        const hospitals = ref({});
         onBeforeMount(() => {
             const styleLink = document.createElement("link");
             styleLink.rel = "stylesheet";
@@ -260,6 +262,22 @@ export default {
                 Cookies.remove(cookieName);
             });
         };
+
+        const hospital = async () => {
+            try {
+                const response = await axios.get('/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${access_token.value}`
+                    }
+                });
+                if (response.data) {
+                    hospitals.value = response.data;
+                }
+            } catch (error) {
+                console.error('Error fetching hospital data:', error.response ? error.response.data : error.message);
+            }
+        };
+
 
         const logout = async () => {
             try {
@@ -285,11 +303,13 @@ export default {
             }
         };
 
-        onMounted(() => {
+        onMounted(async () => {
             access_token.value = Cookies.get('access_token');
+            await hospital();
         })
         return {
             logout,
+            hospitals
         }
     }
 }
