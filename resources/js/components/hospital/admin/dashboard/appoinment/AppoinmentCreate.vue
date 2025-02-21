@@ -55,8 +55,9 @@
                                             <label for="visitTime" class="form-label mb-0">Visit Time</label>
                                             <select class="form-select" id="visitTime">
                                                 <option selected value="" disabled>Select an option</option>
-                                                <option>Morning</option>
-                                                <option>Afternoon</option>
+                                                <option>1st Time</option>
+                                                <option>2nd Time</option>
+                                                <option>3rd Time</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
@@ -71,8 +72,13 @@
                                         </div>
                                     </div>
                                     <div class="mb-2 mt-3">
-                                        <label for="remenance" class="form-label mb-0">Remenance</label>
-                                        <input type="text" class="form-control" id="remenance" placeholder="remenance">
+                                        <label for="remenance" class="form-label mb-0">Reference</label>
+                                        <select id="reference" class="form-select">
+                                            <option value="" selected>Choose...</option>
+                                            <option v-for="reference in references" :key="reference.id"
+                                                :value="reference.name">{{
+                                                    reference.name }}</option>
+                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label mb-0">Description</label>
@@ -97,11 +103,12 @@
                                 <div class="mb-3">
                                     <label for="fee" class="form-label mb-0">Fee</label>
                                     <div class="input-group">
-                                        <input type="text" v-model="fee" class="form-control" id="fee"
-                                            placeholder="Fee">
-                                        <input type="text" v-model="amount" class="form-control" placeholder="Discount">
-                                        <input type="text" v-model="percentage" class="form-control" readonly
-                                            placeholder="%">
+                                        <input type="text" v-model="fee" class="form-control" id="fee" placeholder="Fee"
+                                            @input="calculateFromFeeAndAmount" />
+                                        <input type="text" v-model="amount" class="form-control" placeholder="%"
+                                            @input="calculateFromFeeAndAmount" />
+                                        <input type="text" v-model="percentage" class="form-control" placeholder="TK"
+                                            @input="calculateFromFeeAndPercentage" />
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -120,7 +127,8 @@
                         <div class="form-section mt-3" v-if="form.payment === 'Free'">
                             <div class="d-flex justify-content-between mb-3">
                                 <h6 class="text-center">Free</h6>
-                                <span><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle" @click="hideContent" style="cursor: pointer;"></i></span>
+                                <span><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle"
+                                        @click="hideContent" style="cursor: pointer;"></i></span>
                             </div>
                             <form>
                                 <div class="mb-3">
@@ -144,24 +152,52 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-
+import { ref, computed, onMounted, watch } from 'vue';
+import Cookies from 'js-cookie';
 export default {
     name: "AppoinmentCreate",
     setup() {
+
         const form = ref({
             payment: '',
         })
+
+        const references = ref([]);
+        const access_token = ref('');
+
         const fee = ref('');
         const amount = ref('');
+        const percentage = ref('');
 
-        const percentage = computed(() => {
-            if (fee.value && amount.value) {
-                const percentage = (amount.value / fee.value) * 100;
-                return (fee.value - (fee.value * percentage / 100)).toFixed(2) + ' Tk';
+        const fetchReference = async () => {
+            try {
+                const response = await axios.get('/api/auth/reference', {
+                    headers: {
+                        'Authorization': `Bearer ${access_token.value}`
+                    }
+                });
+                if (response.data && response.status === 200) {
+                    references.value = response.data;
+                }
+            } catch (error) {
             }
-            return "";
-        });
+        }
+        const calculateFromFeeAndAmount = () => {
+            percentage.value='';
+            if (fee.value && amount.value) {
+                const discount = (fee.value * amount.value) / 100;
+                percentage.value = (fee.value - discount).toFixed(2) + ' Tk';;
+            }
+        };
+
+        const calculateFromFeeAndPercentage = () => {
+            amount.value='';
+            if (fee.value && percentage.value) {
+                amount.value = (((fee.value - percentage.value) / fee.value) * 100).toFixed(0) + ' %';
+            }
+        };
+
+
 
         const hideContent = () => {
             if (form.value.payment === 'Discount') {
@@ -170,12 +206,20 @@ export default {
                 form.value.payment = '';
             }
         };
+        onMounted(() => {
+            access_token.value = Cookies.get('access_token');
+            fetchReference()
+        })
         return {
             form,
             fee,
             amount,
             percentage,
-            hideContent
+            hideContent,
+            access_token,
+            references,
+            calculateFromFeeAndAmount,
+            calculateFromFeeAndPercentage,
         };
     },
 };

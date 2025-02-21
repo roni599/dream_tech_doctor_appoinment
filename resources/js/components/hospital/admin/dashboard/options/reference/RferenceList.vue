@@ -16,8 +16,7 @@
                     <label for="reference" class="form-label mb-0">Search Reference</label>
                     <select id="reference" v-model="search_reference" class="form-select">
                         <option value="" selected>Choose...</option>
-                        <option v-for="reference in references" :key="reference.id" :value="reference.name" selected>{{
-                            reference.name }}</option>
+                        <option v-for="reference in references" :key="reference.id" :value="reference.name" selected>{{ reference.name }}</option>
                     </select>
                 </div>
             </div>
@@ -67,7 +66,7 @@
 </template>
 
 <script>
-import { markRaw, onMounted, ref, shallowRef, computed } from 'vue';
+import { markRaw, onMounted, ref, shallowRef,computed } from 'vue';
 import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
 import ReferenceCreate from './ReferenceCreate.vue';
