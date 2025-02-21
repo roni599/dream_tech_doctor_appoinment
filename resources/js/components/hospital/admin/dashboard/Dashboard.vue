@@ -248,6 +248,7 @@ export default {
     name: 'Dashboard',
     setup() {
         const router = useRouter();
+        const hasReloaded = sessionStorage.getItem('hasReloaded');
         const access_token = ref('');
         const hospitals = ref({});
         onBeforeMount(() => {
@@ -292,6 +293,7 @@ export default {
                 );
                 if (response.data && response.status === 200) {
                     clearAllCookies();
+                    sessionStorage.removeItem('hasReloaded');
                     router.push({ name: 'Login' });
                     Toast.fire({
                         icon: "success",
@@ -303,9 +305,18 @@ export default {
             }
         };
 
+
+
         onMounted(async () => {
             access_token.value = Cookies.get('access_token');
-            await hospital();
+            if (!hasReloaded) {
+                sessionStorage.setItem('hasReloaded', 'true');
+                window.location.reload();
+            } else {
+                sessionStorage.removeItem('hasReloaded');
+                await hospital();
+            }
+
         })
         return {
             logout,
