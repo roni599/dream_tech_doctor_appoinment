@@ -2,8 +2,6 @@ import { createApp } from 'vue';
 import './bootstrap';
 import router from './routes/router';
 import App from './components/App.vue';
-
-
 import Swal from 'sweetalert2';
 window.Swal = Swal;
 

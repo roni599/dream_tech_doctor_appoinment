@@ -102,9 +102,17 @@
                             <form>
                                 <div class="mb-3">
                                     <label for="fee" class="form-label mb-0">Fee</label>
-                                    <div class="input-group">
+                                    <!-- <div class="input-group">
                                         <input type="text" v-model="fee" class="form-control" id="fee" placeholder="Fee"
                                             @input="calculateFromFeeAndAmount" />
+                                        <input type="text" v-model="amount" class="form-control" placeholder="%"
+                                            @input="calculateFromFeeAndAmount" />
+                                        <input type="text" v-model="percentage" class="form-control" placeholder="TK"
+                                            @input="calculateFromFeeAndPercentage" />
+                                    </div> -->
+                                    <div class="input-group">
+                                        <input type="text" v-model="fee" class="form-control" id="fee" placeholder="Fee"
+                                            @input="calculateValues" />
                                         <input type="text" v-model="amount" class="form-control" placeholder="%"
                                             @input="calculateFromFeeAndAmount" />
                                         <input type="text" v-model="percentage" class="form-control" placeholder="TK"
@@ -182,21 +190,55 @@ export default {
             } catch (error) {
             }
         }
+        // const calculateFromFeeAndAmount = () => {
+        //     percentage.value = '';
+        //     if (fee.value && amount.value) {
+        //         const discount = (fee.value * amount.value) / 100;
+        //         percentage.value = (fee.value - discount).toFixed(2) + ' Tk';;
+        //     }
+        // };
+
+        // const calculateFromFeeAndPercentage = () => {
+        //     amount.value = '';
+        //     if (fee.value && percentage.value) {
+        //         amount.value = (((fee.value - percentage.value) / fee.value) * 100).toFixed(0) + ' %';
+        //     }
+        // };
         const calculateFromFeeAndAmount = () => {
-            percentage.value='';
             if (fee.value && amount.value) {
-                const discount = (fee.value * amount.value) / 100;
-                percentage.value = (fee.value - discount).toFixed(2) + ' Tk';;
+                const discount = (parseFloat(fee.value) * parseFloat(amount.value)) / 100;
+                // percentage.value = (parseFloat(fee.value) - discount).toFixed(2) + ' Tk';
+                percentage.value = (!isNaN(parseFloat(fee.value)) && !isNaN(discount))
+                    ? (parseFloat(fee.value) - discount).toFixed(2) + ' Tk'
+                    : 0;
             }
         };
 
         const calculateFromFeeAndPercentage = () => {
-            amount.value='';
             if (fee.value && percentage.value) {
-                amount.value = (((fee.value - percentage.value) / fee.value) * 100).toFixed(0) + ' %';
+                const percentageValue = parseFloat(percentage.value);
+                if (!isNaN(percentageValue)) {
+                    // amount.value = (((parseFloat(fee.value) - percentageValue) / parseFloat(fee.value)) * 100).toFixed(0) + ' %';
+                    amount.value = (
+                        !isNaN(parseFloat(fee.value)) && !isNaN(percentageValue) && !isNaN(parseFloat(fee.value))
+                    )
+                        ? (((parseFloat(fee.value) - percentageValue) / parseFloat(fee.value)) * 100).toFixed(0) + ' %'
+                        : 0;
+                }
             }
         };
 
+        // Watch for changes in `fee` and update values dynamically
+        watch(fee, (newValue) => {
+            if (newValue && amount.value) {
+                calculateFromFeeAndAmount();
+            } else if (newValue && percentage.value) {
+                calculateFromFeeAndPercentage();
+            } else {
+                amount.value = '';
+                percentage.value = '';
+            }
+        });
 
 
         const hideContent = () => {

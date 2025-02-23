@@ -259,9 +259,10 @@ export default {
         });
         const clearAllCookies = () => {
             const allCookies = Cookies.get();
-            Object.keys(allCookies).forEach((cookieName) => {
-                Cookies.remove(cookieName);
+            Object.keys(allCookies).forEach((cookie) => {
+                Cookies.remove(cookie, { secure: true, sameSite: 'Strict' });
             });
+            console.log('All cookies have been cleared.');
         };
 
         const hospital = async () => {
@@ -304,9 +305,6 @@ export default {
                 console.log(error.response ? error.response.data : error.message);
             }
         };
-
-
-
         onMounted(async () => {
             access_token.value = Cookies.get('access_token');
             if (!hasReloaded) {
