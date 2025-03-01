@@ -36,10 +36,12 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
 export default {
     name: "ExperienceCreate",
     setup() {
         const access_token = ref('access_token');
+        const router = useRouter();
         const form = ref({
             experience: ''
         })
@@ -51,6 +53,7 @@ export default {
                     }
                 });
                 if (response.data && response.status === 201) {
+                    router.push({name:"Experience"})
                     Swal.fire({
                         title: response.data.message,
                         icon: "success",

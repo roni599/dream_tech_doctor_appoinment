@@ -473,6 +473,7 @@ Dhaka Medical College`)
                         resetForm()
                     }
                     resetForm()
+                    router.push({name:'Doctor'})
                     Swal.fire({
                         title: response.data.message,
                         icon: "success",

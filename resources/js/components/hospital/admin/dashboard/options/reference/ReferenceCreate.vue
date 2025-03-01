@@ -54,10 +54,12 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
 export default {
     name: "ReferenceCreate",
     setup() {
         const access_token = ref('access_token');
+        const router = useRouter();
         const form = ref({
             name: '',
             email: '',
@@ -72,6 +74,7 @@ export default {
                     }
                 });
                 if (response.data && response.status === 201) {
+                    router.push({name:"ReferenceList"})
                     Swal.fire({
                         title: response.data.message,
                         icon: "success",

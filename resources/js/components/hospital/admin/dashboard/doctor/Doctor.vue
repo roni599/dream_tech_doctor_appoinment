@@ -8,10 +8,10 @@
             </div>
             <div class="d-flex w-100 justify-content-end">
                 <router-link to="/doctor-active" class="btn btn-success me-2">
-                    Active
+                    Active Doctor
                 </router-link>
                 <router-link to="/doctor-inactive" class="btn btn-secondary">
-                    Inactive
+                    Inactive Doctor
                 </router-link>
             </div>
         </div>

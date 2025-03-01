@@ -34,12 +34,13 @@
 <script>
 import axios from "axios";
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
 import Cookies from "js-cookie";
+import { useRoute,useRouter } from "vue-router";
 export default {
     name: "ExperienceEdit",
     setup() {
-        const route = useRoute();
+        const router = useRouter();
+        const route=useRoute();
         const room_id = ref("");
         const access_token = ref("");
         const form = ref({
@@ -65,6 +66,7 @@ export default {
                     });
                     form.value.room_number = response.data.romm_number.romm_number;
                     form.value.room_status = response.data.romm_number.status;
+                    router.push({name:"Roomlist"})
                 }
             } catch (error) {
                 console.log(error)

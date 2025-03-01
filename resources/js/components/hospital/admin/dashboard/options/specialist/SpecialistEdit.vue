@@ -28,12 +28,13 @@
 <script>
 import axios from "axios";
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
 import Cookies from "js-cookie";
+import { useRoute,useRouter } from "vue-router";
 export default {
     name: "SpecialistEdit",
     setup() {
-        const route = useRoute();
+        const router = useRouter();
+        const route=useRoute();
         const specialist_id = ref("");
         const access_token = ref("");
         const form = ref({
@@ -59,6 +60,7 @@ export default {
                         draggable: true,
                     });
                     form.value.specialist = response.data.specialist.specialist;
+                    router.push({name:"Specialist"})
                 }
             } catch (error) {
                 console.log(error)

@@ -36,9 +36,11 @@
 import axios from "axios";
 import { onMounted, ref } from "vue";
 import Cookies from "js-cookie";
+import { useRouter } from "vue-router";
 export default {
     name: "SymptomCreate",
     setup() {
+        const router = useRouter();
         const access_token = ref('');
         const form = ref({
             symptom: "",
@@ -58,6 +60,7 @@ export default {
                         draggable: true
                     });
                     form.value.symptom = '';
+                    router.push({name:'Symtom'})
                 }
             } catch (error) { }
         };

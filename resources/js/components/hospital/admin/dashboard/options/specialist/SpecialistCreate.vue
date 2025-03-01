@@ -36,10 +36,12 @@
 import { onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 export default {
     name: "Specialist",
     setup() {
         const access_token = ref('');
+        const router = useRouter();
         const form = ref({
             specialist: ''
         })
@@ -57,6 +59,7 @@ export default {
                         draggable: true
                     });
                     form.value.specialist = '';
+                    router.push({name:"Specialist"})
                 }
 
             } catch (error) {

@@ -5,8 +5,6 @@
                 <router-link to="/doctor"  class="btn btn-primary ms-2">
                     + Doctor List
                 </router-link>
-            </div>
-            <div class="d-flex w-100 mb-2 mb-sm-0">
                 <router-link to="/doctor-create"  class="btn btn-primary ms-2">
                     + Doctor Create
                 </router-link>

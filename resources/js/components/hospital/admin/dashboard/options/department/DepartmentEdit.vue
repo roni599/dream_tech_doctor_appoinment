@@ -29,12 +29,13 @@
 <script>
 import axios from "axios";
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter,useRoute } from 'vue-router';
 import Cookies from "js-cookie";
 export default {
     name: 'DepartmentEdit',
     setup() {
-        const route = useRoute();
+        const router = useRouter();
+        const route=useRoute();
         const specialist_id = ref("");
         const access_token = ref("");
         const form = ref({
@@ -50,6 +51,7 @@ export default {
                     },
                 });
                 if (response.data && response.status === 200) {
+                    router.push({name:"Department"})
                     Swal.fire({
                         title: response.data.message,
                         icon: "success",

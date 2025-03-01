@@ -36,10 +36,12 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
 export default {
     name: "RoomlistCreate",
     setup() {
         const access_token = ref('access_token');
+        const router = useRouter();
         const form = ref({
             room_number: ''
         })
@@ -58,6 +60,7 @@ export default {
                         draggable: true
                     });
                     form.value.room_number = '';
+                    router.push({name:"Roomlist"})
                 }
             } catch (error) {
                 console.log(error)

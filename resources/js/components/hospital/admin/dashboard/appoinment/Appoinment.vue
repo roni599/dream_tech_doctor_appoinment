@@ -36,6 +36,8 @@
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Doctor Name</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Patient Name</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Visit Date</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Visit Time</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Payment</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">S.L No</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Appoint</th>
                             </tr>
@@ -48,6 +50,8 @@
                                 <td>2028-12-08</td>
                                 <td>1</td>
                                 <td>Online</td>
+                                <td>Online</td>
+                                <td>Online</td>
                             </tr>
                             <tr>
                                 <td>Neurology</td>
@@ -55,6 +59,8 @@
                                 <td>Jane Doe</td>
                                 <td>2028-12-09</td>
                                 <td>2</td>
+                                <td>jasim</td>
+                                <td>jasim</td>
                                 <td>jasim</td>
                             </tr>
                         </tbody>

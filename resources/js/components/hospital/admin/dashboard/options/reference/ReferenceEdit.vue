@@ -56,13 +56,14 @@
 <script>
 import axios from "axios";
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute,useRouter } from "vue-router";
 import Cookies from "js-cookie";
 import CryptoJS from 'crypto-js';
 export default {
     name: "ReferenceEdit",
     setup() {
-        const route = useRoute();
+        const router = useRouter();
+        const route=useRoute();
         const reference_id = ref("");
         const access_token = ref("");
 
@@ -117,6 +118,7 @@ export default {
                     form.value.phone = response.data.reference.phone;
                     form.value.address = response.data.reference.address;
                     form.value.status = response.data.reference.status;
+                    router.push({name:"ReferenceList"})
                 }
             } catch (error) {
                 console.log(error)

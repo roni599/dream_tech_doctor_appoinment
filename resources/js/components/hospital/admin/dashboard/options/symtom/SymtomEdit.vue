@@ -28,12 +28,13 @@
 <script>
 import axios from "axios";
 import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter,useRoute } from "vue-router";
 import Cookies from "js-cookie";
 export default {
     name: "SymtomEdit",
     setup() {
-        const route = useRoute();
+        const router = useRouter();
+        const route=useRoute();
         const symtom_id = ref("");
         const access_token = ref("");
         const form = ref({
@@ -59,6 +60,7 @@ export default {
                         draggable: true,
                     });
                     form.value.symptom = response.data.symtom.symptom;
+                    router.push({ name: 'Symtom' })
                 }
             } catch (error) {
                 console.log(error.response)

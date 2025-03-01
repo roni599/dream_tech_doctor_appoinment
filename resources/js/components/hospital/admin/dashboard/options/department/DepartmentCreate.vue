@@ -35,9 +35,11 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router';
 export default {
     name: 'DepartmentCreate',
     setup() {
+        const router = useRouter();
         const form = ref({
             department_category: ''
         })
@@ -50,6 +52,7 @@ export default {
                     }
                 });
                 if (response.data && response.status === 201) {
+                    router.push({name:'Department'})
                     Swal.fire({
                         title: response.data.message,
                         icon: "success",
