@@ -18,8 +18,11 @@
                             <div class="col-md-6">
                                 <label for="department" class="form-label mb-0 fw-bold">Department/Category</label>
                                 <select v-model="form.deparment_category" class="form-select">
-                                    <option :value="form.deparment_category"  selected>{{ form.deparment_category }}</option>
-                                    <option v-for="department in departments" :key="department.id" :value="department.department_category">{{ department.department_category }}</option>
+                                    <option :value="form.deparment_category" selected>{{ form.deparment_category }}
+                                    </option>
+                                    <option v-for="department in departments" :key="department.id"
+                                        :value="department.department_category">{{ department.department_category }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -99,7 +102,7 @@
                                         <option value="" disabled selected>Open this select menu</option>
                                         <!-- <option v-for="item in symptom" :key="item.id" :value="item.value">{{
                                             item.value }}</option> -->
-                                            <option  :value="item.value">{{
+                                        <option :value="item.value">{{
                                             item.value }}</option>
                                     </select>
                                     <div class="d-flex">
@@ -236,7 +239,8 @@
                                 <input v-model="form.appoinment_mobile" type="text" class="form-control" id="mobile">
                             </div>
                             <div class="col-md-6">
-                                <label for="mobile" class="form-label mb-0 fw-bold"> For Appoint Mobile (Optional)</label>
+                                <label for="mobile" class="form-label mb-0 fw-bold"> For Appoint Mobile
+                                    (Optional)</label>
                                 <input v-model="form.appoinment_mobileOptional" type="text" class="form-control"
                                     id="mobile">
                             </div>
@@ -269,7 +273,8 @@
 
                         <div class="row form-section mb-3">
                             <div class="col-md-12">
-                                <label for="details" class="form-label mb-0 fw-bold">Prescription Signature Style</label>
+                                <label for="details" class="form-label mb-0 fw-bold">Prescription Signature
+                                    Style</label>
                                 <input v-model="form.prescription_signature_style" class="form-control" id="details"
                                     style="height: 60px;" />
                             </div>
@@ -438,7 +443,7 @@ export default {
         };
 
         const fetchDepartment = async () => {
-            
+
             try {
                 const response = await axios.get('/api/auth/department', {
                     headers: {
@@ -525,7 +530,7 @@ export default {
 
 
 
-        onMounted(async() => {
+        onMounted(async () => {
             access_token.value = Cookies.get('access_token');
             doctor_id.value = route.params.id;
             await doctorView();

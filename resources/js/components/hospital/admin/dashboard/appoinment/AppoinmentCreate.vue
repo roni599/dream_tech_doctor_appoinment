@@ -210,7 +210,7 @@ export default {
                 // percentage.value = (parseFloat(fee.value) - discount).toFixed(2) + ' Tk';
                 percentage.value = (!isNaN(parseFloat(fee.value)) && !isNaN(discount))
                     ? (parseFloat(fee.value) - discount).toFixed(2) + ' Tk'
-                    : 0;
+                    : 0+'TK';
             }
         };
 
@@ -223,7 +223,7 @@ export default {
                         !isNaN(parseFloat(fee.value)) && !isNaN(percentageValue) && !isNaN(parseFloat(fee.value))
                     )
                         ? (((parseFloat(fee.value) - percentageValue) / parseFloat(fee.value)) * 100).toFixed(0) + ' %'
-                        : 0;
+                        : 0+'%';
                 }
             }
         };
