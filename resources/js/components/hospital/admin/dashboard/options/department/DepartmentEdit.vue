@@ -1,10 +1,10 @@
 <template>
     <router-link to="/department-category" class="btn btn-primary w-100 mb-2">
-        <i class="fa-solid fa-list"></i> Specialist List</router-link>
+        <i class="fa-solid fa-list"></i> Department Category List</router-link>
     <div class="d-flex justify-content-center align-items-center">
         <div class="card w-100" style="max-width: 1230px">
             <div class="card-header mt-2">
-                <h5 class="card-title">Symptom Create</h5>
+                <h5 class="card-title">Department Category Create</h5>
             </div>
             <div class="card-body">
                 <form @submit.prevent="departmentEdit">

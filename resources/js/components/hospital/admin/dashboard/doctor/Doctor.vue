@@ -2,7 +2,7 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3 w-100">
             <div class="d-flex w-100 mb-2 mb-sm-0">
-                <router-link to="/doctor-create"  class="btn btn-primary ms-2">
+                <router-link to="/doctor-create" class="btn btn-primary ms-2">
                     + Create Doctor
                 </router-link>
             </div>
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="allFeature">
-            <div class="row mb-3">
+            <div class="row mb-2">
                 <div class="col-md-6 mb-3">
                     <label for="department" class="form-label">Department/Category</label>
                     <select v-model="departmentFilter" id="department" class="form-select">
@@ -38,54 +38,61 @@
                 <h3 class="text-center">No Doctor Found</h3>
             </div>
             <div v-else class="exitCheck text-center">
-                <div v-for="doctor in filteredDoctors" :key="doctor.id" class="list-group">
-                    <div class="doctor-card d-flex align-items-center">
-                        <div class="doctor-avatar me-3">
-                            <img v-if="doctor.doctor_image" :src="doctor.doctor_image" alt="" width="60px"
-                                height="60px" />
-                        </div>
-                        <div class="flex-grow-1">
-                            <h5 class="mb-1">{{ doctor.doctorName }}</h5>
-                            <p class="mb-0 text-muted">{{ doctor.deparment_category }}</p>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <router-link :to="{ name: 'DoctorView', params: { id: doctor.id } }"
-                                class="btn btn-outline-primary me-2">
-                                <i class="fa-solid fa-eye"></i>
-                            </router-link>
-                            <router-link :to="{ name: 'DoctorEdit', params: { id: doctor.id } }"
-                                class="btn btn-outline-warning me-2">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </router-link>
-                            <button class="btn btn-outline-warning me-2 copy-button"
-                                @click="generateAndCopyLink(doctor.id)" @mouseenter="onHover($event, doctor.id)"
-                                @mouseleave="hoveredButton = null">
-                                <i class="fa-solid fa-copy"></i>
-                            </button>
-                            <div v-if="hoveredButton === doctor.id" :style="tooltipStyle" class="custom-tooltip below">
-                                {{ copymessage }}
-                            </div>
-                            <button class="btn btn-outline-danger me-2" @click="deleteDoctor(doctor.id)">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                            <div class="dropdown">
-                                <select class="form-select border border-success text-success custom-select"
-                                    aria-label="Status select" v-model="doctor.status"
-                                    @change="updateStatus(doctor.id, doctor.status)">
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <table class="table">
+                    <tbody>
+                        <tr v-for="doctor in filteredDoctors" :key="doctor.id">
+                            <td class="rounded">
+                                <div class="doctor-card d-flex align-items-center mt-3">
+                                    <div class="doctor-avatar me-3">
+                                        <img v-if="doctor.doctor_image" :src="doctor.doctor_image" alt="" width="60px"
+                                            height="60px" />
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h5 class="mb-1">{{ doctor.doctorName }}</h5>
+                                        <p class="mb-0 text-muted">{{ doctor.deparment_category }}</p>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <router-link :to="{ name: 'DoctorView', params: { id: doctor.id } }"
+                                            class="btn btn-outline-primary me-2">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </router-link>
+                                        <router-link :to="{ name: 'DoctorEdit', params: { id: doctor.id } }"
+                                            class="btn btn-outline-warning me-2">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </router-link>
+                                        <button class="btn btn-outline-warning me-2 copy-button"
+                                            @click="generateAndCopyLink(doctor.id)" @mouseenter="onHover($event, doctor.id)"
+                                            @mouseleave="hoveredButton = null">
+                                            <i class="fa-solid fa-copy"></i>
+                                        </button>
+                                        <div v-if="hoveredButton === doctor.id" :style="tooltipStyle"
+                                            class="custom-tooltip below">
+                                            {{ copymessage }}
+                                        </div>
+                                        <button class="btn btn-outline-danger me-2" @click="deleteDoctor(doctor.id)">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                        <div class="dropdown">
+                                            <select class="form-select border border-success text-success custom-select"
+                                                aria-label="Status select" v-model="doctor.status"
+                                                @change="updateStatus(doctor.id, doctor.status)">
+                                                <option value="1">Active</option>
+                                                <option value="0">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import {onMounted, computed, ref } from "vue";
+import { onMounted, computed, ref } from "vue";
 import axios from "axios";
 import Cookies from "js-cookie";
 export default {

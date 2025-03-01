@@ -17,7 +17,11 @@
                     <div class="row form-section mb-4">
                         <div class="col-md-12">
                             <label for="symptom" class="form-label mb-0">Room Status</label>
-                            <input v-model="form.room_status" type="text" class="form-control" id="room" required />
+                            <select v-model="form.room_status" id="roomEdit" class="form-select">
+                                <option value="" selected>Choose...</option>
+                                <option value="1">Active</option>
+                                <option value="0">Deactive</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row">

@@ -11,13 +11,15 @@
             <div class="row mb-1">
                 <div class="col-md-12 mb-3">
                     <label for="department" class="form-label mb-0">Specialist</label>
-                    <select id="department" class="form-select">
+                    <select id="specialist" v-model="specialist_search" class="form-select">
                         <option value="" selected>Choose...</option>
+                        <option v-for="symtom in specialists" :key="symtom.id" :value="symtom.specialist">{{
+                            symtom.specialist }}.</option>
                     </select>
                 </div>
             </div>
 
-            <div v-for="symtom in specialists" :key="symtom.id" class="list-group">
+            <div v-for="symtom in filteredSpecialist" :key="symtom.id" class="list-group">
                 <div class="doctor-card d-flex justify-content-between align-items-center p-3">
                     <span>
                         {{ symtom.specialist }}
@@ -38,7 +40,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 export default {
@@ -46,6 +48,16 @@ export default {
     setup() {
         const access_token = ref('');
         const specialists = ref([]);
+        const specialist_search = ref('');
+
+        const filteredSpecialist = computed(() => {
+            return specialists.value.filter(specialist =>
+            specialist.specialist.toLowerCase().includes(specialist_search.value.toLowerCase())
+            );
+        });
+
+
+
         const fetchSpecialist = async () => {
             try {
                 const response = await axios.get('/api/auth/specialist', {
@@ -97,6 +109,8 @@ export default {
         })
         return {
             specialists,
+            specialist_search,
+            filteredSpecialist,
             deleteSpecialist
         }
     }

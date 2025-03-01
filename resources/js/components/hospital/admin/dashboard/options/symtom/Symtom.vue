@@ -11,12 +11,13 @@
             <div class="row mb-1">
                 <div class="col-md-12 mb-3">
                     <label for="department" class="form-label mb-0">Symtom</label>
-                    <select id="department" class="form-select">
+                    <select id="symtom" v-model="symptom_search" class="form-select">
                         <option value="" selected>Choose...</option>
+                        <option v-for="symtom in symtoms" :key="symtom.id" :value="symtom.symptom">{{ symtom.symptom }}</option>
                     </select>
                 </div>
             </div>
-            <div v-for="symtom in symtoms" :key="symtom.id" class="list-group">
+            <div v-for="symtom in filteredSymtoms" :key="symtom.id" class="list-group">
                 <div class="doctor-card d-flex justify-content-between align-items-center p-3">
                     <span>
                         {{ symtom.symptom }}
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 export default {
@@ -45,6 +46,13 @@ export default {
     setup() {
         const access_token = ref('');
         const symtoms = ref([]);
+        const symptom_search=ref('');
+
+        const filteredSymtoms = computed(() => {
+            return symtoms.value.filter(symtom =>
+                symtom.symptom.toLowerCase().includes(symptom_search.value.toLowerCase())
+            );
+        });
 
         const fetchSymtom = async () => {
             try {
@@ -99,6 +107,8 @@ export default {
         })
         return {
             symtoms,
+            symptom_search,
+            filteredSymtoms,
             deleteSymtom
         }
     }

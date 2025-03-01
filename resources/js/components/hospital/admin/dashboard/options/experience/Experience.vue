@@ -11,12 +11,14 @@
             <div class="row mb-1">
                 <div class="col-md-12 mb-3">
                     <label for="department" class="form-label mb-0">Experience</label>
-                    <select id="department" class="form-select">
+                    <select id="experience" v-model="experience_search" class="form-select">
                         <option value="" selected>Choose...</option>
+                        <option v-for="symtom in experiences" :key="symtom.id" :value="symtom.experience">{{
+                            symtom.experience }}</option>
                     </select>
                 </div>
             </div>
-            <div v-for="symtom in experiences" :key="symtom.id" class="list-group">
+            <div v-for="symtom in filteredExperiences" :key="symtom.id" class="list-group">
                 <div class="doctor-card d-flex justify-content-between align-items-center p-3">
                     <span>
                         {{ symtom.experience }}
@@ -37,13 +39,22 @@
 </template>
 
 <script>
-import {onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
 export default {
     name: "Experience",
     setup() {
         const access_token = ref('');
         const experiences = ref([]);
+        const experience_search = ref('');
+
+        const filteredExperiences = computed(() => {
+            return experiences.value.filter(experience =>
+                experience.experience.toLowerCase().includes(experience_search.value.toLowerCase())
+            );
+        });
+
+
         const fetchExperience = async () => {
             try {
                 const response = await axios.get('/api/auth/experience', {
@@ -94,6 +105,8 @@ export default {
         })
         return {
             experiences,
+            experience_search,
+            filteredExperiences,
             deleteExperience
         }
     }

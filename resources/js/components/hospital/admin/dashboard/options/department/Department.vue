@@ -11,12 +11,14 @@
             <div class="row mb-1">
                 <div class="col-md-12 mb-3">
                     <label for="department" class="form-label mb-0">Department-Category</label>
-                    <select id="department" class="form-select">
+                    <select id="department-category" v-model="department_category" class="form-select">
                         <option value="" selected>Choose...</option>
+                        <option v-for="department in departments" :key="department.id"
+                            :value="department.department_category">{{ department.department_category }}</option>
                     </select>
                 </div>
             </div>
-            <div v-for="department in departments" :key="department.id" class="list-group">
+            <div v-for="department in filteredDepartments" :key="department.id" class="list-group">
                 <div class="doctor-card d-flex justify-content-between align-items-center p-3">
                     <span>
                         {{ department.department_category }}
@@ -37,7 +39,7 @@
 </template>
 
 <script>
-import {onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 export default {
@@ -45,6 +47,16 @@ export default {
     setup() {
         const access_token = ref('');
         const departments = ref([]);
+        const department_category = ref('');
+
+
+        const filteredDepartments = computed(() => {
+            return departments.value.filter(department =>
+                department.department_category.toLowerCase().includes(department_category.value.toLowerCase())
+            );
+        });
+
+
         const fetchDepartment = async () => {
             try {
                 const response = await axios.get('/api/auth/department', {
@@ -95,7 +107,9 @@ export default {
         })
         return {
             departments,
-            deleteDepartment
+            deleteDepartment,
+            filteredDepartments,
+            department_category
         }
     }
 }
