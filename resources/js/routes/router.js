@@ -7,25 +7,41 @@ import Home from '../components/hospital/user/Home.vue';
 import DoctorappoinmentView from '../components/hospital/user/DoctorappoinmentView.vue';
 
 import Dashboard from '../components/hospital/admin/dashboard/Dashboard.vue';
+
 import Doctor from '../components/hospital/admin/dashboard/doctor/Doctor.vue';
 import DoctorCreate from '../components/hospital/admin/dashboard/doctor/DoctorCreate.vue';
 import DoctorView from '../components/hospital/admin/dashboard/doctor/DoctorView.vue';
 import DoctorviewOffline from '../components/hospital/admin/dashboard/doctor/DoctorviewOffline.vue';
 import DoctorEdit from '../components/hospital/admin/dashboard/doctor/DoctorEdit.vue';
-import AppoinmentView from '../components/hospital/admin/dashboard/appoinment/AppoinmentView.vue';
+import DoctorActive from '../components/hospital/admin/dashboard/doctor/DoctorActive.vue';
+import DoctorInActive from '../components/hospital/admin/dashboard/doctor/DoctorInActive.vue';
+
+import Appoinment from '../components/hospital/admin/dashboard/appoinment/Appoinment.vue';
 import AppoinmentDetails from '../components/hospital/admin/dashboard/appoinment/AppoinmentDetails.vue';
+import AppoinmentCreate from '../components/hospital/admin/dashboard/appoinment/AppoinmentCreate.vue';
+
 import Symtom from '../components/hospital/admin/dashboard/options/symtom/Symtom.vue';
+import SymtomCreate from '../components/hospital/admin/dashboard/options/symtom/SymtomCreate.vue';
 import SymtomEdit from '../components/hospital/admin/dashboard/options/symtom/SymtomEdit.vue';
+
 import Specialist from '../components/hospital/admin/dashboard/options/specialist/Specialist.vue';
+import SpecialistCreate from '../components/hospital/admin/dashboard/options/specialist/SpecialistCreate.vue'
 import SpecialistEdit from '../components/hospital/admin/dashboard/options/specialist/SpecialistEdit.vue';
+
 import Experience from '../components/hospital/admin/dashboard/options/experience/Experience.vue';
+import ExperienceCreate from '../components/hospital/admin/dashboard/options/experience/ExperienceCreate.vue';
 import ExperienceEdit from '../components/hospital/admin/dashboard/options/experience/ExperienceEdit.vue';
+
 import Department from '../components/hospital/admin/dashboard/options/department/Department.vue';
+import DepartmentCreate from '../components/hospital/admin/dashboard/options/department/DepartmentCreate.vue';
 import DepartmentEdit from '../components/hospital/admin/dashboard/options/department/DepartmentEdit.vue';
+
 import Roomlist from '../components/hospital/admin/dashboard/options/room/Roomlist.vue';
+import RoomListCreate from '../components/hospital/admin/dashboard/options/room/RoomlistCreate.vue'
 import RoomlistEdit from '../components/hospital/admin/dashboard/options/room/RoomlistEdit.vue';
 
-import RferenceList from '../components/hospital/admin/dashboard/options/reference/RferenceList.vue';
+import ReferenceList from '../components/hospital/admin/dashboard/options/reference/RferenceList.vue';
+import ReferenceCreate from '../components/hospital/admin/dashboard/options/reference/ReferenceCreate.vue'
 import ReferenceEdit from '../components/hospital/admin/dashboard/options/reference/ReferenceEdit.vue';
 
 const routes = [
@@ -66,7 +82,7 @@ const routes = [
                 meta: { hideMainContent: true },
             },
             {
-                path: '/doctor_create',
+                path: '/doctor-create',
                 name: 'DoctorCreate',
                 components: {
                     default: Dashboard,
@@ -92,22 +108,50 @@ const routes = [
                 },
                 meta: { hideMainContent: true },
             },
-
             {
-                path: '/appoinment_view',
-                name: 'AppoinmentView',
+                path: '/doctor-active',
+                name: 'DoctorActive',
                 components: {
                     default: Dashboard,
-                    content: AppoinmentView,
+                    content: DoctorActive,
+                },
+                meta: { hideMainContent: true },
+            },
+
+            {
+                path: '/doctor-inactive',
+                name: 'DoctorInActive',
+                components: {
+                    default: Dashboard,
+                    content: DoctorInActive,
+                },
+                meta: { hideMainContent: true },
+            },
+
+            {
+                path: '/appoinment',
+                name: 'Appoinment',
+                components: {
+                    default: Dashboard,
+                    content: Appoinment,
                 },
                 meta: { hideMainContent: true },
             },
             {
-                path: '/appoinment_details',
+                path: '/appoinment-details',
                 name: 'AppoinmentDetails',
                 components: {
                     default: Dashboard,
                     content: AppoinmentDetails,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/appoinment-create',
+                name: 'AppoinmentCreate',
+                components: {
+                    default: Dashboard,
+                    content: AppoinmentCreate,
                 },
                 meta: { hideMainContent: true },
             },
@@ -121,6 +165,24 @@ const routes = [
                 meta: { hideMainContent: true },
             },
             {
+                path: '/symtom-create',
+                name: 'SymtomCreate',
+                components: {
+                    default: Dashboard,
+                    content: SymtomCreate,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/symtomEdit/:id',
+                name: 'SymtomEdit',
+                components: {
+                    default: Dashboard,
+                    content: SymtomEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
                 path: '/specialist',
                 name: 'Specialist',
                 components: {
@@ -130,11 +192,29 @@ const routes = [
                 meta: { hideMainContent: true },
             },
             {
+                path: '/specialist-create',
+                name: 'SpecialistCreate',
+                components: {
+                    default: Dashboard,
+                    content: SpecialistCreate,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
                 path: '/experience',
                 name: 'Experience',
                 components: {
                     default: Dashboard,
                     content: Experience,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/experience-create',
+                name: 'ExperienceCreate',
+                components: {
+                    default: Dashboard,
+                    content: ExperienceCreate,
                 },
                 meta: { hideMainContent: true },
             },
@@ -149,10 +229,19 @@ const routes = [
             },
             {
                 path: '/reference',
-                name: 'RferenceList',
+                name: 'ReferenceList',
                 components: {
                     default: Dashboard,
-                    content: RferenceList,
+                    content: ReferenceList,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/reference-create',
+                name: 'ReferenceCreate',
+                components: {
+                    default: Dashboard,
+                    content: ReferenceCreate,
                 },
                 meta: { hideMainContent: true },
             },
@@ -175,6 +264,15 @@ const routes = [
                 meta: { hideMainContent: true },
             },
             {
+                path: '/room-create',
+                name: 'RoomListCreate',
+                components: {
+                    default: Dashboard,
+                    content: RoomListCreate,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
                 path: '/roomlist-edit/:id',
                 name: 'RoomlistEdit',
                 components: {
@@ -193,20 +291,11 @@ const routes = [
                 meta: { hideMainContent: true },
             },
             {
-                path: '/symtomEdit/:id',
-                name: 'SymtomEdit',
+                path: '/department-category-create',
+                name: 'DepartmentCreate',
                 components: {
                     default: Dashboard,
-                    content: SymtomEdit,
-                },
-                meta: { hideMainContent: true },
-            },
-            {
-                path: '/specialistEdit/:id',
-                name: 'SpecialistEdit',
-                components: {
-                    default: Dashboard,
-                    content: SpecialistEdit,
+                    content: DepartmentCreate,
                 },
                 meta: { hideMainContent: true },
             },
@@ -216,6 +305,15 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: DepartmentEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/specialistEdit/:id',
+                name: 'SpecialistEdit',
+                components: {
+                    default: Dashboard,
+                    content: SpecialistEdit,
                 },
                 meta: { hideMainContent: true },
             },

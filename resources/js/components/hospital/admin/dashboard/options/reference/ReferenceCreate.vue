@@ -1,4 +1,13 @@
 <template>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3 w-100">
+            <div class="d-flex w-100 mb-2 mb-sm-0">
+                <router-link to="/reference" class="btn btn-primary ms-2">
+                    + Reference List
+                </router-link>
+            </div>
+        </div>
+    </div>
     <div class="d-flex justify-content-center align-items-center">
         <div class="card" style="width: 1300px;">
             <div class="card-header" style="background-color: rgb(248,249,250)">
@@ -48,7 +57,6 @@ import Cookies from 'js-cookie';
 export default {
     name: "ReferenceCreate",
     setup() {
-        const currentComponent = ref(false);
         const access_token = ref('access_token');
         const form = ref({
             name: '',
@@ -85,7 +93,6 @@ export default {
             access_token.value = Cookies.get('access_token');
         })
         return {
-            currentComponent,
             form,
             submitReference
         }

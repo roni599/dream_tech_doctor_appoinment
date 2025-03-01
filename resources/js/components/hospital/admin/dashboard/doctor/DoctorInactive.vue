@@ -1,5 +1,20 @@
 <template>
     <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3 w-100">
+            <div class="d-flex w-100 mb-2 mb-sm-0">
+                <router-link to="/doctor"  class="btn btn-primary ms-2">
+                    + Doctor List
+                </router-link>
+                <router-link to="/doctor-create"  class="btn btn-primary ms-2">
+                    + Create Doctor
+                </router-link>
+            </div>
+            <div class="d-flex w-100 justify-content-end">
+                <router-link to="/doctor-active" class="btn btn-success me-2">
+                    Active Doctor
+                </router-link>
+            </div>
+        </div>
         <div v-if="doctors.length > 0">
             <div v-for="doctor in doctors" :key="doctor.id" class="list-group">
                 <div class="doctor-card d-flex align-items-center">

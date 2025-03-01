@@ -2,15 +2,12 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3 w-100">
             <div class="d-flex w-100 mb-2 mb-sm-0">
-                <button @click="anotherLoad" class="btn btn-primary">
-                    <i class="fa-solid fa-list"></i><span class="ms-2">Room List</span>
-                </button>
-                <button @click="componentLoad('RoomlistCreate')" class="btn btn-primary ms-2">
+                <router-link to="/room-create" class="btn btn-primary ms-2">
                     + Create Room
-                </button>
+                </router-link>
             </div>
         </div>
-        <div v-show="!currentComponent" class="allFeature">
+        <div class="allFeature">
             <div class="row mb-1">
                 <div class="col-md-12 mb-3">
                     <label for="department" class="form-label mb-0">Room Number</label>
@@ -45,29 +42,17 @@
             </div>
         </div>
     </div>
-    <component :is="currentComponent"></component>
 </template>
 
 <script>
-import { markRaw, onMounted, ref, shallowRef,computed } from 'vue';
+import { onMounted, ref,computed } from 'vue';
 import Cookies from 'js-cookie';
-import RoomlistCreate from './RoomlistCreate.vue';
 export default {
     name: "Roomlist",
     setup() {
         const access_token = ref('');
-        const currentComponent = shallowRef(null);
         const roomlists = ref([]);
         const search_room = ref('');
-        const componentLoad = (componentvalue) => {
-            if (componentvalue === "RoomlistCreate") {
-                currentComponent.value = markRaw(RoomlistCreate);
-            }
-        };
-        const anotherLoad = () => {
-            currentComponent.value = null;
-            fetchRoomlist()
-        };
         const fetchRoomlist = async () => {
             try {
                 const response = await axios.get('/api/auth/roomlist', {
@@ -123,9 +108,6 @@ export default {
             fetchRoomlist()
         })
         return {
-            currentComponent,
-            componentLoad,
-            anotherLoad,
             roomlists,
             deleteRoom,
             search_room,

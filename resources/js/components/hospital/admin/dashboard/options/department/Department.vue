@@ -2,15 +2,12 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3 w-100">
             <div class="d-flex w-100 mb-2 mb-sm-0">
-                <button @click="anotherLoad" class="btn btn-primary">
-                    <i class="fa-solid fa-list"></i><span class="ms-2">Department-Category</span>
-                </button>
-                <button @click="componentLoad('DepartmentCreate')" class="btn btn-primary ms-2">
+                <router-link to="/department-category-create" class="btn btn-primary ms-2">
                     + Create Department-Category
-                </button>
+                </router-link>
             </div>
         </div>
-        <div v-show="!currentComponent" class="allFeature">
+        <div class="allFeature">
             <div class="row mb-1">
                 <div class="col-md-12 mb-3">
                     <label for="department" class="form-label mb-0">Department-Category</label>
@@ -37,29 +34,17 @@
             </div>
         </div>
     </div>
-    <component :is="currentComponent"></component>
 </template>
 
 <script>
-import { markRaw, onMounted, ref, shallowRef } from 'vue';
+import {onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
-import DepartmentCreate from './DepartmentCreate.vue';
 import axios from 'axios';
 export default {
     name: "Department",
     setup() {
         const access_token = ref('');
-        const currentComponent = shallowRef(null);
         const departments = ref([]);
-        const componentLoad = (componentvalue) => {
-            if (componentvalue === "DepartmentCreate") {
-                currentComponent.value = markRaw(DepartmentCreate);
-            }
-        };
-        const anotherLoad = () => {
-            currentComponent.value = null;
-            fetchDepartment();
-        };
         const fetchDepartment = async () => {
             try {
                 const response = await axios.get('/api/auth/department', {
@@ -73,7 +58,6 @@ export default {
             } catch (error) {
             }
         }
-
         const deleteDepartment = async (id) => {
             Swal.fire({
                 title: "Are you sure?",
@@ -110,9 +94,6 @@ export default {
             fetchDepartment();
         })
         return {
-            currentComponent,
-            componentLoad,
-            anotherLoad,
             departments,
             deleteDepartment
         }

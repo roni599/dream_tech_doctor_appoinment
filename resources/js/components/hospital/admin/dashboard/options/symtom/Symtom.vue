@@ -2,15 +2,12 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3 w-100">
             <div class="d-flex w-100 mb-2 mb-sm-0">
-                <button @click="anotherLoad" class="btn btn-primary">
-                    <i class="fa-solid fa-list"></i><span class="ms-2">Symptom List</span>
-                </button>
-                <button @click="componentLoad('SymtomCreate')" class="btn btn-primary ms-2">
+                <router-link to="/symtom-create" class="btn btn-primary ms-2">
                     + Create Symptom
-                </button>
+                </router-link>
             </div>
         </div>
-        <div v-show="!currentComponent" class="allFeature">
+        <div class="allFeature">
             <div class="row mb-1">
                 <div class="col-md-12 mb-3">
                     <label for="department" class="form-label mb-0">Symtom</label>
@@ -35,28 +32,20 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-    <component :is="currentComponent"></component>
 </template>
 
 <script>
-import { markRaw, onBeforeMount, onMounted, ref, shallowRef } from 'vue';
-import SymtomCreate from './SymtomCreate.vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 export default {
     name: "Symtom",
     setup() {
-        const currentComponent = shallowRef(null);
         const access_token = ref('');
         const symtoms = ref([]);
-        const componentLoad = (componentvalue) => {
-            if (componentvalue === "SymtomCreate") {
-                currentComponent.value = markRaw(SymtomCreate);
-            }
-        };
+
         const fetchSymtom = async () => {
             try {
                 const response = await axios.get('/api/auth/symptoms', {
@@ -70,10 +59,7 @@ export default {
             } catch (error) {
             }
         }
-        const anotherLoad = () => {
-            currentComponent.value = null;
-            fetchSymtom()
-        };
+
         const deleteSymtom = async (id) => {
             Swal.fire({
                 title: "Are you sure?",
@@ -112,9 +98,6 @@ export default {
             fetchSymtom();
         })
         return {
-            currentComponent,
-            componentLoad,
-            anotherLoad,
             symtoms,
             deleteSymtom
         }

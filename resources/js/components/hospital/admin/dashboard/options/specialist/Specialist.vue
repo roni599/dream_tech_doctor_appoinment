@@ -2,15 +2,12 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3 w-100">
             <div class="d-flex w-100 mb-2 mb-sm-0">
-                <button @click="anotherLoad" class="btn btn-primary">
-                    <i class="fa-solid fa-list"></i><span class="ms-2">Specialist List</span>
-                </button>
-                <button @click="componentLoad('SpecialistCreate')" class="btn btn-primary ms-2">
+                <router-link to="/specialist-create" class="btn btn-primary ms-2">
                     + Create Specialist
-                </button>
+                </router-link>
             </div>
         </div>
-        <div v-show="!currentComponent" class="allFeature">
+        <div class="allFeature">
             <div class="row mb-1">
                 <div class="col-md-12 mb-3">
                     <label for="department" class="form-label mb-0">Specialist</label>
@@ -38,30 +35,17 @@
             </div>
         </div>
     </div>
-    <component :is="currentComponent"></component>
 </template>
 
 <script>
-import { markRaw, onMounted, ref, shallowRef } from 'vue';
-import SpecialistCreate from './SpecialistCreate.vue';
+import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 export default {
     name: "Specialist",
     setup() {
         const access_token = ref('');
-        const currentComponent = shallowRef(null);
         const specialists = ref([]);
-        const componentLoad = (componentvalue) => {
-            if (componentvalue === "SpecialistCreate") {
-                currentComponent.value = markRaw(SpecialistCreate);
-            }
-        };
-        const anotherLoad = () => {
-            currentComponent.value = null;
-            fetchSpecialist();
-        };
-
         const fetchSpecialist = async () => {
             try {
                 const response = await axios.get('/api/auth/specialist', {
@@ -112,9 +96,6 @@ export default {
             fetchSpecialist()
         })
         return {
-            currentComponent,
-            componentLoad,
-            anotherLoad,
             specialists,
             deleteSpecialist
         }

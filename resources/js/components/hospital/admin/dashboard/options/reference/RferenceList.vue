@@ -2,15 +2,12 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3 w-100">
             <div class="d-flex w-100 mb-2 mb-sm-0">
-                <button @click="anotherLoad" class="btn btn-primary">
-                    <i class="fa-solid fa-list"></i><span class="ms-2">Reference List</span>
-                </button>
-                <button @click="componentLoad('ReferenceCreate')" class="btn btn-primary ms-2">
+                <router-link to="/reference-create" class="btn btn-primary ms-2">
                     + Create Reference
-                </button>
+                </router-link>
             </div>
         </div>
-        <div class="" v-show="!currentComponent">
+        <div>
             <div class="row mb-1">
                 <div class="col-md-12 mb-3">
                     <label for="reference" class="form-label mb-0">Search Reference</label>
@@ -62,31 +59,18 @@
             </div>
         </div>
     </div>
-    <component :is="currentComponent"></component>
 </template>
 
 <script>
-import { markRaw, onMounted, ref, shallowRef,computed } from 'vue';
+import { onMounted, ref,computed } from 'vue';
 import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
-import ReferenceCreate from './ReferenceCreate.vue';
 export default {
     name: "ReferenceList",
     setup() {
-        const currentComponent = shallowRef(null);
         const access_token = ref('');
         const references = ref([]);
         const search_reference = ref('');
-
-        const componentLoad = (componentvalue) => {
-            if (componentvalue === "ReferenceCreate") {
-                currentComponent.value = markRaw(ReferenceCreate);
-            }
-        };
-        const anotherLoad = () => {
-            currentComponent.value = null;
-            fetchReference();
-        };
         const filteredReference = computed(() => {
             if (!search_reference.value) {
                 return references.value;
@@ -150,9 +134,6 @@ export default {
         })
 
         return {
-            currentComponent,
-            componentLoad,
-            anotherLoad,
             search_reference,
             references,
             encryptId,

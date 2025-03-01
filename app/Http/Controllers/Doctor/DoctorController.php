@@ -24,7 +24,7 @@ class DoctorController extends Controller
     {
         $user = Auth::user();
         if ($user) {
-            $doctor = Doctor::where('user_id', $user->id)->get();
+            $doctor = Doctor::where('user_id', $user->id)->with('user')->get();
             return response()->json($doctor, 200);
         }
         return response()->json(['error' => 'Unauthorized'], 401);

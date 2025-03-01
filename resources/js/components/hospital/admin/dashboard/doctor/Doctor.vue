@@ -2,23 +2,20 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3 w-100">
             <div class="d-flex w-100 mb-2 mb-sm-0">
-                <button @click="anotherLoad" class="btn btn-primary">
-                    <i class="fa-solid fa-list"></i><span class="ms-2">Doctor List</span>
-                </button>
-                <button @click="componentLoad('DoctorCreate')" class="btn btn-primary ms-2">
+                <router-link to="/doctor-create"  class="btn btn-primary ms-2">
                     + Create Doctor
-                </button>
+                </router-link>
             </div>
             <div class="d-flex w-100 justify-content-end">
-                <button @click="componentLoad('DoctorActive')" class="btn btn-success me-2">
+                <router-link to="/doctor-active" class="btn btn-success me-2">
                     Active
-                </button>
-                <button @click="componentLoad('DoctorInactive')" class="btn btn-secondary">
+                </router-link>
+                <router-link to="/doctor-inactive" class="btn btn-secondary">
                     Inactive
-                </button>
+                </router-link>
             </div>
         </div>
-        <div v-show="!currentComponent" class="allFeature">
+        <div class="allFeature">
             <div class="row mb-3">
                 <div class="col-md-6 mb-3">
                     <label for="department" class="form-label">Department/Category</label>
@@ -85,21 +82,16 @@
             </div>
         </div>
     </div>
-    <component :is="currentComponent"></component>
 </template>
 
 <script>
-import { ref, shallowRef, markRaw, onMounted, computed } from "vue";
-import DoctorCreate from "./DoctorCreate.vue";
-import DoctorActive from "./DoctorActive.vue";
-import DoctorInactive from "./DoctorInactive.vue";
+import {onMounted, computed, ref } from "vue";
 import axios from "axios";
 import Cookies from "js-cookie";
 export default {
     name: "Doctor-vue",
     setup() {
         const access_token = ref('');
-        const currentComponent = shallowRef(null);
         const doctors = ref([]);
         const hoveredButton = ref(null);
         const tooltipStyle = ref({});
@@ -108,10 +100,6 @@ export default {
         const doctorFilter = ref('');
         const experiences = ref([]);
         const departments = ref([]);
-
-        // const uniqueDepartments = computed(() => {
-        //     return [...new Set(doctors.value.map((doctor) => doctor.deparment_category))];
-        // });
 
         const filteredDoctors = computed(() => {
             return doctors.value.filter((doctor) => {
@@ -156,20 +144,6 @@ export default {
                 console.error("Failed to copy:", error);
             }
         };
-        const componentLoad = (componentvalue) => {
-            if (componentvalue === "DoctorCreate") {
-                currentComponent.value = markRaw(DoctorCreate);
-            } else if (componentvalue === "DoctorActive") {
-                currentComponent.value = markRaw(DoctorActive);
-            } else if (componentvalue === "DoctorInactive") {
-                currentComponent.value = markRaw(DoctorInactive);
-            }
-        };
-        const anotherLoad = () => {
-            currentComponent.value = null;
-            fetchDoctor();
-        };
-
         const fetchDoctor = async () => {
             try {
                 const response = await axios.get("/api/auth/hospital-doctor", {
@@ -278,9 +252,6 @@ export default {
             await fetchDepartment();
         });
         return {
-            currentComponent,
-            componentLoad,
-            anotherLoad,
             fetchDoctor,
             doctors,
             updateStatus,
@@ -293,7 +264,6 @@ export default {
             departmentFilter,
             doctorFilter,
             filteredDoctors,
-            // uniqueDepartments,
             experiences,
             departments
         };

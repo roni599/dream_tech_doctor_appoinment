@@ -1,23 +1,32 @@
 <template>
-    <div class="d-flex justify-content-center align-items-center">
-        <div class="card w-100" style="width: 1300px;">
-            <div class="card-header mt-2">
-                <h5 class="card-title">Symptom Create</h5>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3 w-100">
+            <div class="d-flex w-100 mb-2 mb-sm-0">
+                <router-link to="/symtom" class="btn btn-primary ms-2">
+                    + Create Symptom
+                </router-link>
             </div>
-            <div class="card-body">
-                <form @submit.prevent="submitSymptom">
-                    <div class="row form-section mb-4">
-                        <div class="col-md-12">
-                            <label for="symptom" class="form-label mb-0">Symptom</label>
-                            <input v-model="form.symptom" type="text" class="form-control" id="symptom" required />
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="card w-100" style="width: 1300px;">
+                <div class="card-header mt-2">
+                    <h5 class="card-title">Symptom Create</h5>
+                </div>
+                <div class="card-body">
+                    <form @submit.prevent="submitSymptom">
+                        <div class="row form-section mb-4">
+                            <div class="col-md-12">
+                                <label for="symptom" class="form-label mb-0">Symptom</label>
+                                <input v-model="form.symptom" type="text" class="form-control" id="symptom" required />
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button class="btn btn-primary w-100">Save</button>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary w-100">Save</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -30,7 +39,6 @@ import Cookies from "js-cookie";
 export default {
     name: "SymptomCreate",
     setup() {
-        const currentComponent = ref(false);
         const access_token = ref('');
         const form = ref({
             symptom: "",
@@ -59,7 +67,6 @@ export default {
         })
 
         return {
-            currentComponent,
             form,
             submitSymptom,
         };

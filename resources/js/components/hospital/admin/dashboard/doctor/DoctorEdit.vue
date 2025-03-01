@@ -2,8 +2,21 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3 w-100">
             <div class="d-flex w-100 mb-2 mb-sm-0">
-                <router-link to="/doctor" class="btn btn-primary w-100">
-                    <i class="fa-solid fa-list"></i><span class="ms-2">Doctor List</span>
+                <router-link to="/doctor"  class="btn btn-primary ms-2">
+                    + Doctor List
+                </router-link>
+            </div>
+            <div class="d-flex w-100 mb-2 mb-sm-0">
+                <router-link to="/doctor-create"  class="btn btn-primary ms-2">
+                    + Doctor Create
+                </router-link>
+            </div>
+            <div class="d-flex w-100 justify-content-end">
+                <router-link to="/doctor-active" class="btn btn-success me-2">
+                    Active Doctor
+                </router-link>
+                <router-link to="/doctor-inactive" class="btn btn-secondary">
+                    Inactive Doctor
                 </router-link>
             </div>
         </div>
@@ -67,7 +80,6 @@
                                 <label for="experience" class="form-label mb-0 fw-bold">Experience</label>
                                 <input v-model="form.experience" type="text" class="form-control" id="experience">
                             </div>
-
                         </div>
                         <div class="row form-section mb-2">
                             <div class="col-md-12">
@@ -77,17 +89,14 @@
                                     <select class="form-select flex-grow-1 me-2" v-model="item.value"
                                         aria-label="Default select example">
                                         <option selected disabled value="">Open this select menu</option>
-                                        <option v-for="item in selects" :key="item.id" :value="item.value">{{
-                                            item.value }}</option>
-
+                                        <option v-for="opt in selects" :key="opt.id" :value="opt.value">{{ opt.value }}
+                                        </option>
                                     </select>
                                     <div class="d-flex">
-                                        <button type="button" class="btn btn-success me-1"
-                                            v-if="index === selects.length - 1" @click="addSelect">+
-                                        </button>
-                                        <button type="button" class="btn btn-danger" v-if="selects.length > 1"
-                                            @click="removeSelect(index)"> -
-                                        </button>
+                                        <button type="button" class="btn btn-success me-1" v-if="index === 0"
+                                            @click="addSelect">+</button>
+                                        <button type="button" class="btn btn-danger" v-if="index !== 0"
+                                            @click="removeSelect(index)">-</button>
                                     </div>
                                 </div>
                             </div>
@@ -100,20 +109,17 @@
                                     <select class="form-select flex-grow-1 me-2" v-model="item.value"
                                         aria-label="Default select example">
                                         <option value="" disabled selected>Open this select menu</option>
-                                        <!-- <option v-for="item in symptom" :key="item.id" :value="item.value">{{
-                                            item.value }}</option> -->
-                                        <option :value="item.value">{{
-                                            item.value }}</option>
+                                        <option :value="item.value">{{ item.value }}</option>
                                     </select>
+
                                     <div class="d-flex">
-                                        <button type="button" class="btn btn-success me-1"
-                                            v-if="index === symptom.length - 1" @click="addSymtom">+
-                                        </button>
-                                        <button type="button" class="btn btn-danger" v-if="symptom.length > 1"
-                                            @click="removeSymptom(index)"> -
-                                        </button>
+                                        <button type="button" class="btn btn-success me-1" v-if="index === 0"
+                                            @click="addSymtom">+</button>
+                                        <button type="button" class="btn btn-danger" v-if="index !== 0"
+                                            @click="removeSymptom(index)">-</button>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                         <div class="row form-section mb-2">
@@ -128,9 +134,9 @@
                         </div>
                         <div class="row form-section mb-2">
                             <div class="col-md-12">
-                                <label for="mobile" class="form-label mb-0 fw-bold">Shedule</label>
+                                <label for="mobile" class="form-label mb-0 fw-bold">Schedule</label>
                                 <div class="table_size">
-                                    <table class="table table-bordered  table-hover table-striped">
+                                    <table class="table table-bordered table-hover table-striped">
                                         <thead>
                                             <tr>
                                                 <th style="height: 30px;">Days</th>
@@ -162,15 +168,16 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <button @click.prevent="addRow" class="btn btn-success me-1"
-                                                        v-if="index === rows.length - 1">+</button>
+                                                        v-if="index === 0">+</button>
                                                     <button @click.prevent="removeRow(index)" class="btn btn-danger"
-                                                        :disabled="rows.length === 1" v-if="rows.length > 1">-</button>
+                                                        v-if="index !== 0">-</button>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
+
                         </div>
                         <div class="row form-section mb-2">
                             <div class="col-md-12">

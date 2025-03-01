@@ -2,7 +2,7 @@
     <div class="container">
         <div
             class="header-buttons d-flex flex-wrap justify-content-start justify-content-center justify-content-md-start mb-2">
-            <router-link to="/appoinment" class="btn btn-info text-white mb-2">All Appoinment</router-link>
+            <router-link to="/appoinment-details" class="btn btn-info text-white mb-2">New Appoinment</router-link>
         </div>
         <div class="card">
             <div class="card-body">
@@ -31,16 +31,13 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">S.L No</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Category/Department
+                                </th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Doctor Name</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Patient Name</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Mobile</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Gender</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Age</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Visit Date</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">S.L No</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Appoint</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Visit Time</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Payment</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Amount</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,10 +48,6 @@
                                 <td>2028-12-08</td>
                                 <td>1</td>
                                 <td>Online</td>
-                                <td>Online</td>
-                                <td>Online</td>
-                                <td>Online</td>
-                                <td>Online</td>
                             </tr>
                             <tr>
                                 <td>Neurology</td>
@@ -63,17 +56,9 @@
                                 <td>2028-12-09</td>
                                 <td>2</td>
                                 <td>jasim</td>
-                                <td>jasim</td>
-                                <td>jasim</td>
-                                <td>jasim</td>
-                                <td>jasim</td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <router-link to="/appoinment-create" class="btn btn-primary fw-bold">Add <span class="fw-bold"><i
-                                class="fa-solid fa-plus"></i></span></router-link>
                 </div>
             </div>
         </div>
@@ -85,11 +70,11 @@ import { onMounted, ref } from 'vue';
 import axios from "axios";
 import Cookies from "js-cookie";
 export default {
-    name: "AppoinmentDetails",
+    name: "AppoinmentView",
     setup() {
         const access_token = ref('');
-        const doctors = ref([]);
-        const departments = ref([]);
+        const doctors=ref([]);
+        const departments=ref([]);
 
         const fetchDoctor = async () => {
             try {
@@ -162,6 +147,7 @@ export default {
     background-color: #007bff;
     color: white;
 }
+
 
 @media (max-width: 768px) {
     .filters {

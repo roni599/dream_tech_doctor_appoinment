@@ -1,339 +1,348 @@
 <template>
-    <div class="d-flex justify-content-center align-items-center">
-        <div class="card" style="width: 1300px;">
-            <div class="card-header">
-                <h5 class="card-title">Doctor Create</h5>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3 w-100">
+            <div class="d-flex w-100 mb-2 mb-sm-0">
+                <router-link to="/doctor"  class="btn btn-primary ms-2">
+                    + Doctor List
+                </router-link>
             </div>
-            <div class="card-body">
-                <form @submit.prevent="submitForm">
-                    <div class="row form-section mb-2">
-                        <div class="col-md-6">
-                            <label for="department" class="form-label mb-0 fw-bold"
-                                style="color:rgb(213,213,218);">Department/Category</label>
-                            <select v-model="form.deparment_category" class="form-select  mt-1">
-                                <!-- <option value="" disabled selected>Select Department</option> -->
-                                <option v-for="department in departments" :key="department.id"
-                                    :value="department.department_category">{{ department.department_category }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="department" class="form-label mb-0 fw-bold" style="color:rgb(213,213,218);">Reg
-                                Number</label>
-                            <input v-model="form.regnum" type="text" class="form-control " id="reg-number">
-                        </div>
-                    </div>
-                    <div class="row form-section mb-2">
-                        <div class="col-md-6">
-                            <label for="department" class="form-label mb-0 fw-bold"
-                                style="color:rgb(213,213,218);">Doctor Name</label>
-                            <input v-model="form.doctorName" type="text" class="form-control " id="reg-number">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="email" class="form-label mb-0 fw-bold"
-                                style="color:rgb(213,213,218);">E-Mail</label>
-                            <input v-model="form.email" type="email" class="form-control " id="email">
-                        </div>
-                    </div>
-
-                    <div class="row form-section mb-2">
-                        <div class="col-md-6">
-                            <label for="age" class="form-label mb-0 fw-bold" style="color:rgb(213,213,218);">Age</label>
-                            <input v-model="form.age" type="text" class="form-control " id="age">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="gender" class="form-label mb-0 fw-bold"
-                                style="color:rgb(213,213,218);">Gender</label>
-                            <select v-model="form.gender" class="form-select form-control "
-                                aria-label="Default select example">
-                                <!-- <option selected value="">Open this select menu</option> -->
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Others</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class="row form-section mb-2">
-                        <div class="col-md-6">
-                            <label for="details" class="form-label mb-0 fw-bold"
-                                style="color:rgb(213,213,218);">Details</label>
-                            <input v-model="form.details" class="form-control " id="details" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="experience" class="form-label mb-0"
-                                style="color:rgb(213,213,218);">Experience</label>
-                            <input v-model="form.experience" type="text" class="form-control " id="experience">
-                        </div>
-                    </div>
-                    <div class="row form-section mb-2">
-                        <div class="col-md-12">
-                            <label for="specialist" class="form-label mb-0 fw-bold"
-                                style="color:rgb(213,213,218);">Specialist</label>
-                            <div class="d-flex align-items-center mb-2">
-                                <select class="form-select flex-grow-1 me-2" v-model="selects[0].value"
-                                    aria-label="Default select example">
-                                    <option v-for="specialist in specialists" :key="specialist.id"
-                                        :value="specialist.specialist">
-                                        {{ specialist.specialist }}
+            <div class="d-flex w-100 justify-content-end">
+                <router-link to="/doctor-active" class="btn btn-success me-2">
+                    Active Doctor
+                </router-link>
+                <router-link to="/doctor-inactive" class="btn btn-secondary">
+                    Inactive Doctor
+                </router-link>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="card" style="width: 1300px;">
+                <div class="card-header">
+                    <h5 class="card-title">Doctor Create</h5>
+                </div>
+                <div class="card-body">
+                    <form @submit.prevent="submitForm">
+                        <div class="row form-section mb-2">
+                            <div class="col-md-6">
+                                <label for="department" class="form-label mb-0 fw-bold"
+                                    >Department/Category</label>
+                                <select v-model="form.deparment_category" class="form-select  mt-1">
+                                    <!-- <option value="" disabled selected>Select Department</option> -->
+                                    <option v-for="department in departments" :key="department.id"
+                                        :value="department.department_category">{{ department.department_category }}
                                     </option>
                                 </select>
-                                <button type="button" class="btn btn-success me-1" @click="addSelect">+</button>
                             </div>
-                            <div v-for="(item, index) in selects.slice(1)" :key="index"
-                                class="d-flex align-items-center mb-2">
-                                <select class="form-select flex-grow-1 me-2" v-model="item.value"
-                                    aria-label="Default select example">
-                                    <option v-for="specialist in specialists" :key="specialist.id"
-                                        :value="specialist.specialist">
-                                        {{ specialist.specialist }}
-                                    </option>
-                                </select>
-                                <button type="button" class="btn btn-danger" @click="removeSelect(index + 1)"> -
-                                </button>
+                            <div class="col-md-6">
+                                <label for="department" class="form-label mb-0 fw-bold">Reg
+                                    Number</label>
+                                <input v-model="form.regnum" type="text" class="form-control " id="reg-number">
                             </div>
                         </div>
-                    </div>
-
-                    <!-- <div class="row form-section mb-2">
-                        <div class="col-md-12">
-                            <label for="symptom" class="form-label mb-0" style="color:rgb(213,213,218);">Symptom</label>
-                            <div v-for="(item, index) in symptom" :key="index" class="d-flex align-items-center">
-                                <select class="form-select flex-grow-1 me-2" v-model="item.value"
+                        <div class="row form-section mb-2">
+                            <div class="col-md-6">
+                                <label for="department" class="form-label mb-0 fw-bold">Doctor Name</label>
+                                <input v-model="form.doctorName" type="text" class="form-control " id="reg-number">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label mb-0 fw-bold">E-Mail</label>
+                                <input v-model="form.email" type="email" class="form-control " id="email">
+                            </div>
+                        </div>
+    
+                        <div class="row form-section mb-2">
+                            <div class="col-md-6">
+                                <label for="age" class="form-label mb-0 fw-bold">Age</label>
+                                <input v-model="form.age" type="text" class="form-control " id="age">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="gender" class="form-label mb-0 fw-bold">Gender</label>
+                                <select v-model="form.gender" class="form-select form-control "
                                     aria-label="Default select example">
-                                    <option value="" disabled selected>Open this select menu</option>
-                                    <option v-for="symptom in symtoms" :key="symptom.id" :value="symptom.symptom">{{
-                                        symptom.symptom }}</option>
+                                    <!-- <option selected value="">Open this select menu</option> -->
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Others</option>
                                 </select>
-                                <div class="d-flex">
-                                    <button type="button" class="btn btn-success me-1"
-                                        v-if="index === symptom.length - 1" @click="addSymtom">+
-                                    </button>
-                                    <button type="button" class="btn btn-danger" v-if="symptom.length > 1"
-                                        @click="removeSymptom(index)"> -
+                            </div>
+    
+                        </div>
+                        <div class="row form-section mb-2">
+                            <div class="col-md-6">
+                                <label for="details" class="form-label mb-0 fw-bold">Details</label>
+                                <input v-model="form.details" class="form-control " id="details" />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="experience" class="form-label mb-0">Experience</label>
+                                <input v-model="form.experience" type="text" class="form-control " id="experience">
+                            </div>
+                        </div>
+                        <div class="row form-section mb-2">
+                            <div class="col-md-12">
+                                <label for="specialist" class="form-label mb-0 fw-bold">Specialist</label>
+                                <div class="d-flex align-items-center mb-2">
+                                    <select class="form-select flex-grow-1 me-2" v-model="selects[0].value"
+                                        aria-label="Default select example">
+                                        <option v-for="specialist in specialists" :key="specialist.id"
+                                            :value="specialist.specialist">
+                                            {{ specialist.specialist }}
+                                        </option>
+                                    </select>
+                                    <button type="button" class="btn btn-success me-1" @click="addSelect">+</button>
+                                </div>
+                                <div v-for="(item, index) in selects.slice(1)" :key="index"
+                                    class="d-flex align-items-center mb-2">
+                                    <select class="form-select flex-grow-1 me-2" v-model="item.value"
+                                        aria-label="Default select example">
+                                        <option v-for="specialist in specialists" :key="specialist.id"
+                                            :value="specialist.specialist">
+                                            {{ specialist.specialist }}
+                                        </option>
+                                    </select>
+                                    <button type="button" class="btn btn-danger" @click="removeSelect(index + 1)"> -
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    </div> -->
-
-                    <div class="row form-section mb-2">
-                        <div class="col-md-12">
-                            <label for="symptom" class="form-label mb-0" style="color:rgb(213,213,218);">Symptom</label>
-
-                            <!-- First dropdown always visible with the plus button -->
-                            <div class="d-flex align-items-center mb-2">
-                                <select class="form-select flex-grow-1 me-2" v-model="symptom[0].value"
-                                    aria-label="Default select example">
-                                    <option v-for="sym in symtoms" :key="sym.id" :value="sym.symptom">
-                                        {{ sym.symptom }}
-                                    </option>
-                                </select>
-                                <!-- Plus button always stays here -->
-                                <button type="button" class="btn btn-success me-1" @click="addSymtom">+</button>
+    
+                        <!-- <div class="row form-section mb-2">
+                            <div class="col-md-12">
+                                <label for="symptom" class="form-label mb-0" >Symptom</label>
+                                <div v-for="(item, index) in symptom" :key="index" class="d-flex align-items-center">
+                                    <select class="form-select flex-grow-1 me-2" v-model="item.value"
+                                        aria-label="Default select example">
+                                        <option value="" disabled selected>Open this select menu</option>
+                                        <option v-for="symptom in symtoms" :key="symptom.id" :value="symptom.symptom">{{
+                                            symptom.symptom }}</option>
+                                    </select>
+                                    <div class="d-flex">
+                                        <button type="button" class="btn btn-success me-1"
+                                            v-if="index === symptom.length - 1" @click="addSymtom">+
+                                        </button>
+                                        <button type="button" class="btn btn-danger" v-if="symptom.length > 1"
+                                            @click="removeSymptom(index)"> -
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-
-                            <!-- Additional dropdowns appear below when clicking plus -->
-                            <div v-for="(item, index) in symptom.slice(1)" :key="index"
-                                class="d-flex align-items-center mb-2">
-                                <select class="form-select flex-grow-1 me-2" v-model="item.value"
-                                    aria-label="Default select example">
-                                    <option v-for="sym in symtoms" :key="sym.id" :value="sym.symptom">
-                                        {{ sym.symptom }}
-                                    </option>
-                                </select>
-                                <!-- Minus button for removing fields -->
-                                <button type="button" class="btn btn-danger" @click="removeSymptom(index + 1)"> -
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row form-section mb-2">
-                        <div class="col-md-6">
-                            <label for="mobile" class="form-label mb-0 fw-bold"
-                                style="color:rgb(213,213,218);">Mobile</label>
-                            <input v-model="form.mobile" type="text" class="form-control" id="mobile">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="mobile" class="form-label mb-0 fw-bold" style="color:rgb(213,213,218);">Optional
-                                Mobile</label>
-                            <input v-model="form.mobile_optional" type="text" class="form-control" id="mobile">
-                        </div>
-                    </div>
-                    <div class="row form-section mb-2">
-                        <div class="col-md-12">
-                            <label for="mobile" class="form-label mb-0 fw-bold"
-                                style="color:rgb(213,213,218);">Shedule</label>
-                            <div class="table_size">
-                                <table class="table table-bordered  table-hover table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th style="height: 30px; color:rgb(213,213,218);">Days</th>
-                                            <th style="height: 30px; color:rgb(213,213,218);">Start</th>
-                                            <th style="height: 30px; color:rgb(213,213,218);">End</th>
-                                            <th style="height: 30px; color:rgb(213,213,218);">Visit Limit</th>
-                                            <th style="height: 30px; color:rgb(213,213,218);">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="(row, index) in rows" :key="index">
-                                            <td style="min-width: 150px;">
-                                                <select v-model="row.day" class="form-select form-control"
-                                                    aria-label="Default select example">
-                                                    <option value="Saturday">Saturday</option>
-                                                    <option value="Sunday">Sunday</option>
-                                                    <option value="Monday">Monday</option>
-                                                    <option value="Tuesday">Tuesday</option>
-                                                    <option value="Wednesday">Wednesday</option>
-                                                    <option value="Thursday">Thursday</option>
-                                                    <option value="Friday">Friday</option>
-                                                </select>
-                                            </td>
-                                            <td style="min-width: 150px;">
-                                                <input v-model="row.start" type="time" class="fw-6 form-control">
-                                            </td>
-                                            <td style="min-width: 150px;">
-                                                <input v-model="row.end" type="time" class="form-control">
-                                            </td>
-                                            <td style="min-width: 150px;">
-                                                <input v-model="row.visitLimit" type="text" class="form-control">
-                                            </td>
-                                            <td class="text-center">
-                                                <button @click.prevent="removeRow(index)" class="btn btn-danger"
-                                                    v-if="index !== 0">-</button>
-                                                <button @click.prevent="addRow" class="btn btn-success me-0"
-                                                    v-if="index === 0">+</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        </div> -->
+    
+                        <div class="row form-section mb-2">
+                            <div class="col-md-12">
+                                <label for="symptom" class="form-label mb-0">Symptom</label>
+    
+                                <!-- First dropdown always visible with the plus button -->
+                                <div class="d-flex align-items-center mb-2">
+                                    <select class="form-select flex-grow-1 me-2" v-model="symptom[0].value"
+                                        aria-label="Default select example">
+                                        <option v-for="sym in symtoms" :key="sym.id" :value="sym.symptom">
+                                            {{ sym.symptom }}
+                                        </option>
+                                    </select>
+                                    <!-- Plus button always stays here -->
+                                    <button type="button" class="btn btn-success me-1" @click="addSymtom">+</button>
+                                </div>
+    
+                                <!-- Additional dropdowns appear below when clicking plus -->
+                                <div v-for="(item, index) in symptom.slice(1)" :key="index"
+                                    class="d-flex align-items-center mb-2">
+                                    <select class="form-select flex-grow-1 me-2" v-model="item.value"
+                                        aria-label="Default select example">
+                                        <option v-for="sym in symtoms" :key="sym.id" :value="sym.symptom">
+                                            {{ sym.symptom }}
+                                        </option>
+                                    </select>
+                                    <!-- Minus button for removing fields -->
+                                    <button type="button" class="btn btn-danger" @click="removeSymptom(index + 1)"> -
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row form-section mb-2">
-                        <div class="col-md-12">
-                            <label for="mobile" class="form-label mb-0 fw-bold" style="color:rgb(213,213,218);">Payment
-                                Details</label>
-                            <div class="table_size">
-                                <table class="table table-bordered  table-hover table-striped ">
-                                    <thead>
-                                        <tr>
-                                            <th style="height: 30px; color:rgb(213,213,218);">Visit Fee</th>
-                                            <th style="height: 30px; color:rgb(213,213,218);">2nd Time</th>
-                                            <th style="height: 30px; color:rgb(213,213,218);">3rd Time</th>
-                                            <th style="height: 30px; color:rgb(213,213,218);">Payment Type</th>
-                                            <th style="height: 30px; color:rgb(213,213,218);">Room Number</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td style="min-width: 150px;">
-                                                <input type="text" class="form-control" v-model="form.visitfee">
-                                            </td>
-                                            <td style="min-width: 150px;">
-                                                <div class="d-flex">
-                                                    <input v-model="form.second_day" type="text" class="form-control"
-                                                        style="min-width: 100px;">
-                                                    <input type="text" v-model="form.second_dayFee"
-                                                        class="form-control ms-2" style="min-width: 100px;">
-                                                </div>
-                                            </td>
-                                            <td style="min-width: 150px;">
-                                                <div class="d-flex" style="min-width: 150px;">
-                                                    <input v-model="form.thired_day" type="text" class="form-control"
-                                                        style="min-width: 100px;">
-                                                    <input v-model="form.thired_dayFee" type="text"
-                                                        class="form-control ms-2" style="min-width: 100px;">
-                                                </div>
-                                            </td>
-                                            <td style="min-width: 150px;">
-                                                <select v-model="form.payment_type" class="form-select "
-                                                    style="min-width: 150px;">
-                                                    <!-- <option value="" disabled selected>Select</option> -->
-                                                    <option value="online">Online</option>
-                                                    <option value="offline">Offline</option>
-                                                    <option value="both">Offline/Online</option>
-                                                </select>
-                                            </td>
-                                            <td style="min-width: 150px;">
-                                                <div class="d-flex">
-                                                    <!-- <input v-model="form.room_number" type="text"
-                                                        class="form-control me-2" style="min-width: 100px;"
-                                                        placeholder="Rom number"> -->
-                                                    <select v-model="form.room_number" class="form-select Room"
-                                                        style="min-width: 150px;">
-                                                        <!-- <option value="" disabled selected>Select Room</option> -->
-                                                        <option v-for="availableRoom in availableRoomlists"
-                                                            :key="availableRoom.id" :value="availableRoom.room_number">
-                                                            {{ availableRoom.room_number }}</option>
+    
+                        <div class="row form-section mb-2">
+                            <div class="col-md-6">
+                                <label for="mobile" class="form-label mb-0 fw-bold">Mobile</label>
+                                <input v-model="form.mobile" type="text" class="form-control" id="mobile">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="mobile" class="form-label mb-0 fw-bold">Optional
+                                    Mobile</label>
+                                <input v-model="form.mobile_optional" type="text" class="form-control" id="mobile">
+                            </div>
+                        </div>
+                        <div class="row form-section mb-2">
+                            <div class="col-md-12">
+                                <label for="mobile" class="form-label mb-0 fw-bold">Shedule</label>
+                                <div class="table_size">
+                                    <table class="table table-bordered  table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th style="height: 30px; ">Days</th>
+                                                <th style="height: 30px; ">Start</th>
+                                                <th style="height: 30px; ">End</th>
+                                                <th style="height: 30px; ">Visit Limit</th>
+                                                <th style="height: 30px; ">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(row, index) in rows" :key="index">
+                                                <td style="min-width: 150px;">
+                                                    <select v-model="row.day" class="form-select form-control"
+                                                        aria-label="Default select example">
+                                                        <option value="Saturday">Saturday</option>
+                                                        <option value="Sunday">Sunday</option>
+                                                        <option value="Monday">Monday</option>
+                                                        <option value="Tuesday">Tuesday</option>
+                                                        <option value="Wednesday">Wednesday</option>
+                                                        <option value="Thursday">Thursday</option>
+                                                        <option value="Friday">Friday</option>
                                                     </select>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                </td>
+                                                <td style="min-width: 150px;">
+                                                    <input v-model="row.start" type="time" class="fw-6 form-control">
+                                                </td>
+                                                <td style="min-width: 150px;">
+                                                    <input v-model="row.end" type="time" class="form-control">
+                                                </td>
+                                                <td style="min-width: 150px;">
+                                                    <input v-model="row.visitLimit" type="text" class="form-control">
+                                                </td>
+                                                <td class="text-center">
+                                                    <button @click.prevent="removeRow(index)" class="btn btn-danger"
+                                                        v-if="index !== 0">-</button>
+                                                    <button @click.prevent="addRow" class="btn btn-success me-0"
+                                                        v-if="index === 0">+</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row form-section mb-2">
-                        <div class="col-md-6">
-                            <label for="mobile" class="form-label mb-0 fw-bold" style="color:rgb(213,213,218);"> For
-                                Appoint Mobile</label>
-                            <input v-model="form.appoinment_mobile" type="text" class="form-control" id="mobile">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="mobile" class="form-label mb-0 fw-bold" style="color:rgb(213,213,218);"> For
-                                Appoint Mobile (Optional)</label>
-                            <input v-model="form.appoinment_mobileOptional" type="text" class="form-control"
-                                id="mobile">
-                        </div>
-                    </div>
-                    <div class="row form-section mb-2">
-                        <div class="col-md-5 mb-2 mb-md-0">
-                            <label for="inputFile" class="fw-bold" style="color:rgb(213,213,218);">Doctor
-                                Picture</label>
-                            <div class="form-floating mb-3 mb-md-0">
-                                <input class="form-control p-3 px-4" required type="file" @change="onFileSelect" />
+                        <div class="row form-section mb-2">
+                            <div class="col-md-12">
+                                <label for="mobile" class="form-label mb-0 fw-bold">Payment
+                                    Details</label>
+                                <div class="table_size">
+                                    <table class="table table-bordered  table-hover table-striped ">
+                                        <thead>
+                                            <tr>
+                                                <th style="height: 30px; ">Visit Fee</th>
+                                                <th style="height: 30px; ">2nd Time</th>
+                                                <th style="height: 30px; ">3rd Time</th>
+                                                <th style="height: 30px; ">Payment Type</th>
+                                                <th style="height: 30px; ">Room Number</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="min-width: 150px;">
+                                                    <input type="text" class="form-control" v-model="form.visitfee">
+                                                </td>
+                                                <td style="min-width: 150px;">
+                                                    <div class="d-flex">
+                                                        <input v-model="form.second_day" type="text" class="form-control"
+                                                            style="min-width: 100px;">
+                                                        <input type="text" v-model="form.second_dayFee"
+                                                            class="form-control ms-2" style="min-width: 100px;">
+                                                    </div>
+                                                </td>
+                                                <td style="min-width: 150px;">
+                                                    <div class="d-flex" style="min-width: 150px;">
+                                                        <input v-model="form.thired_day" type="text" class="form-control"
+                                                            style="min-width: 100px;">
+                                                        <input v-model="form.thired_dayFee" type="text"
+                                                            class="form-control ms-2" style="min-width: 100px;">
+                                                    </div>
+                                                </td>
+                                                <td style="min-width: 150px;">
+                                                    <select v-model="form.payment_type" class="form-select "
+                                                        style="min-width: 150px;">
+                                                        <!-- <option value="" disabled selected>Select</option> -->
+                                                        <option value="online">Online</option>
+                                                        <option value="offline">Offline</option>
+                                                        <option value="both">Offline/Online</option>
+                                                    </select>
+                                                </td>
+                                                <td style="min-width: 150px;">
+                                                    <div class="d-flex">
+                                                        <!-- <input v-model="form.room_number" type="text"
+                                                            class="form-control me-2" style="min-width: 100px;"
+                                                            placeholder="Rom number"> -->
+                                                        <select v-model="form.room_number" class="form-select Room"
+                                                            style="min-width: 150px;">
+                                                            <!-- <option value="" disabled selected>Select Room</option> -->
+                                                            <option v-for="availableRoom in availableRoomlists"
+                                                                :key="availableRoom.id" :value="availableRoom.room_number">
+                                                                {{ availableRoom.room_number }}</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-1 mt-1 mt-md-4">
-                            <div class="form-floating mb-3 mb-md-0">
-                                <img width="55" height="55" :src="form.doctor_image" />
+                        <div class="row form-section mb-2">
+                            <div class="col-md-6">
+                                <label for="mobile" class="form-label mb-0 fw-bold"> For
+                                    Appoint Mobile</label>
+                                <input v-model="form.appoinment_mobile" type="text" class="form-control" id="mobile">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="mobile" class="form-label mb-0 fw-bold"> For
+                                    Appoint Mobile (Optional)</label>
+                                <input v-model="form.appoinment_mobileOptional" type="text" class="form-control"
+                                    id="mobile">
                             </div>
                         </div>
-                        <div class="col-md-5 mb-0 mb-md-2">
-                            <label for="inputFile" class="fw-bold" style="color:rgb(213,213,218);">Signature </label>
-                            <div class="form-floating mb-3 mb-md-0">
-                                <input class="form-control p-3 px-4" required type="file" @change="onFileSelect1" />
+                        <div class="row form-section mb-2">
+                            <div class="col-md-5 mb-2 mb-md-0">
+                                <label for="inputFile" class="fw-bold">Doctor
+                                    Picture</label>
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control p-3 px-4" required type="file" @change="onFileSelect" />
+                                </div>
+                            </div>
+                            <div class="col-md-1 mt-1 mt-md-4">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <img width="55" height="55" :src="form.doctor_image" />
+                                </div>
+                            </div>
+                            <div class="col-md-5 mb-0 mb-md-2">
+                                <label for="inputFile" class="fw-bold">Signature </label>
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input class="form-control p-3 px-4" required type="file" @change="onFileSelect1" />
+                                </div>
+                            </div>
+                            <div class="col-md-1 mt-1 mt-md-4">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <img width="55" height="55" :src="form.signature_image" />
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-1 mt-1 mt-md-4">
-                            <div class="form-floating mb-3 mb-md-0">
-                                <img width="55" height="55" :src="form.signature_image" />
+                        <div class="row form-section mb-3">
+                            <div class="col-md-12">
+                                <label for="details" class="form-label fw-bold">Prescription
+                                    Signature Style</label>
+                                <textarea v-model="form.prescription_signature_style" class="form-control" id="details"
+                                    style="white-space: pre-wrap; height: 150px; color:grey"
+                                    :placeholder="prescription_style"></textarea>
+    
                             </div>
                         </div>
-                    </div>
-                    <div class="row form-section mb-3">
-                        <div class="col-md-12">
-                            <label for="details" class="form-label fw-bold" style="color:rgb(213,213,218);">Prescription
-                                Signature Style</label>
-                            <textarea v-model="form.prescription_signature_style" class="form-control" id="details"
-                                style="white-space: pre-wrap; height: 150px; color:grey"
-                                :placeholder="prescription_style"></textarea>
-
+                        <div class="row">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <!-- <button class="btn btn-primary me-3">Save</button>
+                                <button class="btn btn-success">Save & View</button> -->
+                                <button type="submit" class="btn btn-primary me-3" name="action" value="save">Save</button>
+                                <button type="submit" class="btn btn-success" name="action" value="save_view">Save &
+                                    View</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 d-flex justify-content-end">
-                            <!-- <button class="btn btn-primary me-3">Save</button>
-                            <button class="btn btn-success">Save & View</button> -->
-                            <button type="submit" class="btn btn-primary me-3" name="action" value="save">Save</button>
-                            <button type="submit" class="btn btn-success" name="action" value="save_view">Save &
-                                View</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

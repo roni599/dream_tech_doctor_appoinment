@@ -208,15 +208,15 @@
                                     class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
                         </li>
                         <li class="dropdown" style="cursor: pointer;">
-                            <a class="menu-toggle nav-link has-dropdown"><i
-                                    class="fa-solid fa-calendar-check"></i><span>Appoinment</span></a>
-                            <ul class="dropdown-menu">
+                            <router-link to="/appoinment" class="menu-toggle nav-link has-dropdown"><i
+                                    class="fa-solid fa-calendar-check"></i><span>Appoinment</span></router-link>
+                            <!-- <ul class="dropdown-menu">
                                 <li><router-link to="/appoinment_view" class="nav-link"
                                         href="chat.html">Appoinment-View</router-link>
                                 </li>
                                 <li><router-link to="/appoinment_details"
                                         class="nav-link">Appoinment-Details</router-link></li>
-                            </ul>
+                            </ul> -->
                         </li>
 
                     </ul>
