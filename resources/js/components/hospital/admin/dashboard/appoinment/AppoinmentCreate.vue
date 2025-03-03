@@ -2,57 +2,67 @@
     <div class="container">
         <div class="row">
             <div class="container">
-                <div class="row justify-content-center">
-                    <div
-                        :class="{ 'col-lg-8': form.payment === 'Discount' || form.payment === 'Free', 'col-lg-12': !(form.payment === 'Discount' || form.payment === 'Free') }">
-                        <div class="card w-100">
-                            <div class="card-header d-flex justify-content-between">
-                                <h6 class="text-center mt-2" style="color: #1d93d2;">Appointment Create</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="mb-1 text-center">
-                                    <span class="section-title">S.L No:</span>
-                                    <span class="badge badge-custom ms-2">102</span>
+                <form @submit.prevent="submitForm">
+                    <div class="row justify-content-center">
+                        <div
+                            :class="{ 'col-lg-8': form.payment === 'Discount' || form.payment === 'Free', 'col-lg-12': !(form.payment === 'Discount' || form.payment === 'Free') }">
+                            <div class="card w-100">
+                                <div class="card-header d-flex justify-content-between">
+                                    <h6 class="text-center mt-2" style="color: #1d93d2;">Appointment Create</h6>
                                 </div>
-                                <div class="mb-2 text-center">
-                                    <p class="mb-0"><strong>Visit Date:</strong> 10/08/2024</p>
-                                    <p class="mb-0"><strong>Department/Category:</strong> Cardiologist</p>
-                                    <p class="mb-0"><strong>Doctor:</strong> Dr. Md. Jasim Uddin</p>
-                                </div>
-                                <form>
+                                <div class="card-body">
+                                    <div class="mb-1 text-center">
+                                        <span class="section-title">S.L No:</span>
+                                        <span class="badge badge-custom ms-2">{{ SlNo }}</span>
+                                        <input type="hidden" name="slNo" v-model="form.slNo">
+                                    </div>
+                                    <div class="mb-2 text-center">
+                                        <p class="mb-0"><strong>Visit Date:</strong>{{ visitDate }}</p>
+                                        <input type="hidden" name="visit_date" v-model="form.visit_date">
+                                        <p class="mb-0"><strong>Department/Category:</strong>{{ departmentCategory }}
+                                        </p>
+                                        <input type="hidden" name="department_categoy"
+                                            v-model="form.department_category_id">
+                                        <p class="mb-0"><strong>Doctor:</strong>{{ DoctorName }}</p>
+                                        <input type="hidden" name="doctor_id" v-model="form.doctor_id">
+                                    </div>
                                     <div class="mb-2">
                                         <label for="patientMobile" class="form-label mb-0">Patient Mobile/Mail</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="patientMobile">
+                                            <input type="text" class="form-control" id="patientMobile"
+                                                v-model="form.patient_mobile">
                                             <button class="btn btn-danger" type="button">✔</button>
                                         </div>
                                     </div>
                                     <div class="mb-2">
                                         <label for="patientName" class="form-label mb-0">Patient Name</label>
-                                        <input type="text" class="form-control" id="patientName">
+                                        <input type="text" class="form-control" id="patientName"
+                                            v-model="form.patient_name">
                                     </div>
                                     <div class="row mb-0 g-2">
                                         <div class="col-md-6">
                                             <label for="gender" class="form-label mb-0">Gender</label>
-                                            <select class="form-select" id="gender">
+                                            <select class="form-select" id="gender" v-model="form.patient_gender">
                                                 <option selected value="" disabled>Select an option</option>
-                                                <option>Male</option>
-                                                <option>Female</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Others">Others</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="age" class="form-label mb-0">Age</label>
-                                            <input type="number" class="form-control" id="age">
+                                            <input type="text" class="form-control" id="age"
+                                                v-model="form.patient_age">
                                         </div>
                                     </div>
                                     <div class="row g-2 mt-1">
                                         <div class="col-md-6">
                                             <label for="visitTime" class="form-label mb-0">Visit Time</label>
-                                            <select class="form-select" id="visitTime">
+                                            <select class="form-select" id="visitTime" v-model="form.visit_time">
                                                 <option selected value="" disabled>Select an option</option>
-                                                <option>1st Time</option>
-                                                <option>2nd Time</option>
-                                                <option>3rd Time</option>
+                                                <option value="1st">1st Time</option>
+                                                <option value="2nd">2nd Time</option>
+                                                <option value="3rd">3rd Time</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
@@ -68,85 +78,88 @@
                                     </div>
                                     <div class="mb-2 mt-3">
                                         <label for="remenance" class="form-label mb-0">Reference</label>
-                                        <select id="reference" class="form-select">
+                                        <select id="reference" class="form-select" v-model="form.visit_reference_id">
                                             <option value="" selected>Choose...</option>
                                             <option v-for="reference in references" :key="reference.id"
-                                                :value="reference.name">{{
+                                                :value="reference.id">{{
                                                     reference.name }}</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label mb-0">Description</label>
-                                        <textarea class="form-control" id="description" rows="3"></textarea>
+                                        <textarea class="form-control" id="description" rows="3"
+                                            v-model="form.visit_description"></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-custom w-100">Submit</button>
-                                </form>
+                                    <button class="btn w-100"
+                                        style="background-color: #0d6efd; color: #fff;;">Submit</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4" v-if="form.payment === 'Discount' || form.payment === 'Free'">
-                        <div class="form-section" v-if="form.payment === 'Discount'">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h6 class="text-center">Discount</h6>
-                                <span><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle"
-                                        style="cursor: pointer;" @click="hideContent"></i></span>
-                            </div>
-                            <form>
+                        <div class="col-lg-4" v-if="form.payment === 'Discount' || form.payment === 'Free'">
+                            <div class="form-section" v-if="form.payment === 'Discount'">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h6 class="text-center">Discount</h6>
+                                    <span><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle"
+                                            style="cursor: pointer;" @click="hideContent"></i></span>
+                                </div>
                                 <div class="mb-3">
-                                    <label for="fee" class="form-label mb-0">Fee</label>
-                                    <div class="input-group">
-                                        <input type="text" v-model="fee" class="form-control" id="fee" placeholder="Fee"
-                                            @input="calculateValues" />
-                                        <input type="text" v-model="amount" class="form-control" placeholder="%"
-                                            @input="calculateFromFeeAndAmount" />
-                                        <input type="text" v-model="percentage" class="form-control" placeholder="TK"
-                                            @input="calculateFromFeeAndPercentage" />
+                                    <div class="mb-3">
+                                        <label for="fee" class="form-label mb-0">Fee</label>
+                                        <div class="input-group">
+                                            <input type="text" v-model="form.fee" class="form-control" id="fee"
+                                                placeholder="Fee" @input="calculateValues" />
+                                            <input type="text" v-model="form.amount" class="form-control"
+                                                placeholder="%" @input="calculateFromFeeAndAmount" />
+                                            <input type="text" v-model="form.percentage" class="form-control"
+                                                placeholder="TK" @input="calculateFromFeeAndPercentage" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="reference" class="form-label mb-0">Reference</label>
-                                    <select id="reference2" class="form-select">
+                                    <select id="reference2" class="form-select" v-model="form.discount_reference_id">
                                         <option value="" selected>Choose...</option>
                                         <option v-for="reference in references" :key="reference.id"
-                                            :value="reference.name">{{
+                                            :value="reference.id">
+                                            {{
                                                 reference.name }}</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="narration" class="form-label mb-0">Narration</label>
-                                    <textarea class="form-control" id="narration" rows="3"
-                                        placeholder="narration"></textarea>
+                                    <textarea class="form-control" id="narration" rows="3" placeholder="narration"
+                                        v-model="form.discount_narration"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-custom w-100">Ok</button>
-                            </form>
-                        </div>
+                                <!-- <button type="submit" class="btn btn-custom w-100">Ok</button> -->
 
-                        <div class="form-section mt-3" v-if="form.payment === 'Free'">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h6 class="text-center">Free</h6>
-                                <span><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle"
-                                        @click="hideContent" style="cursor: pointer;"></i></span>
                             </div>
-                            <form>
+
+                            <div class="form-section mt-3" v-if="form.payment === 'Free'">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <h6 class="text-center">Free</h6>
+                                    <span><i class="fa-solid fa-xmark text-white bg-danger p-1 rounded-circle"
+                                            @click="hideContent" style="cursor: pointer;"></i></span>
+                                </div>
                                 <div class="mb-3">
                                     <label for="referenceFree" class="form-label mb-0">Reference</label>
-                                    <select id="reference" class="form-select">
+                                    <select id="reference" class="form-select" v-model="form.free_reference_id">
                                         <option value="" selected>Choose...</option>
                                         <option v-for="reference in references" :key="reference.id"
-                                            :value="reference.name">{{
+                                            :value="reference.id">
+                                            {{
                                                 reference.name }}</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="narrationFree" class="form-label mb-0">Narration</label>
-                                    <textarea class="form-control" id="narrationFree" rows="3"
-                                        placeholder="narration"></textarea>
+                                    <textarea class="form-control" id="narrationFree" rows="3" placeholder="narration"
+                                        v-model="form.free_narration"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-custom w-100">Ok</button>
-                            </form>
+                                <!-- <button type="submit" class="btn btn-custom w-100">Ok</button> -->
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -161,16 +174,51 @@ export default {
     setup() {
 
         const form = ref({
+            slNo: '102',
+            visit_date: '10/08/2024',
+            department_category_id: '1',
+            doctor_id: '1',
+            patient_name: '',
+            patient_mobile: '',
+            patient_gender: '',
+            patient_age: '',
+            visit_time: '',
             payment: '',
+            visit_reference_id: '',
+            visit_description: '',
+            fee: '',
+            amount: '',
+            percentage: '',
+            discount_reference_id: '',
+            discount_narration: '',
+            free_reference_id: '',
+            free_narration: '',
         })
+        const SlNo = ref('102');
+        const visitDate = ref('10/08/2024');
+        const departmentCategory = ref('Cardiologist')
+        const DoctorName = ref('Dr. Md. Jasim Uddin');
 
         const references = ref([]);
         const access_token = ref('');
-
-        const fee = ref('');
-        const amount = ref('');
-        const percentage = ref('');
-
+        const cleanAndConvert = (value) => {
+            // Remove '%' and 'TK', and then convert to float
+            return parseFloat(value.replace(/[%Tk]/g, '').trim());
+        };
+        const submitForm = async () => {
+            try {
+                form.value.fee = cleanAndConvert(form.value.fee);
+                form.value.amount = cleanAndConvert(form.value.amount);
+                form.value.percentage = cleanAndConvert(form.value.percentage);
+                const response = await axios.post('/api/auth/appoinment/store', form.value, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token.value}`
+                    }
+                });
+                console.log(response)
+            } catch (error) {
+            }
+        }
         const fetchReference = async () => {
             try {
                 const response = await axios.get('/api/auth/reference', {
@@ -185,59 +233,75 @@ export default {
             }
         }
         const calculateFromFeeAndAmount = () => {
-            if (fee.value && amount.value) {
-                const discount = (parseFloat(fee.value) * parseFloat(amount.value)) / 100;
-                percentage.value = (!isNaN(parseFloat(fee.value)) && !isNaN(discount))
-                    ? (parseFloat(fee.value) - discount).toFixed(2) + ' Tk'
-                    : 0 + 'TK';
+            if (form.value.fee && form.value.amount) {
+                const discount = (parseFloat(form.value.fee) * parseFloat(form.value.amount)) / 100;
+                form.value.percentage = !isNaN(parseFloat(form.value.fee)) && !isNaN(discount)
+                    ? (parseFloat(form.value.fee) - discount).toFixed(2) + ' Tk'
+                    : '0 Tk';
             }
         };
-
         const calculateFromFeeAndPercentage = () => {
-            if (fee.value && percentage.value) {
-                const percentageValue = parseFloat(percentage.value);
+            if (form.value.fee && form.value.percentage) {
+                const percentageValue = parseFloat(form.value.percentage);
                 if (!isNaN(percentageValue)) {
-                    amount.value = (
-                        !isNaN(parseFloat(fee.value)) && !isNaN(percentageValue) && !isNaN(parseFloat(fee.value))
-                    )
-                        ? (((parseFloat(fee.value) - percentageValue) / parseFloat(fee.value)) * 100).toFixed(0) + ' %'
-                        : 0 + '%';
+                    form.value.amount = !isNaN(parseFloat(form.value.fee)) && !isNaN(percentageValue)
+                        ? (((parseFloat(form.value.fee) - percentageValue) / parseFloat(form.value.fee)) * 100).toFixed(0) + ' %'
+                        : '0 %';
                 }
             }
         };
-        watch(fee, (newValue) => {
-            if (newValue && amount.value) {
-                calculateFromFeeAndAmount();
-            } else if (newValue && percentage.value) {
-                calculateFromFeeAndPercentage();
+
+        watch(() => form.value.fee, (newValue) => {
+            if (newValue) {
+                calculateValues();
             } else {
-                amount.value = '';
-                percentage.value = '';
+                form.value.amount = '';
+                form.value.percentage = '';
             }
         });
 
-
-        const hideContent = () => {
-            if (form.value.payment === 'Discount') {
-                form.value.payment = '';
-            } else if (form.value.payment === 'Free') {
-                form.value.payment = '';
+        const calculateValues = () => {
+            if (form.value.fee) {
+                if (form.value.amount) {
+                    calculateFromFeeAndAmount();
+                } else if (form.value.percentage) {
+                    calculateFromFeeAndPercentage();
+                }
+            } else {
+                form.value.amount = '';
+                form.value.percentage = '';
             }
         };
         onMounted(() => {
             access_token.value = Cookies.get('access_token');
             fetchReference()
         })
+        const hideContent = () => {
+            if (form.value.payment === 'Discount') {
+                form.value.payment = '';
+                form.value.fee = '';
+                form.value.amount = '';
+                form.value.percentage = '';
+            } else if (form.value.payment === 'Free') {
+                form.value.payment = '';
+                form.value.fee = '';
+                form.value.amount = '';
+                form.value.percentage = '';
+            }
+        };
         return {
             form,
-            fee,
-            amount,
-            percentage,
+            SlNo,
+            visitDate,
+            departmentCategory,
+            DoctorName,
+            submitForm,
             hideContent,
             access_token,
             references,
             calculateFromFeeAndAmount,
             calculateFromFeeAndPercentage,
+            calculateValues
         };
     },
 };

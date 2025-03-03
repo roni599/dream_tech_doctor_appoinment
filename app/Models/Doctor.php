@@ -44,9 +44,13 @@ class Doctor extends Model
         'Schedule' => 'array',
         'symptom' => 'array',
     ];
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
     }
 }

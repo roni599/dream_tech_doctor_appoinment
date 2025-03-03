@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Appointment\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\Doctor\DoctorController;
@@ -85,6 +86,8 @@ Route::group([
     Route::get('/department/department-editdata/{id}', [DepartmentController::class, 'departmentEditData']);
     Route::post('/department/department-edit', [DepartmentController::class, 'departmentEdit']);
     Route::post('/department/departmentdelete', [DepartmentController::class, 'delete']);
+
+    Route::post('/appoinment/store',[AppointmentController::class,'store']);
 });
 
 Route::get('home/hospital-doctor',[HomeController::class,'doctorshow']);

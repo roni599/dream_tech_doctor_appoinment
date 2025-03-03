@@ -158,10 +158,12 @@ export default {
                         Authorization: `Bearer ${access_token.value}`,
                     },
                 });
+                console.log(response.data.data)
                 if (response.data && response.status === 200) {
                     doctors.value = response.data;
                 }
             } catch (error) {
+                console.log(error)
             }
         };
 

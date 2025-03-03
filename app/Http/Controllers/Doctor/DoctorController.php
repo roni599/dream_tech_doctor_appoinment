@@ -23,12 +23,19 @@ class DoctorController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if ($user) {
-            $doctor = Doctor::where('user_id', $user->id)->with('user')->get();
-            return response()->json($doctor, 200);
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
-        return response()->json(['error' => 'Unauthorized'], 401);
+
+        $doctor = Doctor::where('user_id', $user->id)
+            ->with('user')
+            ->get();
+
+        return response()->json($doctor, 200);
     }
+
+
     public function activeDoctor()
     {
         $user = Auth::user();
