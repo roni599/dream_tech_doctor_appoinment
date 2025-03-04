@@ -47,7 +47,7 @@ class AppointmentRequest extends FormRequest
             'visit_description' => 'nullable|string',
             'fee' => 'nullable|numeric|min:0',
             'amount' => 'nullable|numeric|min:0',
-            'percentage' => 'nullable|numeric|min:0|max:100',
+            'percentage' => 'nullable|numeric',
             'discount_reference_id' => 'nullable|exists:references,id',
             'discount_narration' => 'nullable|string',
             'free_reference_id' => 'nullable|exists:references,id',

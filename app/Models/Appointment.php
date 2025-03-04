@@ -30,6 +30,6 @@ class Appointment extends Model
     }
     public function departmentCategory()
     {
-        return $this->belongsTo(Department::class, 'department_category_id');
+        return $this->belongsTo(Department::class,'department_id');
     }
 }

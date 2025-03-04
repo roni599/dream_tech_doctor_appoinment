@@ -16,6 +16,6 @@ class Department extends Model
     }
     public function appointments()
     {
-        return $this->hasMany(Appointment::class, 'department_category_id');
+        return $this->hasMany(Appointment::class);
     }
 }

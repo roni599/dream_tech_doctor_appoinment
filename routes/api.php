@@ -88,6 +88,7 @@ Route::group([
     Route::post('/department/departmentdelete', [DepartmentController::class, 'delete']);
 
     Route::post('/appoinment/store',[AppointmentController::class,'store']);
+    Route::get('/appoinment',[AppointmentController::class,'index']);
 });
 
 Route::get('home/hospital-doctor',[HomeController::class,'doctorshow']);
