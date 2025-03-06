@@ -19,21 +19,21 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="mb-1 text-center">
-                                        <span class="section-title">S.L No:</span>
+                                        <span class="section-title">S.L No: </span>
                                         <span class="badge badge-custom ms-2">{{ SlNo }}</span>
                                         <input type="hidden" name="slNo" v-model="form.slNo" />
                                     </div>
                                     <div class="mb-2 text-center">
                                         <p class="mb-0">
-                                            <strong>Visit Date:</strong>{{ visitDate }}
+                                            <strong>Visit Date: </strong>{{ visitDate }}
                                         </p>
                                         <input type="hidden" name="visit_date" v-model="form.visit_date" />
                                         <p class="mb-0">
-                                            <strong>Department/Category:</strong>{{ departmentCategory }}
+                                            <strong>Department/Category: </strong>{{ departmentCategory }}
                                         </p>
                                         <input type="hidden" name="department_categoy"
                                             v-model="form.department_category_id" />
-                                        <p class="mb-0"><strong>Doctor:</strong>{{ DoctorName }}</p>
+                                        <p class="mb-0"><strong>Doctor: </strong>{{ DoctorName }}</p>
                                         <input type="hidden" name="doctor_id" v-model="form.doctor_id" />
                                     </div>
                                     <div class="mb-2">
@@ -222,16 +222,17 @@
 <script>
 import { ref, computed, onMounted, watch } from "vue";
 import Cookies from "js-cookie";
-import { useRouter } from "vue-router";
+import { useRouter,useRoute } from "vue-router";
 export default {
     name: "AppoinmentCreate",
     setup() {
         const router = useRouter();
+        const route = useRoute();
         const form = ref({
-            slNo: "102",
-            visit_date: "10/4/2024",
-            department_category_id: 1,
-            doctor_id: "1",
+            slNo: "",
+            visit_date: "",
+            department_category_id: '',
+            doctor_id: "",
             patient_name: "",
             patient_address: "",
             patient_mobile: "",
@@ -371,6 +372,15 @@ export default {
         };
         onMounted(() => {
             access_token.value = Cookies.get("access_token");
+            form.value.slNo= route.query.Sl_no || '',
+            form.value.visit_date=route.query.visitDate || '',
+            form.value.department_category_id=route.query.departmentId || '',
+            form.value.doctor_id=route.query.doctor_id || '',
+
+            SlNo.value=route.query.Sl_no || '',
+            visitDate.value=route.query.visitDate || '',
+            departmentCategory.value=route.query.departmentCategory || ''
+            DoctorName.value=route.query.doctorName
             fetchReference();
         });
         const hideContent = () => {

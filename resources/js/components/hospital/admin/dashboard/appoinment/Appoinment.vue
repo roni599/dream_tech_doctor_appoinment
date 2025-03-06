@@ -10,22 +10,24 @@
                     class="filters d-flex flex-column flex-sm-row justify-content-center gap-3 align-items-center mb-4 my-3">
                     <div class="filter-item">
                         <label for="patientMobile" class="form-label mb-0">Visit date</label>
-                        <input type="date" class="form-control" v-model="visitDate" />
+                        <input type="date" class="form-control" v-model="visitDate" @change="searchAppointments" />
                     </div>
                     <div class="filter-item">
                         <label for="patientMobile" class="form-label mb-0">Department/Category</label>
-                        <select class="form-select" aria-label="Department/Category">
-                            <!-- <option selected value="" disabled>Department/Category</option> -->
+                        <select class="form-select" aria-label="Department/Category" v-model="selectedDepartment"
+                            @change="searchAppointments">
                             <option selected value="all">All</option>
-                            <option v-for="department in departments" :key="department.id" :value="department.department_category">{{ department.department_category }}</option>
+                            <option v-for="department in departments" :key="department.id" :value="department.id">{{
+                                department.department_category }}</option>
                         </select>
                     </div>
                     <div class="filter-item">
                         <label for="patientMobile" class="form-label mb-0">Doctor</label>
-                        <select class="form-select" aria-label="Doctor">
-                            <!-- <option selected value="" disabled>Doctor</option> -->
+                        <select class="form-select" aria-label="Doctor" v-model="selectedDoctor"
+                            @change="searchAppointments">
                             <option selected value="all">All</option>
-                            <option v-for="doctor in doctors" :key="doctor.id" :value="doctor.doctorName">{{ doctor.doctorName }}</option>
+                            <option v-for="doctor in doctors" :key="doctor.id" :value="doctor.id">{{
+                                doctor.doctorName }}</option>
                         </select>
                     </div>
                 </div>
@@ -44,7 +46,12 @@
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Appoint</th>
                             </tr>
                         </thead>
-                        <tbody>
+                         <tbody  v-if="appoinments.length <0">
+                            <tr>
+                                <td colspan="8" class="text-center text-black">No data found</td>
+                            </tr>
+                        </tbody>
+                        <tbody v-else>
                             <tr v-for="appoinment in appoinments" :key="appoinment.id">
                                 <td>{{ appoinment.department_category.department_category }}</td>
                                 <td>{{ appoinment.doctor.doctorName }}</td>
@@ -71,28 +78,49 @@ export default {
     name: "AppoinmentView",
     setup() {
         const access_token = ref('');
-        const doctors=ref([]);
-        const departments=ref([]);
-        const appoinments=ref([]);
-
+        const selectedDepartment = ref("all");
+        const selectedDoctor = ref("all");
         const today = new Date();
         const formattedDate = today.toISOString().split("T")[0];
         const visitDate = ref(formattedDate);
 
-        const fetchAppoinment=async()=>{
+        const doctors = ref([]);
+        const departments = ref([]);
+        const appoinments = ref([]);
+
+
+        const searchAppointments = async () => {
+            try {
+                const params = {
+                    visit_date: visitDate.value,
+                    selectedDepartment: selectedDepartment.value,
+                    selectedDoctor: selectedDoctor.value
+                };
+                const response = await axios.post("/api/auth/appoinment/search", params);
+                if (response.data && response.status === 200) {
+                    appoinments.value = response.data;
+                }
+            } catch (error) {
+                console.error("Error fetching appointments:", error);
+            }
+        };
+
+
+        const fetchAppoinment = async () => {
             try {
                 const response = await axios.get("/api/auth/appoinment", {
                     headers: {
                         Authorization: `Bearer ${access_token.value}`,
                     },
                 });
-                console.log(response)
                 if (response.data && response.status === 200) {
                     appoinments.value = response.data;
                 }
             } catch (error) {
+                console.log(error)
             }
         }
+
         const fetchDoctor = async () => {
             try {
                 const response = await axios.get("/api/auth/hospital-doctor", {
@@ -128,10 +156,13 @@ export default {
         });
 
         return {
+            searchAppointments,
+            selectedDepartment,
+            visitDate,
+            selectedDoctor,
             appoinments,
             doctors,
             departments,
-            visitDate
         }
     }
 }

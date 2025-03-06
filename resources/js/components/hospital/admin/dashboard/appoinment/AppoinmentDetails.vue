@@ -10,20 +10,24 @@
                     class="filters d-flex flex-column flex-sm-row justify-content-center gap-3 align-items-center mb-4 my-3">
                     <div class="filter-item">
                         <label for="patientMobile" class="form-label mb-0">Visit date</label>
-                        <input type="date" class="form-control" />
-                    </div>
-                    <div class="filter-item">
-                        <label for="patientMobile" class="form-label mb-0">Doctor</label>
-                        <select class="form-select" aria-label="Doctor">
-                            <option selected value="" disabled>Doctor</option>
-                            <option v-for="doctor in doctors" :key="doctor.id" :value="doctor.doctorName">{{ doctor.doctorName }}</option>
-                        </select>
+                        <input type="date" class="form-control" v-model="visitDate" @change="searchAppointments" />
                     </div>
                     <div class="filter-item">
                         <label for="patientMobile" class="form-label mb-0">Department/Category</label>
-                        <select class="form-select" aria-label="Department/Category">
-                            <option selected value="" disabled>Department/Category</option>
-                            <option v-for="department in departments" :key="department.id" :value="department.department_category">{{ department.department_category }}</option>
+                        <select class="form-select" aria-label="Department/Category" v-model="selectedDepartment"
+                            @change="searchAppointments">
+                            <option selected value="" disabled>Choose an option</option>
+                            <option v-for="department in departments" :key="department.id" :value="department.id">{{
+                                department.department_category }}</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label for="patientMobile" class="form-label mb-0">Doctor</label>
+                        <select class="form-select" aria-label="Doctor" v-model="selectedDoctor"
+                            @change="searchAppointments">
+                            <option selected value="" disabled>Choose an option</option>
+                            <option v-for="doctor in doctors" :key="doctor.id" :value="doctor.id">{{
+                                doctor.doctorName }}</option>
                         </select>
                     </div>
                 </div>
@@ -33,9 +37,10 @@
                             <tr>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">S.L No</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Patient Name</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Mobile</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Gender</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Age</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Patient Mobile / Email
+                                </th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Patient Gender</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Patient Age</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Appoint</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Visit Time</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Payment</th>
@@ -43,37 +48,45 @@
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="appoinments.length === 0">
                             <tr>
-                                <td>Cardiology</td>
-                                <td>Dr. Smith</td>
-                                <td>John Doe</td>
-                                <td>2028-12-08</td>
-                                <td>1</td>
-                                <td>Online</td>
-                                <td>Online</td>
-                                <td>Online</td>
-                                <td>Online</td>
-                                <td>Online</td>
+                                <td colspan="10" class="text-center text-black">No selectd data found.plese select vist Date,Department,Doctor</td>
                             </tr>
-                            <tr>
-                                <td>Neurology</td>
-                                <td>Dr. Brown</td>
-                                <td>Jane Doe</td>
-                                <td>2028-12-09</td>
-                                <td>2</td>
-                                <td>jasim</td>
-                                <td>jasim</td>
-                                <td>jasim</td>
-                                <td>jasim</td>
-                                <td>jasim</td>
+                        </tbody>
+                        <tbody v-else>
+                            <tr v-for="appoinment in appoinments" :key="appoinment.id">
+                                <td>{{ appoinment.Sl_no }}</td>
+                                <td>{{ appoinment.patient_name }}</td>
+                                <td>{{ appoinment.patient_mobile }}</td>
+                                <td>{{ appoinment.gender }}</td>
+                                <td>{{ appoinment.age }}</td>
+                                <td>Hospital</td>
+                                <td>{{ appoinment.visit_time }}</td>
+                                <td>{{ appoinment.payment_status }}</td>
+                                <td>
+                                    <span v-if="appoinment.taka === null">Free</span>
+                                    <span v-else>{{ appoinment.taka }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-info d-block d-md-inline"><i class="fa-solid fa-eye"></i></span>
+                                    <span class="text-info d-block d-md-inline ms-md-1"><i
+                                            class="fa-solid fa-pen-to-square"></i></span>
+                                    <span class="text-danger d-block d-md-inline ms-md-1"><i
+                                            class="fa-solid fa-trash"></i></span>
+                                </td>
+
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <router-link to="/appoinment-create" class="btn btn-primary fw-bold">Add <span class="fw-bold"><i
-                                class="fa-solid fa-plus"></i></span></router-link>
+                    <router-link :to="{
+                        path: '/appoinment-create',
+                        query: computedQueryParams
+                    }" class="btn btn-primary fw-bold">
+                        Add <span class="fw-bold"><i class="fa-solid fa-plus"></i></span>
+                    </router-link>
+
                 </div>
             </div>
         </div>
@@ -81,7 +94,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import axios from "axios";
 import Cookies from "js-cookie";
 export default {
@@ -90,6 +103,59 @@ export default {
         const access_token = ref('');
         const doctors = ref([]);
         const departments = ref([]);
+        const appoinments = ref([]);
+
+        const selectedDoctor = ref("");
+        const selectedDepartment = ref("");
+        const visitDate = ref('');
+        const nextSlNo = computed(() => {
+            const lastAppoinment = appoinments.value[appoinments.value.length - 1];
+            console.log(lastAppoinment)
+            if (!lastAppoinment) {
+                return 1;
+            }
+            return parseInt(lastAppoinment.Sl_no) + 1;
+        });
+        const computedQueryParams = computed(() => {
+            const lastAppoinment = appoinments.value[appoinments.value.length - 1];
+            if (!lastAppoinment) {
+                const doctor = doctors.value.find(doc => doc.id === selectedDoctor.value);
+                const department = departments.value.find(dept => dept.id === selectedDepartment.value);
+                return {
+                    Sl_no: '1',
+                    doctor_id: selectedDoctor.value,
+                    doctorName: doctor?.doctorName,
+                    departmentCategory: department?.department_category,
+                    departmentId: selectedDepartment.value,
+                    visitDate: visitDate.value
+                };
+            }
+            return {
+                Sl_no: nextSlNo.value.toString(),
+                doctor_id: lastAppoinment.doctor.id,
+                doctorName: lastAppoinment.doctor.doctorName,
+                departmentCategory: lastAppoinment.department_category.department_category,
+                departmentId: lastAppoinment.department_category.id,
+                visitDate:visitDate.value
+            };
+        });
+
+        const searchAppointments = async () => {
+            try {
+                const params = {
+                    visit_date: visitDate.value,
+                    selectedDepartment: selectedDepartment.value,
+                    selectedDoctor: selectedDoctor.value
+                };
+                const response = await axios.post("/api/auth/appoinment/search", params);
+                if (response.data && response.status === 200) {
+                    appoinments.value = response.data;
+                }
+            } catch (error) {
+                console.error("Error fetching appointments:", error);
+            }
+        };
+
 
         const fetchDoctor = async () => {
             try {
@@ -126,7 +192,14 @@ export default {
 
         return {
             doctors,
-            departments
+            departments,
+            appoinments,
+            searchAppointments,
+            selectedDepartment,
+            visitDate,
+            selectedDoctor,
+            nextSlNo,
+            computedQueryParams
         }
     }
 }
