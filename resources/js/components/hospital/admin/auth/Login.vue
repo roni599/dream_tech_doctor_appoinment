@@ -61,6 +61,7 @@ import axios from 'axios';
 import { ref } from 'vue';
 import Cookies from 'js-cookie';
 import { useRouter } from 'vue-router';
+import api from '../../../Helpers/RefreshToken';
 export default {
     name: 'Login',
     setup() {
@@ -71,40 +72,56 @@ export default {
             admin_email: '',
             password: ''
         })
+        // const login = async () => {
+        //     try {
+        //         const response = await axios.post('/api/auth/login', loginForm.value);
+        //         if (response.data && response.data.access_token) {
+        //             Cookies.set('access_token', response.data.access_token, {
+        //                 secure: true,
+        //                 sameSite: 'Strict',
+        //             });
+        //             Cookies.set('user_id', response.data.user_id, {
+        //                 secure: true,
+        //                 sameSite: 'Strict',
+        //             });
+        //             router.push({ name: 'Dashboard' });
+        //             Toast.fire({
+        //                 icon: "success",
+        //                 title: "Successfully Logged in!"
+        //             });
+        //         }
+        //     } catch (error) {
+        //         errors.value = error.response.data.errors;
+        //         if (error.response && error.response.data.errors) {
+        //             this.errors = error.response.data.errors;
+        //             Toast.fire({
+        //                 icon: "warning",
+        //                 title: "Invalid email or password"
+        //             });
+        //         } else {
+        //             Toast.fire({
+        //                 icon: "error",
+        //                 title: "An error occurred. Please try again later."
+        //             });
+        //         }
+        //     }
+        // }
         const login = async () => {
             try {
-                const response = await axios.post('/api/auth/login', loginForm.value);
-                if (response.data && response.data.access_token) {
-                    Cookies.set('access_token', response.data.access_token, {
-                        secure: true,
-                        sameSite: 'Strict',
-                    });
-                    Cookies.set('user_id', response.data.user_id, {
-                        secure: true,
-                        sameSite: 'Strict',
-                    });
-                    router.push({ name: 'Dashboard' });
-                    Toast.fire({
-                        icon: "success",
-                        title: "Successfully Logged in!"
-                    });
-                }
+                const response = await api.post('/auth/login', loginForm.value);
+                const { access_token } = response.data;
+
+                // Save the token to cookies
+                Cookies.set('access_token', access_token, { secure: true, sameSite: 'Strict' });
+
+                // Redirect to the dashboard or wherever you need
+                router.push({ name: 'Dashboard' });
             } catch (error) {
-                errors.value = error.response.data.errors;
-                if (error.response && error.response.data.errors) {
-                    this.errors = error.response.data.errors;
-                    Toast.fire({
-                        icon: "warning",
-                        title: "Invalid email or password"
-                    });
-                } else {
-                    Toast.fire({
-                        icon: "error",
-                        title: "An error occurred. Please try again later."
-                    });
-                }
+                console.error('Login failed:', error);
+                // Handle the error
             }
-        }
+        };
+
         return {
             eye,
             loginForm,

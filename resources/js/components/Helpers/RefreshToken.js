@@ -1,42 +1,58 @@
-// RefreshToken.js
 import axios from 'axios';
-import Cookies from 'js-cookie'; // Import js-cookie
+import Cookies from 'js-cookie';
 
-// Configure axios
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
+// Create an Axios instance
+const api = axios.create({
+    baseURL: '/api/',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
 
-const refreshToken = async () => {
-    const token = Cookies.get('access_token'); // Get token from cookies
-    if (!token) {
-        return null; // No token found, so no need to refresh
-    }
+// Add a request interceptor to add the token to the request headers
+api.interceptors.request.use(
+    config => {
+        const token = Cookies.get('access_token'); // Retrieve token from cookies
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    error => Promise.reject(error)
+);
 
-    try {
-        console.warn("Token expired! Refreshing...");
-        const refreshResponse = await axios.post('/refresh', {}, {
-            headers: {
-                Authorization: `Bearer ${token}`
+// Add a response interceptor to handle token expiration
+api.interceptors.response.use(
+    response => response,
+    async error => {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            
+            // Try to refresh the token
+            const refreshToken = Cookies.get('access_token'); // Retrieve refresh token from cookies
+            if (refreshToken) {
+                console.log(refreshToken)
+                try {
+                    // Call your refresh API
+                    const refreshResponse = await api.post('auth/refresh');
+                    const { access_token } = refreshResponse.data;
+
+                    // Save the new token in cookies
+                    Cookies.set('access_token', access_token, { secure: true, sameSite: 'Strict' });
+
+                    // Retry the original request with the new token
+                    originalRequest.headers['Authorization'] = `Bearer ${access_token}`;
+                    return api(originalRequest);
+                } catch (refreshError) {
+                    // If refreshing fails, logout or redirect
+                    // console.error('Token refresh failed:', refreshError);
+                    // Redirect to login or perform logout logic here
+                }
             }
-        });
-
-        const newToken = refreshResponse.data.access_token;
-        // Store the new token in cookies
-        Cookies.set('access_token', newToken, {
-            secure: true,  // Secure flag for HTTPS
-            sameSite: 'Strict',  // Prevent CSRF attacks
-        });
-
-        // Set the Authorization header for subsequent requests
-        axios.defaults.headers['Authorization'] = `Bearer ${newToken}`;
-
-        return newToken; // Return the new token
-    } catch (error) {
-        console.error('Token refresh failed:', error);
-        Cookies.remove('access_token'); // Remove token from cookies if refresh fails
-        window.location.href = '/login'; // Redirect to login
-        return null;
+        }
+        return Promise.reject(error);
     }
-};
+);
 
-// Export the refreshToken function only
-export default refreshToken;
+export default api;

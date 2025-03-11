@@ -19,6 +19,8 @@ import DoctorInActive from '../components/hospital/admin/dashboard/doctor/Doctor
 import Appoinment from '../components/hospital/admin/dashboard/appoinment/Appoinment.vue';
 import AppoinmentDetails from '../components/hospital/admin/dashboard/appoinment/AppoinmentDetails.vue';
 import AppoinmentCreate from '../components/hospital/admin/dashboard/appoinment/AppoinmentCreate.vue';
+import AppointReport from '../components/hospital/admin/dashboard/appoinment/AppointReport.vue';
+import DoctorwiseReport from '../components/hospital/admin/dashboard/appoinment/DoctorwiseReport.vue';
 
 import Symtom from '../components/hospital/admin/dashboard/options/symtom/Symtom.vue';
 import SymtomCreate from '../components/hospital/admin/dashboard/options/symtom/SymtomCreate.vue';
@@ -152,6 +154,24 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: AppoinmentCreate,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/appoinment-report',
+                name: 'AppointReport',
+                components: {
+                    default: Dashboard,
+                    content: AppointReport,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/appoinment-doctor-report',
+                name: 'DoctorwiseReport',
+                components: {
+                    default: Dashboard,
+                    content: DoctorwiseReport,
                 },
                 meta: { hideMainContent: true },
             },

@@ -90,6 +90,8 @@ Route::group([
     Route::post('/appoinment/store',[AppointmentController::class,'store']);
     Route::get('/appoinment',[AppointmentController::class,'index']);
     Route::post('/appoinment/search',[AppointmentController::class,'searchAppointments']);
+    Route::get('/appoinment/report',[AppointmentController::class,'appoinmentReport']);
+
 });
 
 Route::get('home/hospital-doctor',[HomeController::class,'doctorshow']);

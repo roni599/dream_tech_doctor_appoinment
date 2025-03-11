@@ -250,16 +250,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $ttl, // TTL in seconds for 24 hours
+            'expires_in' => $ttl,
             'user_id' => auth()->user()->id,
-            // 'hospital_name' => auth()->user()->hospital_name,
-            // 'admin_email' => auth()->user()->email,
-            // 'admin_name' => auth()->user()->admin_name,
-            // 'admin_mobile' => auth()->user()->mobile_number_2,
-            // 'logo' => auth()->user()->logo,
-            // 'front_picture' => auth()->user()->front_picture,
-            // 'role_name' => auth()->user()->role->role_name,
-            // 'status' => auth()->user()->status,
         ]);
     }
 }

@@ -2,8 +2,8 @@
     <div class="container">
         <div
             class="header-buttons d-flex flex-wrap justify-content-start justify-content-center justify-content-md-start mb-2">
+            <router-link to="/appoinment" class="btn btn-info text-white mb-2">All Appoinment</router-link>
             <router-link to="/appoinment-details" class="btn btn-info text-white mb-2">New Appoinment</router-link>
-            <router-link to="/appoinment-report" class="btn btn-info text-white mb-2">Appoint</router-link>
             <router-link to="/appoinment-doctor-report" class="btn btn-info text-white mb-2">Doctor</router-link>
         </div>
         <div class="card">
@@ -37,32 +37,34 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Category/Department
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Department/Category
                                 </th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Doctor Name</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Patient Name</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Visit Date</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Visit Time</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Payment</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">S.L No</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Appoint</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Doctor</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Total Patient</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Male</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Female</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">1st Timer</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">2nd Timer</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">3rd Timer</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Visit</th>
                             </tr>
                         </thead>
-                         <tbody  v-if="appoinments.length <0">
+                        <tbody v-if="appoinments.length < 0">
                             <tr>
                                 <td colspan="8" class="text-center text-black">No data found</td>
                             </tr>
                         </tbody>
                         <tbody v-else>
                             <tr v-for="appoinment in appoinments" :key="appoinment.id">
-                                <td>{{ appoinment.department_category.department_category }}</td>
-                                <td>{{ appoinment.doctor.doctorName }}</td>
-                                <td>{{ appoinment.patient_name }}</td>
-                                <td>{{ appoinment.visit_date }}</td>
-                                <td>{{ appoinment.visit_time }}</td>
-                                <td>{{ appoinment.payment_status }}</td>
-                                <td>{{ appoinment.Sl_no }}</td>
-                                <td>Hospital</td>
+                                <td>{{ appoinment.department_name }}</td>
+                                <td>{{ appoinment.doctor_name }}</td>
+                                <td>{{ appoinment.total_appointments }}</td>
+                                <td>{{ appoinment.total_male }}</td>
+                                <td>{{ appoinment.total_female }}</td>
+                                <td>{{ appoinment.first_time_visits }}</td>
+                                <td>{{ appoinment.second_time_visits }}</td>
+                                <td>{{ appoinment.third_time_visits }}</td>
+                                <td>0</td>
                             </tr>
                         </tbody>
                     </table>
@@ -73,11 +75,11 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { onMounted, ref } from 'vue';
-import axios from "axios";
 import Cookies from "js-cookie";
 export default {
-    name: "AppoinmentView",
+    name: 'AppointReport',
     setup() {
         const access_token = ref('');
         const selectedDepartment = ref("all");
@@ -110,12 +112,13 @@ export default {
 
         const fetchAppoinment = async () => {
             try {
-                const response = await axios.get("/api/auth/appoinment", {
+                const response = await axios.get("/api/auth/appoinment/report", {
                     headers: {
                         Authorization: `Bearer ${access_token.value}`,
                     },
                 });
                 if (response.data && response.status === 200) {
+                    console.log(response);
                     appoinments.value = response.data;
                 }
             } catch (error) {
