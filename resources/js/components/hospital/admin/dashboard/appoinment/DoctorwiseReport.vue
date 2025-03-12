@@ -33,13 +33,13 @@
                         </select>
                     </div>
                 </div>
-                <div  id="appointment-table" class="table-responsive" ref="table">
+                <div id="appointment-table" class="table-responsive" ref="table">
                     <div class="doctor_details" v-show="formattedVisitDate">
                         <span>{{ formattedVisitDate }}</span><br>
                         <span>{{ formattedData.department_category }}</span><br>
                         <span>{{ formattedData.doctor_name }}</span>
                     </div>
-                    <table   class="table table-bordered">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">SL.NO
@@ -86,9 +86,14 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div v-if="appoinments.length > 0" class="button_group d-flex justify-content-end align-items-center gap-2">
-                        <button class="btn btn-primary" @click="downloadPDF">Download PDF</button>
-                        <button class="btn btn-success">Print</button>
+                    <div v-if="appoinments.length > 0"
+                        class="button_group d-flex justify-content-end align-items-center gap-2">
+                        <button class="btn btn-primary"
+                            @click="downloadPDF(formattedData.hospitalName, formattedData.hospitalLogo)">Download
+                            PDF</button>
+                        <button class="btn btn-success"
+                            @click="printDoctorWistReport(formattedData.hospitalName, formattedData.hospitalLogo, formattedVisitDate)">Print
+                            Appointment Table</button>
                     </div>
                 </div>
             </div>
@@ -100,7 +105,8 @@
 import { onMounted, ref, computed } from 'vue';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import html2pdf from 'html2pdf.js';
+import DoctorWiseReportPrintHelper from '../../../../Helpers/DoctorWiseReportPrintHelper';
+import PDFGenerator from '../../../../Helpers/pdfGenerator';
 export default {
     name: 'DoctorwiseReport',
     setup() {
@@ -124,13 +130,19 @@ export default {
                     selectedDepartment: selectedDepartment.value,
                     selectedDoctor: selectedDoctor.value
                 };
-                const response = await axios.post("/api/auth/appoinment/search", params);
+                const response = await axios.post("/api/auth/appoinment/search", params, {
+                    headers: {
+                        Authorization: `Bearer ${access_token.value}`,
+                    },
+                });
                 console.log(response)
                 if (response.data && response.status === 200) {
                     appoinments.value = response.data;
                     formattedData.value = response.data.reduce((acc, item) => {
                         acc.visit_date = item.visit_date;
                         acc.doctor_name = item.doctor.doctorName;
+                        acc.hospitalName = item.user.hospital_name;
+                        acc.hospitalLogo = item.user.logo;
                         acc.department_category = item.department_category.department_category;
                         return acc;
                     }, {});
@@ -146,7 +158,7 @@ export default {
                 return '';
             }
             const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // months are 0-indexed
+            const month = String(date.getMonth() + 1).padStart(2, '0');
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
         });
@@ -184,77 +196,13 @@ export default {
             await fetchDepartment();
         });
 
-        // const downloadPDF = () => { 
-        //     const buttonGroup = document.querySelector('.button_group');
-        //     buttonGroup.classList.add('hide-buttons');
-
-        //     const element = document.getElementById('appointment-table');
-        //     const options = {
-        //         margin: 0.5,
-        //         filename: 'appointments.pdf',
-        //         image: { type: 'jpeg', quality: 0.98 },
-        //         html2canvas: {
-        //         scale: 3,
-        //         logging: true,
-        //         letterRendering: true,
-        //         useCORS: true
-        //         },
-        //         jsPDF: {
-        //         unit: 'in',
-        //         format: 'letter',
-        //         orientation: 'landscape', 
-        //     }
-        // };
-        // html2pdf().from(element).set(options).save().then(() => {
-        //     buttonGroup.classList.remove('hide-buttons');
-        // });
-        // };
-
-
-
-    const downloadPDF = () => { 
-        const buttonGroup = document.querySelector('.button_group');
-        buttonGroup.classList.add('hide-buttons');
-        const element = document.getElementById('appointment-table');
-        const options = {
-            margin: .5,
-            filename: 'appointments.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: {
-                scale: 3,
-                logging: true,
-                letterRendering: true,
-                useCORS: true
-            },
-            jsPDF: {
-                unit: 'in',
-                format: 'letter',
-                orientation: 'landscape',
-                putOnlyUsedFonts: true,
-            }
+        const downloadPDF = (name, logo) => {
+            const pdfGenerator = new PDFGenerator(name, logo);
+            pdfGenerator.generatePDF();
         };
-        html2pdf().from(element).set(options).toPdf().get('pdf').then(function (pdf) {
-            const pageWidth = pdf.internal.pageSize.width;
-            pdf.setFontSize(18);
-            const text = 'Ibnsina Hospital';
-            const textWidth = pdf.getTextWidth(text);
-            const xPos = (pageWidth - textWidth) / 2; 
-            pdf.text(text, xPos, 0.5);
-            pdf.setFontSize(12);
-            // pdf.text('Your Subheading or Additional Info', xPos, 1);
-            const logo = './backend/images/doctor_image/141_182.png';
-            const logoX = 6.5;
-            const logoY = 0.1;
-            const logoWidth = 1;
-            const logoHeight = 0.6;
-            pdf.addImage(logo, 'JPEG', logoX, logoY, logoWidth, logoHeight); 
-            pdf.save('appointments.pdf');
-            buttonGroup.classList.remove('hide-buttons');
-        });
-    };
-
-
-
+        const printDoctorWistReport = (hospitalName, hospitalLogo, formattedVisitDate) => {
+            DoctorWiseReportPrintHelper.printDoctorWistReport(hospitalName, hospitalLogo, formattedData.value, formattedVisitDate, appoinments.value);
+        };
 
         return {
             searchAppointments,
@@ -266,7 +214,8 @@ export default {
             departments,
             formattedData,
             formattedVisitDate,
-            downloadPDF
+            downloadPDF,
+            printDoctorWistReport
         }
     }
 }
@@ -274,8 +223,9 @@ export default {
 
 <style scoped>
 .hide-buttons {
-  display: none !important;
+    display: none !important;
 }
+
 .header-buttons .btn {
     margin-right: 10px;
 }

@@ -98,7 +98,11 @@ export default {
                     selectedDepartment: selectedDepartment.value,
                     selectedDoctor: selectedDoctor.value
                 };
-                const response = await axios.post("/api/auth/appoinment/search", params);
+                const response = await axios.post("/api/auth/appoinment/search", params,{
+                    headers: {
+                        Authorization: `Bearer ${access_token.value}`,
+                    },
+                });
                 if (response.data && response.status === 200) {
                     appoinments.value = response.data;
                 }

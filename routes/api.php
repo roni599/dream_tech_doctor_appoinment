@@ -91,6 +91,7 @@ Route::group([
     Route::get('/appoinment',[AppointmentController::class,'index']);
     Route::post('/appoinment/search',[AppointmentController::class,'searchAppointments']);
     Route::get('/appoinment/report',[AppointmentController::class,'appoinmentReport']);
+    Route::post('/appoinment/apoint/search',[AppointmentController::class,'searchAppointmentsApoint']);
 
 });
 

@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="appointment-table">
                         <thead>
                             <tr>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Department/Category
@@ -68,6 +68,15 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div v-if="appoinments.length > 0"
+                        class="button_group d-flex justify-content-end align-items-center gap-2">
+                        <button class="btn btn-primary"
+                            @click="downloadPdf(hospitals.hospital_name, hospitals.logo)">Download
+                            PDF</button>
+                        <button class="btn btn-success"
+                            @click="printAppointmentTable(hospitals.hospital_name, hospitals.logo)">Print Appointment
+                            Table</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,6 +87,9 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import Cookies from "js-cookie";
+import html2pdf from 'html2pdf.js';
+import PrintHelper from '../../../../Helpers/PrintHelper';
+import doctorAppointmentPdf from '../../../../Helpers/doctorAppointmentPdf';
 export default {
     name: 'AppointReport',
     setup() {
@@ -91,6 +103,7 @@ export default {
         const doctors = ref([]);
         const departments = ref([]);
         const appoinments = ref([]);
+        const hospitals = ref({});
 
 
         const searchAppointments = async () => {
@@ -100,7 +113,11 @@ export default {
                     selectedDepartment: selectedDepartment.value,
                     selectedDoctor: selectedDoctor.value
                 };
-                const response = await axios.post("/api/auth/appoinment/search", params);
+                const response = await axios.post("/api/auth/appoinment/apoint/search", params, {
+                    headers: {
+                        Authorization: `Bearer ${access_token.value}`,
+                    },
+                });
                 if (response.data && response.status === 200) {
                     appoinments.value = response.data;
                 }
@@ -118,7 +135,6 @@ export default {
                     },
                 });
                 if (response.data && response.status === 200) {
-                    console.log(response);
                     appoinments.value = response.data;
                 }
             } catch (error) {
@@ -153,11 +169,35 @@ export default {
             }
         }
 
+        const downloadPdf = (hospitalName, hospitalLogo) => {
+            const pdfGenerator = new doctorAppointmentPdf(hospitalName, hospitalLogo);
+            pdfGenerator.generatePDF();
+        };
+        const printAppointmentTable = (hospitalName, hospitalLog) => {
+            PrintHelper.printTable(hospitalName, hospitalLog, appoinments.value);
+        };
+
+        const hospital = async () => {
+            try {
+                const response = await axios.get('/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${access_token.value}`
+                    }
+                });
+                if (response.data) {
+                    hospitals.value = response.data;
+                }
+            } catch (error) {
+                console.error('Error fetching hospital data:', error.response ? error.response.data : error.message);
+            }
+        };
+
         onMounted(async () => {
             access_token.value = Cookies.get('access_token');
             await fetchDoctor();
             await fetchDepartment();
             await fetchAppoinment();
+            await hospital();
         });
 
         return {
@@ -168,6 +208,9 @@ export default {
             appoinments,
             doctors,
             departments,
+            downloadPdf,
+            hospitals,
+            printAppointmentTable
         }
     }
 }

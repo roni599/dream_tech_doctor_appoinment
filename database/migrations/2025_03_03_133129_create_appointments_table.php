@@ -33,6 +33,8 @@ return new class extends Migration
             $table->foreignId('reference_id')->nullable()->constrained('references')->onDelete('set null');
             $table->foreignId('discount_free_reference_id')->nullable()->constrained('references')->onDelete('set null');
             $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
+            $table->string('appointby')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
         

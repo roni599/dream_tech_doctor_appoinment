@@ -29,11 +29,24 @@ class AppointmentController extends Controller
     // }
     public function index()
     {
+        // $user = Auth::user();
+        // if ($user) {
+        //     $currentDate = Carbon::today()->toDateString(); // Get today's date in 'YYYY-MM-DD' format
+
+        //     $appointment = Appointment::whereDate('visit_date', $currentDate)->with('user', 'doctor', 'departmentCategory')->get();
+        //     return response()->json($appointment, 200);
+        // }
+        // return response()->json(['error' => 'Unauthorized'], 401);
+
         $user = Auth::user();
         if ($user) {
             $currentDate = Carbon::today()->toDateString(); // Get today's date in 'YYYY-MM-DD' format
 
-            $appointment = Appointment::whereDate('visit_date', $currentDate)->with('user', 'doctor', 'departmentCategory')->get();
+            $appointment = Appointment::where('user_id', $user->id)
+                ->whereDate('visit_date', $currentDate)
+                ->with('user', 'doctor', 'departmentCategory')
+                ->get();
+
             return response()->json($appointment, 200);
         }
         return response()->json(['error' => 'Unauthorized'], 401);
@@ -64,6 +77,7 @@ class AppointmentController extends Controller
                 "discount_narration" => $request->input('discount_narration'),
                 "free_narration" => $request->input('free_narration'),
                 "user_id" => 1,
+                "appointby" => 'Hospital',
                 "doctor_id" => $request->input('doctor_id'),
                 "department_id" => $request->input('department_category_id'),
             ]);
@@ -74,56 +88,172 @@ class AppointmentController extends Controller
 
     public function searchAppointments(Request $request)
     {
+        // $visitDate = $request->input('visit_date');
+        // $department = $request->input('selectedDepartment');
+        // $doctor = $request->input('selectedDoctor');
+        // $user=Auth::user();
+        // $query = Appointment::query();
+        // if ($visitDate && $department === 'all' && $doctor === 'all') {
+        //     $appointment = $query->where('visit_date', $visitDate)->with('doctor', 'user', 'departmentCategory','reference')->get();
+        //     return response()->json($appointment);
+        // }
+
+        // if ($visitDate && $department && $doctor === 'all') {
+        //     $appointment = $query->where('visit_date', $visitDate)
+        //         ->where('department_id', $department)->with('doctor', 'user', 'departmentCategory','reference')->get();
+        //     return response()->json($appointment);
+        // }
+        // if ($visitDate && $doctor && $department === 'all') {
+        //     $appointment = $query->where('visit_date', $visitDate)
+        //         ->where('doctor_id', $doctor)->with('doctor', 'user', 'departmentCategory','reference')->get();
+        //     return response()->json($appointment);
+        // }
+        // if ($visitDate && $department && $doctor) {
+        //     $appointment = $query->where('visit_date', $visitDate)
+        //         ->where('department_id', $department)
+        //         ->where('doctor_id', $doctor)->with('doctor', 'user', 'departmentCategory','reference')->get();
+        //     return response()->json($appointment);
+        // }
+        $user = Auth::user();
+
+        // Check if user is authenticated
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Get request parameters
         $visitDate = $request->input('visit_date');
         $department = $request->input('selectedDepartment');
         $doctor = $request->input('selectedDoctor');
-        $query = Appointment::query();
+
+        // Start query with user-specific data
+        $query = Appointment::where('user_id', $user->id);
+
         if ($visitDate && $department === 'all' && $doctor === 'all') {
-            $appointment = $query->where('visit_date', $visitDate)->with('doctor', 'user', 'departmentCategory','reference')->get();
+            $appointment = $query->where('visit_date', $visitDate)
+                ->with('doctor', 'user', 'departmentCategory', 'reference')->get();
             return response()->json($appointment);
         }
 
         if ($visitDate && $department && $doctor === 'all') {
             $appointment = $query->where('visit_date', $visitDate)
-                ->where('department_id', $department)->with('doctor', 'user', 'departmentCategory','reference')->get();
+                ->where('department_id', $department)
+                ->with('doctor', 'user', 'departmentCategory', 'reference')->get();
             return response()->json($appointment);
         }
+
         if ($visitDate && $doctor && $department === 'all') {
             $appointment = $query->where('visit_date', $visitDate)
-                ->where('doctor_id', $doctor)->with('doctor', 'user', 'departmentCategory','reference')->get();
+                ->where('doctor_id', $doctor)
+                ->with('doctor', 'user', 'departmentCategory', 'reference')->get();
             return response()->json($appointment);
         }
+
         if ($visitDate && $department && $doctor) {
             $appointment = $query->where('visit_date', $visitDate)
                 ->where('department_id', $department)
-                ->where('doctor_id', $doctor)->with('doctor', 'user', 'departmentCategory','reference')->get();
+                ->where('doctor_id', $doctor)
+                ->with('doctor', 'user', 'departmentCategory', 'reference')->get();
             return response()->json($appointment);
         }
     }
     public function appoinmentReport()
     {
-        $appointment = Appointment::with(['doctor', 'departmentCategory'])
-            ->get()
-            ->groupBy('doctor_id')
-            ->map(function ($doctorAppointments) {
-                $doctor = $doctorAppointments->first()->doctor;
-                $department = $doctorAppointments->first()->departmentCategory;
+        // $appointment = Appointment::with(['doctor', 'departmentCategory'])
+        //     ->get()
+        //     ->groupBy('doctor_id')
+        //     ->map(function ($doctorAppointments) {
+        //         $doctor = $doctorAppointments->first()->doctor;
+        //         $department = $doctorAppointments->first()->departmentCategory;
 
-                return [
-                    'doctor_id' => $doctor->id ?? null,
-                    'doctor_name' => $doctor->doctorName ?? 'N/A',
-                    'department_id' => $department->id ?? null,
-                    'department_name' => $department->department_category ?? 'N/A',
-                    'total_appointments' => $doctorAppointments->count(),
-                    'total_male' => $doctorAppointments->where('gender', 'Male')->count(),
-                    'total_female' => $doctorAppointments->where('gender', 'Female')->count(),
-                    'first_time_visits' => $doctorAppointments->where('visit_time', '1st')->count(),
-                    'second_time_visits' => $doctorAppointments->where('visit_time', '2nd')->count(),
-                    'third_time_visits' => $doctorAppointments->where('visit_time', '3rd')->count(),
-                ];
-            })
-            ->values();
+        //         return [
+        //             'doctor_id' => $doctor->id ?? null,
+        //             'doctor_name' => $doctor->doctorName ?? 'N/A',
+        //             'department_id' => $department->id ?? null,
+        //             'department_name' => $department->department_category ?? 'N/A',
+        //             'total_appointments' => $doctorAppointments->count(),
+        //             'total_male' => $doctorAppointments->where('gender', 'Male')->count(),
+        //             'total_female' => $doctorAppointments->where('gender', 'Female')->count(),
+        //             'first_time_visits' => $doctorAppointments->where('visit_time', '1st')->count(),
+        //             'second_time_visits' => $doctorAppointments->where('visit_time', '2nd')->count(),
+        //             'third_time_visits' => $doctorAppointments->where('visit_time', '3rd')->count(),
+        //         ];
+        //     })
+        //     ->values();
 
-        return response()->json($appointment);
+        // return response()->json($appointment);
+        $user = Auth::user();
+        if ($user) {
+            $appointment = Appointment::where('user_id', $user->id)
+                ->with(['doctor', 'departmentCategory'])
+                ->get()
+                ->groupBy('doctor_id')
+                ->map(function ($doctorAppointments) {
+                    $doctor = $doctorAppointments->first()->doctor;
+                    $department = $doctorAppointments->first()->departmentCategory;
+
+                    return [
+                        'doctor_id' => $doctor->id ?? null,
+                        'doctor_name' => $doctor->doctorName ?? 'N/A',
+                        'department_id' => $department->id ?? null,
+                        'department_name' => $department->department_category ?? 'N/A',
+                        'total_appointments' => $doctorAppointments->count(),
+                        'total_male' => $doctorAppointments->where('gender', 'Male')->count(),
+                        'total_female' => $doctorAppointments->where('gender', 'Female')->count(),
+                        'first_time_visits' => $doctorAppointments->where('visit_time', '1st')->count(),
+                        'second_time_visits' => $doctorAppointments->where('visit_time', '2nd')->count(),
+                        'third_time_visits' => $doctorAppointments->where('visit_time', '3rd')->count(),
+                    ];
+                })
+                ->values();
+
+            return response()->json($appointment);
+        }
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    public function searchAppointmentsApoint(Request $request)
+    {
+        $user = Auth::user();
+        if ($user) {
+            $query = Appointment::where('user_id', $user->id)
+                ->with(['doctor', 'departmentCategory']);
+            if ($request->has('visit_date') && $request->visit_date) {
+                $query->whereDate('visit_date', $request->visit_date);
+            }
+
+            if ($request->has('selectedDepartment') && $request->selectedDepartment !== 'all') {
+                $query->where('department_id', $request->selectedDepartment);
+            }
+
+            if ($request->has('selectedDoctor') && $request->selectedDoctor !== 'all') {
+                $query->where('doctor_id', $request->selectedDoctor);
+            }
+
+            $appointments = $query->get()
+                ->groupBy('doctor_id')
+                ->map(function ($doctorAppointments) {
+                    $doctor = $doctorAppointments->first()->doctor;
+                    $department = $doctorAppointments->first()->departmentCategory;
+
+                    return [
+                        'doctor_id' => $doctor->id ?? null,
+                        'doctor_name' => $doctor->doctorName ?? 'N/A',
+                        'department_id' => $department->id ?? null,
+                        'department_name' => $department->department_category ?? 'N/A',
+                        'total_appointments' => $doctorAppointments->count(),
+                        'total_male' => $doctorAppointments->where('gender', 'Male')->count(),
+                        'total_female' => $doctorAppointments->where('gender', 'Female')->count(),
+                        'first_time_visits' => $doctorAppointments->where('visit_time', '1st')->count(),
+                        'second_time_visits' => $doctorAppointments->where('visit_time', '2nd')->count(),
+                        'third_time_visits' => $doctorAppointments->where('visit_time', '3rd')->count(),
+                    ];
+                })
+                ->values();
+
+            return response()->json($appointments);
+        }
+
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 }
