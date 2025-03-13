@@ -88,6 +88,9 @@ Route::group([
     Route::post('/department/departmentdelete', [DepartmentController::class, 'delete']);
 
     Route::post('/appoinment/store',[AppointmentController::class,'store']);
+    Route::get('/appointment/editdata/{appointmentId}', [AppointmentController::class, 'appointmentEditdata']);
+    Route::get('/appointment/showdata/{appointmentId}', [AppointmentController::class, 'appointmentShowdata']);
+    Route::post('/appoinment/update',[AppointmentController::class,'appoinmentUpdate']);
     Route::get('/appoinment',[AppointmentController::class,'index']);
     Route::post('/appoinment/search',[AppointmentController::class,'searchAppointments']);
     Route::get('/appoinment/report',[AppointmentController::class,'appoinmentReport']);

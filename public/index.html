@@ -1,0 +1,278 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medical Appointment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container_main {
+            max-width: 700px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            background-color: #4b4b4b;
+            color: white;
+            padding: 5px 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            max-width: 190px;
+        }
+        .info-table td {
+            padding: 3px 10px;
+        }
+        .table th, .table td {
+            text-align: center;
+            font-size: 14px;
+        }
+        .apply-btn {
+            width: 100%;
+            font-size: 18px;
+        }
+        .badge-online {
+            background-color: green;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container container_main mt-4">
+        <div class="container img_header d-flex justify-content-start align-items-center gap-4 mb-3">
+            <div class="hospital_img">
+                <img src="../public/hospital/backend/img/users/logo/734_IbnSina Hospital.png" width="110" height="auto" alt="">
+            </div>
+            <div>
+                <p class="mb-0"> Dhanmondi Dibadic Senter</p>
+                <p class="">Dhannodi, Lacopsit, Hous No 45/22, Dhaka-1200<br>01984994406</p>
+            </div>
+        </div>
+        <div class="button_pay d-flex justify-content-end align-items-center">
+            <button class="btn btn-danger">Pay Now</button>
+        </div>
+        <div class="container mb-3">
+            <div class="section-title mt-3">Appointment Doctor</div>
+            <div class="doctor_details ms-2">
+                <p class="mb-1"><strong>Dr. Md. Jasim Uddin Nizami</strong></p>
+                <p class="mb-1">MBBS DMU FCPS MS</p>
+                <p class="mb-1">WHO Clinical Polw On Child Urologist (India)</p>
+                <p class="mb-1">Polw On Child Urologist (USA)</p>
+                <p class="mb-1"><strong>Specialist:</strong> Child BabyCare Urologists Medicine</p>
+                <p class="mb-1"><strong>Proposer:</strong> Department of Child Surgery, Sohid Sorowardy Medical College</p>
+                <p class="mb-1">01984-994406</p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="section-title">Patient</div>
+            <div class="patient_details">
+                <table class="info-table">
+                    <tr><td><b>Mobile Number</b></td><td>: 01987-994406</td></tr>
+                    <tr><td><b>Name</b></td><td>: Md. Jasim Uddin Nizami</td></tr>
+                    <tr><td><b>Gender</b></td><td>: Male</td></tr>
+                    <tr><td><b>Age</b></td><td>: 38</td></tr>
+                    <tr><td><b>Marital Status</b></td><td>: Married</td></tr>
+                    <tr><td><b>Blood Group</b></td><td>: O+</td></tr>
+                    <tr><td><b>Height</b></td><td>: 5.4"</td></tr>
+                    <tr><td><b>Weight</b></td><td>: 70kg</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="container mb-4">
+            <table class="table table-bordered mt-3">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Days</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Room</th>
+                        <th>Visit</th>
+                        <th>Fee</th>
+                        <th>P.Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12.09.2023</td>
+                        <td>Sun</td>
+                        <td>10:30am</td>
+                        <td>05:30pm</td>
+                        <td>17</td>
+                        <td>1st</td>
+                        <td>600</td>
+                        <td><span class="badge-online">Online</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container mb-3">
+            <div class="mb-0">Symptom</div>
+            <p>........................................................................................</p>
+        </div>
+        <div class="container mb-3">
+            <div class="mb-0">Description</div>
+            <p>........................................................................................</p>
+        </div>
+        <button class="btn btn-primary apply-btn mt-3">Apply</button>
+    </div>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medical Appointment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container_main {
+            max-width: 700px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            background-color: #4b4b4b;
+            color: white;
+            padding: 5px 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            max-width: 30%;
+        }
+        .info-table td {
+            padding: 3px 10px;
+        }
+        .table th, .table td {
+            text-align: center;
+            font-size: 14px;
+        }
+        .apply-btn {
+            width: 100%;
+            font-size: 18px;
+        }
+        .badge-online {
+            background-color: green;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        @media (max-width: 768px) {
+            .container_main {
+                max-width: 100%;
+                padding: 15px;
+            }
+            .info-table td {
+                display: block;
+                text-align: left;
+                padding: 5px 0;
+            }
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .apply-btn {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container container_main mt-4">
+        <div class="container img_header d-flex flex-wrap align-items-center gap-3 mb-3">
+            <div class="hospital_img">
+                <img src="../public/hospital/backend/img/users/logo/734_IbnSina Hospital.png" class="img-fluid" width="110" alt="Hospital Logo">
+            </div>
+            <div>
+                <p class="mb-0 fw-bold">Dhanmondi Dibadic Center</p>
+                <p class="small text-muted">Dhannodi, Lacopsit, House No 45/22, Dhaka-1200<br>01984994406</p>
+            </div>
+        </div>
+        
+        <div class="text-end mb-3">
+            <button class="btn btn-danger">Pay Now</button>
+        </div>
+
+        <div class="section-title mt-3">Appointment Doctor</div>
+        <div class="doctor_details ms-2">
+            <p class="mb-1 fw-bold">Dr. Md. Jasim Uddin Nizami</p>
+            <p class="mb-1 small">MBBS DMU FCPS MS</p>
+            <p class="mb-1 small">WHO Clinical Polw On Child Urologist (India)</p>
+            <p class="mb-1 small">Polw On Child Urologist (USA)</p>
+            <p class="mb-1"><strong>Specialist:</strong> Child BabyCare Urologists Medicine</p>
+            <p class="mb-1"><strong>Department:</strong> Child Surgery, Sohid Sorowardy Medical College</p>
+            <p class="mb-1"><strong>Contact:</strong> 01984-994406</p>
+        </div>
+
+        <div class="section-title mt-3">Patient</div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr><td><b>Mobile Number</b></td><td>: 01987-994406</td></tr>
+                    <tr><td><b>Name</b></td><td>: Md. Jasim Uddin Nizami</td></tr>
+                    <tr><td><b>Gender</b></td><td>: Male</td></tr>
+                    <tr><td><b>Age</b></td><td>: 38</td></tr>
+                    <tr><td><b>Marital Status</b></td><td>: Married</td></tr>
+                    <tr><td><b>Blood Group</b></td><td>: O+</td></tr>
+                    <tr><td><b>Height</b></td><td>: 5.4"</td></tr>
+                    <tr><td><b>Weight</b></td><td>: 70kg</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">Appointment Details</div>
+        <div class="table-responsive mb-3">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Days</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Room</th>
+                        <th>Visit</th>
+                        <th>Fee</th>
+                        <th>P.Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12.09.2023</td>
+                        <td>Sun</td>
+                        <td>10:30am</td>
+                        <td>05:30pm</td>
+                        <td>17</td>
+                        <td>1st</td>
+                        <td>600</td>
+                        <td><span class="badge-online">Online</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">Symptom</div>
+        <p class="border p-2">Lorem ipsum dolor sit amet...</p>
+
+        <div class="section-title">Description</div>
+        <p class="border p-2">Lorem ipsum dolor sit amet...</p>
+
+        <button class="btn btn-primary apply-btn mt-3">Apply</button>
+    </div>
+</body>
+</html>
