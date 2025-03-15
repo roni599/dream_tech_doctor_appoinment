@@ -11,19 +11,19 @@
                                 <i class="fa-solid fa-expand text-muted"></i>
                             </a></li>
                         <li>
-                            <form class="form-inline me-auto">
+                            <!-- <form class="form-inline me-auto">
                                 <div class="search-element d-flex">
                                     <input class="form-control" type="search" placeholder="Search" aria-label="Search">
                                     <button class="btn" type="submit">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
-                            </form>
+                            </form> -->
                         </li>
                     </ul>
                 </div>
                 <ul class="navbar-nav navbar-right">
-                    <li class="dropdown dropdown-list-toggle"><a href="#" data-bs-toggle="dropdown"
+                    <!-- <li class="dropdown dropdown-list-toggle"><a href="#" data-bs-toggle="dropdown"
                             class="nav-link nav-link-lg message-toggle">
                             <i class="fa-regular fa-envelope text-muted"></i>
                             <span class="badge headerBadge1">
@@ -95,8 +95,9 @@
                                 <a href="#">View All <i class="fas fa-chevron-right"></i></a>
                             </div>
                         </div>
-                    </li>
-                    <li class="dropdown dropdown-list-toggle"><a href="#" data-bs-toggle="dropdown"
+                    </li> -->
+                    <!-- <li class="dropdown dropdown-list-toggle">
+                        <a href="#" data-bs-toggle="dropdown"
                             class="nav-link notification-toggle nav-link-lg"><i
                                 class="fa-regular fa-bell text-muted"></i>
                         </a>
@@ -148,18 +149,18 @@
                                 <a href="#">View All <i class="fas fa-chevron-right"></i></a>
                             </div>
                         </div>
-                    </li>
+                    </li> -->
                     <li class="dropdown"><a href="#" data-bs-toggle="dropdown"
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image"
                                 :src="`/hospital/backend/img/users/logo/${hospitals.logo}`"
                                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
                         <div class="dropdown-menu dropdown-menu-right pullDown">
                             <div class="dropdown-title">Hello Sarah Smith</div>
-                            <a href="profile.html" class="dropdown-item has-icon"> <i class="far
+                            <a href="#" class="dropdown-item has-icon"> <i class="far
 										fa-user"></i> Profile
-                            </a> <a href="timeline.html" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
+                            </a> <a href="#" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
                                 Activities
-                            </a> <a href="" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
+                            </a> <a href="#" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
                                 Settings
                             </a>
                             <div class="dropdown-divider"></div>
