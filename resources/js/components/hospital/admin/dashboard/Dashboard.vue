@@ -199,25 +199,25 @@
                                 <li><router-link to="/symtom" class="nav-link" href="chat.html">Symtoms</router-link>
                                 </li>
                                 <li><router-link to="/specialist" class="nav-link">Specialist</router-link></li>
-                                <li><router-link to="/experience" class="nav-link">Experience</router-link></li>
                                 <li><router-link to="/room" class="nav-link">Room Number</router-link></li>
                                 <li><router-link to="/reference" class="nav-link">Reference</router-link></li>
                             </ul>
                         </li>
+                        <li class="dropdown" style="cursor: pointer;">
+                            <a class="menu-toggle nav-link has-dropdown"><i class="fa-solid fa-mortar-pestle"></i><span>Pharmacy</span></a>
+                            <ul class="dropdown-menu">
+                                <li><router-link to="/medicine-group" class="nav-link">Medicine Group</router-link></li>
+                                <li><router-link to="/medicine" class="nav-link">Medicine</router-link>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="dropdown">
                             <router-link to="/doctor" href="#" class="menu-toggle nav-link has-dropdown"><i
-                                    class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
+                            class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
                         </li>
                         <li class="dropdown" style="cursor: pointer;">
                             <router-link to="/appoinment" class="menu-toggle nav-link has-dropdown"><i
-                                    class="fa-solid fa-calendar-check"></i><span>Appoinment</span></router-link>
-                            <!-- <ul class="dropdown-menu">
-                                <li><router-link to="/appoinment_view" class="nav-link"
-                                        href="chat.html">Appoinment-View</router-link>
-                                </li>
-                                <li><router-link to="/appoinment_details"
-                                        class="nav-link">Appoinment-Details</router-link></li>
-                            </ul> -->
+                             class="fa-solid fa-calendar-check"></i><span>Appoinment</span></router-link>
                         </li>
 
                     </ul>

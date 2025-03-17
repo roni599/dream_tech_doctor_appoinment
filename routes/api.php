@@ -6,11 +6,11 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\MedicineGroup\MedicineGroupController;
 use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SpecialistController;
 use App\Http\Controllers\SymptomController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -96,6 +96,11 @@ Route::group([
     Route::get('/appoinment/report',[AppointmentController::class,'appoinmentReport']);
     Route::post('/appoinment/apoint/search',[AppointmentController::class,'searchAppointmentsApoint']);
 
+    Route::get('/medicine-group',[MedicineGroupController::class, 'index']);
+    Route::post('/medicine-group/store',[MedicineGroupController::class,'store']);
+    Route::get('/medicine-group/editdata/{id}', [MedicineGroupController::class, 'medicineEditData']);
+    Route::post('/medicine-group/edit', [MedicineGroupController::class, 'medicineEdit']);
+    Route::post('/medicine-group/delete', [MedicineGroupController::class, 'delete']);
 });
 
 Route::get('home/hospital-doctor',[HomeController::class,'doctorshow']);

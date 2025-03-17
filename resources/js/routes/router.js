@@ -46,6 +46,14 @@ import ReferenceList from '../components/hospital/admin/dashboard/options/refere
 import ReferenceCreate from '../components/hospital/admin/dashboard/options/reference/ReferenceCreate.vue'
 import ReferenceEdit from '../components/hospital/admin/dashboard/options/reference/ReferenceEdit.vue';
 
+import Medicine from '../components/hospital/admin/dashboard/pharmacy/medicine/Medicine.vue';
+import MedicineCreate from '../components/hospital/admin/dashboard/pharmacy/medicine/MedicineCreate.vue';
+import MedicineEdit from '../components/hospital/admin/dashboard/pharmacy/medicine/MedicineEdit.vue';
+
+import MedicineGoup from '../components/hospital/admin/dashboard/pharmacy/medicine-group/MedicineGoup.vue';
+import MedicinegroupCreate from '../components/hospital/admin/dashboard/pharmacy/medicine-group/MedicinegroupCreate.vue';
+import MedicinegroupEdit from '../components/hospital/admin/dashboard/pharmacy/medicine-group/MedicinegroupEdit.vue';
+
 const routes = [
     {
         path: '/',
@@ -337,6 +345,62 @@ const routes = [
                 },
                 meta: { hideMainContent: true },
             },
+            {
+                path: '/medicine-group',
+                name: 'MedicineGroup',
+                components: {
+                    default: Dashboard,
+                    content: MedicineGoup,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/medicine-group-create',
+                name: 'MedicinegroupCreate',
+                components: {
+                    default: Dashboard,
+                    content: MedicinegroupCreate,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/medicine-group-edit/:id',
+                name: 'MedicinegroupEdit',
+                components: {
+                    default: Dashboard,
+                    content: MedicinegroupEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/medicine',
+                name: 'Medicine',
+                components: {
+                    default: Dashboard,
+                    content: Medicine,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/medicine-create',
+                name: 'MedicineCreate',
+                components: {
+                    default: Dashboard,
+                    content: MedicineCreate,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/medicine-eidt/:id',
+                name: 'MedicineEdit',
+                components: {
+                    default: Dashboard,
+                    content: MedicineEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+
+
         ]
     },
 ]
