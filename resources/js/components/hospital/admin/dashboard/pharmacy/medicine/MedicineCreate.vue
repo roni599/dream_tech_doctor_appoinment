@@ -14,9 +14,10 @@
                     <form @submit.prevent="submitMedicine">
                         <div class="row form-section mb-2">
                             <div class="col-md-12">
-                                <select v-model="form.medicine_group" id="medicine_group" class="form-control">
-                                    <option value="">Select Medicine</option>
-                                    <option v-for="medicine_group in medicineGroup" :value="medicine_group.id" :key="medicine_group.id">{{ medicine_group.group_name }}</option>
+                                <select v-model="form.medicine_group_id" id="medicine_group" class="form-control">
+                                    <option value="">Select Medicine Group</option>
+                                    <option v-for="medicine_group in medicineGroup" :value="medicine_group.id"
+                                        :key="medicine_group.id">{{ medicine_group.group_name }}</option>
                                 </select>
                             </div>
                         </div>
@@ -28,15 +29,17 @@
                         </div>
                         <div class="row form-section mb-2">
                             <div class="col-md-12">
-                                <label for="department" class="form-label mb-0">Strength</label>
+                                <label for="department" class="form-label mb-0">Strength<span
+                                        class="text-danger">*</span> (gm/mg)</label>
                                 <input v-model="form.medicine_strength" type="text" class="form-control"
                                     id="reg-number">
                             </div>
                         </div>
                         <div class="row form-section mb-4">
                             <div class="col-md-12">
-                                <label for="department" class="form-label mb-0">Dosages Description</label>
-                                <input v-model="form.medicine_description" type="text" class="form-control"
+                                <label for="department" class="form-label mb-0">Dosages Description <span
+                                        class="text-danger">*</span>(tab/syp)</label>
+                                <input v-model="form.dosages_description" type="text" class="form-control"
                                     id="reg-number">
                             </div>
                         </div>
@@ -62,10 +65,10 @@ export default {
         const router = useRouter();
         const medicineGroup = ref([]);
         const form = ref({
-            medicine_group:'',
+            medicine_group_id: '',
             medicine_name: '',
             medicine_strength: '',
-            medicine_description: ''
+            dosages_description: ''
         })
         const access_token = ref('');
 
@@ -84,20 +87,22 @@ export default {
         }
         const submitMedicine = async () => {
             try {
-                const response = await axios.post('/api/auth/medicine-group/store', form.value, {
+                const response = await axios.post('/api/auth/medicine/create', form.value, {
                     headers: {
                         'Authorization': `Bearer ${access_token.value}`
                     }
                 });
-                console.log(response)
                 if (response.data && response.status === 201) {
-                    router.push({ name: 'MedicineGroup' })
+                    form.value.medicine_group_id = '';
+                    form.value.medicine_name = '';
+                    form.value.medicine_strength = '';
+                    form.value.dosages_description = '';
+                    router.push({ name: 'Medicine' })
                     Swal.fire({
                         title: response.data.message,
                         icon: "success",
                         draggable: true
                     });
-                    form.value.medicine_group = '';
                 }
             } catch (error) {
                 console.error("Error occurred:", error);

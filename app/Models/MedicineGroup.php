@@ -8,5 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class MedicineGroup extends Model
 {
     use HasFactory;
-    protected $fillable = ['group_name','status','user_id'];
+    protected $fillable = ['group_name', 'status', 'user_id'];
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function medicines()
+    {
+        return $this->hasMany(Medicine::class);
+    }
 }

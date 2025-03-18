@@ -10,7 +10,7 @@
                 <form @submit.prevent="medicineEdit">
                     <div class="row form-section mb-2">
                         <div class="col-md-12">
-                            <select v-model="form.medicine_group" id="medicine_group" class="form-control">
+                            <select v-model="form.medicine_group_id" id="medicine_group" class="form-control">
                                 <option value="">Select Medicine</option>
                                 <option v-for="medicine_group in medicineGroup" :value="medicine_group.id"
                                     :key="medicine_group.id">{{ medicine_group.group_name }}</option>
@@ -32,7 +32,7 @@
                     <div class="row form-section mb-4">
                         <div class="col-md-12">
                             <label for="department" class="form-label mb-0">Dosages Description</label>
-                            <input v-model="form.medicine_description" type="text" class="form-control" id="reg-number">
+                            <input v-model="form.dosages_description" type="text" class="form-control" id="reg-number">
                         </div>
                     </div>
                     <div class="row row form-section mb-4">
@@ -66,10 +66,10 @@ export default {
         const access_token = ref("");
         const form = ref({
             id: "",
-            medicine_group:'',
+            medicine_group_id: '',
             medicine_name: '',
             medicine_strength: '',
-            medicine_description: '',
+            dosages_description: '',
             status: ''
         });
 
@@ -88,19 +88,24 @@ export default {
         }
         const medicineEdit = async () => {
             try {
-                const response = await axios.post("/api/auth/medicine-group/edit", form.value, {
+                const response = await axios.post("/api/auth/medicine/edit", form.value, {
                     headers: {
                         Authorization: `Bearer ${access_token.value}`,
                     },
                 });
                 if (response.data && response.status === 200) {
-                    router.push({ name: "MedicineGroup" })
+                    router.push({ name: "Medicine" })
                     Swal.fire({
                         title: response.data.message,
                         icon: "success",
                         draggable: true,
                     });
-                    form.value = '';
+                    form.value.id = '';
+                    form.value.medicine_group_id = '';
+                    form.value.medicine_name = '';
+                    form.value.medicine_strength = '';
+                    form.value.dosages_description = '';
+                    form.value.status = '';
                 }
             } catch (error) {
                 console.log(error)
@@ -109,7 +114,7 @@ export default {
 
         const medicineEditView = async () => {
             try {
-                const response = await axios.get(`/api/auth/medicine-group/editdata/${medicine_id.value}`,
+                const response = await axios.get(`/api/auth/medicine/editdata/${medicine_id.value}`,
                     {
                         headers: {
                             Authorization: `Bearer ${access_token.value}`,
@@ -117,8 +122,12 @@ export default {
                     }
                 );
                 if (response.data && response.status === 200) {
-                    form.value.medicine_group = response.data.group_name;
+                    console.log(response.data.medicine_group.group_name)
+                    form.value.medicine_group_id = response.data.medicine_group.id;
                     form.value.id = response.data.id;
+                    form.value.medicine_name = response.data.medicine_name
+                    form.value.medicine_strength = response.data.strength
+                    form.value.dosages_description = response.data.dosages_description
                     form.value.status = response.data.status
                 }
             } catch (error) {

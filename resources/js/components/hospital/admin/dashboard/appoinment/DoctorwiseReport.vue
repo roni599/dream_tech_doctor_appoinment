@@ -4,7 +4,8 @@
             class="header-buttons d-flex flex-wrap justify-content-start justify-content-center justify-content-md-start mb-2">
             <router-link to="/appoinment" class="btn btn-info text-white mb-2">All Appoinment</router-link>
             <router-link to="/appoinment-details" class="btn btn-info text-white mb-2">New Appoinment</router-link>
-            <router-link to="/appoinment-report" class="btn btn-info text-white mb-2">Appoint</router-link>
+            <router-link to="/appoinment-report" class="btn btn-info text-white mb-2">Appoinment Report</router-link>
+            <router-link to="/doctor-visit" class="btn btn-info text-white mb-2">Doctor Visit</router-link>
         </div>
         <div class="card">
             <div class="card-body">

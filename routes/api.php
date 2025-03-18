@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\Medicine\MedicineController;
 use App\Http\Controllers\MedicineGroup\MedicineGroupController;
 use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\RoomController;
@@ -101,6 +102,12 @@ Route::group([
     Route::get('/medicine-group/editdata/{id}', [MedicineGroupController::class, 'medicineEditData']);
     Route::post('/medicine-group/edit', [MedicineGroupController::class, 'medicineEdit']);
     Route::post('/medicine-group/delete', [MedicineGroupController::class, 'delete']);
+
+    Route::get('/medicine',[MedicineController::class, 'index']);
+    Route::post('/medicine/create',[MedicineController::class, 'store']);
+    Route::get('/medicine/editdata/{id}', [MedicineController::class, 'medicineEditData']);
+    Route::post('/medicine/edit', [MedicineController::class, 'medicineEdit']);
+    Route::post('/medicine/delete', [MedicineController::class, 'delete']);
 });
 
 Route::get('home/hospital-doctor',[HomeController::class,'doctorshow']);

@@ -11,10 +11,11 @@
       <div class="row mb-1">
         <div class="col-md-12 mb-3">
           <label for="department" class="form-label mb-0">Medicine Name</label>
-          <select id="department-category" v-model="medicine_group" class="form-select">
+          <select id="department-category" v-model="selectedMedicine" class="form-select">
             <option value="" selected>Choose...</option>
-            <option v-for="medicine_group in medicineGroup" :key="medicine_group.id" :value="medicine_group.group_name">
-              {{ medicine_group.group_name }}</option>
+            <option v-for="med in medicines" :key="med.id" :value="med.medicine_name">
+              {{ med.medicine_name }}
+            </option>
           </select>
         </div>
       </div>
@@ -32,19 +33,22 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(medicine_group, index) in filteredmedicineGroup" :key="medicine_group.id">
+            <tr v-for="(medicine, index) in filteredmedicine" :key="medicine.id">
               <td>{{ index + 1 }}</td>
-              <td>{{ medicine_group.group_name }}</td>
+              <td>{{ medicine.medicine_name }}</td>
+              <td>{{ medicine.medicine_group.group_name }}</td>
+              <td>{{ medicine.strength }}</td>
+              <td>{{ medicine.dosages_description }}</td>
               <td>
-                <span class="badge bg-success" v-if="medicine_group.status === 1">Active</span>
+                <span class="badge bg-success" v-if="medicine.status === 1">Active</span>
                 <span v-else class="badge bg-danger">InActive</span>
               </td>
               <td class="text-end">
-                <router-link :to="{ name: 'MedicinegroupEdit', params: { id: medicine_group.id } }"
+                <router-link :to="{ name: 'MedicineEdit', params: { id: medicine.id } }"
                   class="btn btn-outline-warning btn-sm me-2">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </router-link>
-                <button class="btn btn-outline-danger btn-sm" @click="deleteMedicineGroup(medicine_group.id)">
+                <button class="btn btn-outline-danger btn-sm" @click="deleteMedicine(medicine.id)">
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </td>
@@ -63,12 +67,13 @@ export default {
   setup() {
     const access_token = ref('');
     const medicineGroup = ref([]);
-    const medicine_group = ref('');
+    const medicines = ref([]);
+    const selectedMedicine = ref('');
 
 
-    const filteredmedicineGroup = computed(() => {
-      return medicineGroup.value.filter(medicinegroup =>
-        medicinegroup.group_name.toLowerCase().includes(medicine_group.value.toLowerCase())
+    const filteredmedicine = computed(() => {
+      return medicines.value.filter(medicine =>
+        medicine.medicine_name.toLowerCase().includes(selectedMedicine.value.toLowerCase())
       );
     });
 
@@ -86,7 +91,22 @@ export default {
       } catch (error) {
       }
     }
-    const deleteMedicineGroup = async (id) => {
+
+    const fetchMedicine = async () => {
+      try {
+        const response = await axios.get('/api/auth/medicine', {
+          headers: {
+            'Authorization': `Bearer ${access_token.value}`
+          }
+        });
+        if (response.data && response.status === 200) {
+          medicines.value = response.data;
+        }
+      } catch (error) {
+
+      }
+    }
+    const deleteMedicine = async (id) => {
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -98,7 +118,7 @@ export default {
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
-            const response = await axios.post('/api/auth/medicine-group/delete', { id }, {
+            const response = await axios.post('/api/auth/medicine/delete', { id }, {
               headers: {
                 'Authorization': `Bearer ${access_token.value}`
               }
@@ -106,6 +126,7 @@ export default {
 
             if (response.data && response.status === 200) {
               fetchMedicineGroup();
+              fetchMedicine();
               Swal.fire({
                 title: response.data.message,
                 icon: "success",
@@ -118,15 +139,17 @@ export default {
         }
       });
     }
-    onMounted(() => {
+    onMounted(async () => {
       access_token.value = Cookies.get('access_token');
-      fetchMedicineGroup();
+      await fetchMedicineGroup();
+      await fetchMedicine();
     })
     return {
       medicineGroup,
-      deleteMedicineGroup,
-      filteredmedicineGroup,
-      medicine_group
+      deleteMedicine,
+      filteredmedicine,
+      selectedMedicine,
+      medicines,
     }
   }
 }

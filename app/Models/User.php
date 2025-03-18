@@ -115,4 +115,12 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Appointment::class);
     }
+    public function medicineGroups()
+    {
+        return $this->hasMany(MedicineGroup::class);
+    }
+    public function medicines()
+    {
+        return $this->hasMany(Medicine::class);
+    }
 }

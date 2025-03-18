@@ -21,6 +21,7 @@ import AppoinmentDetails from '../components/hospital/admin/dashboard/appoinment
 import AppoinmentCreate from '../components/hospital/admin/dashboard/appoinment/AppoinmentCreate.vue';
 import AppointReport from '../components/hospital/admin/dashboard/appoinment/AppointReport.vue';
 import DoctorwiseReport from '../components/hospital/admin/dashboard/appoinment/DoctorwiseReport.vue';
+import DoctorVisit from '../components/hospital/admin/dashboard/appoinment/DoctorVisit.vue';
 
 import Symtom from '../components/hospital/admin/dashboard/options/symtom/Symtom.vue';
 import SymtomCreate from '../components/hospital/admin/dashboard/options/symtom/SymtomCreate.vue';
@@ -180,6 +181,15 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: DoctorwiseReport,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/doctor-visit',
+                name: 'DoctorVisit',
+                components: {
+                    default: Dashboard,
+                    content: DoctorVisit,
                 },
                 meta: { hideMainContent: true },
             },
