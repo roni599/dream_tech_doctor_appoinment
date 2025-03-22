@@ -219,6 +219,9 @@
                             <router-link to="/appoinment" class="menu-toggle nav-link has-dropdown"><i
                              class="fa-solid fa-calendar-check"></i><span>Appoinment</span></router-link>
                         </li>
+                        <li class="dropdown" style="cursor: pointer;">
+                            <router-link to="/prescription" class="menu-toggle nav-link has-dropdown"><i class="fa-solid fa-prescription"></i><span>Prescription</span></router-link>
+                        </li>
 
                     </ul>
                 </aside>

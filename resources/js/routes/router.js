@@ -55,6 +55,8 @@ import MedicineGoup from '../components/hospital/admin/dashboard/pharmacy/medici
 import MedicinegroupCreate from '../components/hospital/admin/dashboard/pharmacy/medicine-group/MedicinegroupCreate.vue';
 import MedicinegroupEdit from '../components/hospital/admin/dashboard/pharmacy/medicine-group/MedicinegroupEdit.vue';
 
+import Prescription from '../components/hospital/admin/dashboard/prescription/Prescription.vue';
+
 const routes = [
     {
         path: '/',
@@ -406,6 +408,16 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: MedicineEdit,
+                },
+                meta: { hideMainContent: true },
+            },
+
+            {
+                path: '/prescription',
+                name: 'Prescription',
+                components: {
+                    default: Dashboard,
+                    content: Prescription,
                 },
                 meta: { hideMainContent: true },
             },

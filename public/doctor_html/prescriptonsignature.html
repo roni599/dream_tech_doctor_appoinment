@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        @media (min-width: 768px) {
+            .pathology_test {
+                height: 100%;
+            }
+
+            .prescription_text {
+                height: 100%;
+            }
+        }
+
+        @media (max-width: 767px) {
+
+            .pathology_test,
+            .prescription_text {
+                height: auto;
+            }
+
+            .prescription_details {
+                flex-direction: column;
+            }
+
+            .pathology_test {
+                order: 1;
+                width: 100%;
+            }
+
+            .prescription_text {
+                order: 2;
+                width: 100%;
+            }
+
+            .input_group {
+                gap: 0.5rem;
+            }
+
+            .row {
+                flex-direction: column;
+            }
+        }
+
+        .custom-height {
+            height: 30px;
+            background-color: #1d93d2;
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .custom-height {
+                height: 25px;
+            }
+        }
+        .signature-footer {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            text-align: right;
+        }
+        .signature-footer img {
+            height: 70px; 
+        }
+        .signature-line {
+            border-top: 1px solid black;
+            width: 200px;
+            margin-bottom: 5px;
+        }
+        @media (max-width: 768px) { 
+            .signature-footer {
+                text-align: right;
+                position: relative;
+                bottom: 10px;
+                right: auto;
+                left: auto;
+                width: 100%;
+            }
+            .signature-line {
+                margin-left: auto;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid content-wrapper">
+        <div class="row flex-grow-1">
+            <main class="col-md-9 pt-2 d-flex flex-column content">
+                <div
+                    class="doctor_details_hospital d-flex flex-column-reverse flex-md-row justify-content-between align-items-center w-100 p-1 mb-md-2">
+                    <div class="doctorName_details w-100 w-md-50 mb-2 mb-md-0">
+                        <h6 class="text-primary">Dr. Md. Jasim Uddin Nizami</h6>
+                        <div class="doctor_details">
+                            <p class="mb-0">MBBS DMU FCPS MS</p>
+                            <p class="mb-0">WHO Clinical Polw On Child Urologist</p>
+                            <p class="mb-0">Polw On Child Urologist</p>
+                            <p class="text-primary mb-0">Specialist</p>
+                            <p class="mb-0">Child, BabyCare, Urologists, Medicine</p>
+                            <p class="mb-0">Hfdngf, Reaset</p>
+                            <p class="text-primary mb-0">Proposer</p>
+                            <p class="mb-0">Department of Child Surgery</p>
+                            <p class="mb-0">Sohid Sorowerdy Medical Collge</p>
+                            <p class="mb-0">01984-994406</p>
+                        </div>
+                    </div>
+                    <div class="hospital_address_logo w-100 w-md-50 mb-3">
+                        <div class="address_logo d-flex justify-content-start align-items-center">
+                            <div class="hospital_logo">
+                                <img src="./images/logo.png" width="80" height="auto" alt="">
+                            </div>
+                            <div class="hospital_address">
+                                <h3 class="mb-0">Ibnsina Hospital</h3>
+                                <p class="mb-0">House# 68, Road # 15/A, Dhanmondi, Dhaka-1206</p>
+                                <p class="mb-0">0194-994406, 01778344090</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="patient_details mb-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th class="custom-height">Name</th>
+                                    <td class="custom-height">Md.</td>
+                                    <th class="custom-height">Gender</th>
+                                    <td class="custom-height">Male</td>
+                                    <th class="custom-height">Age</th>
+                                    <td class="custom-height">38</td>
+                                    <th class="custom-height">Date</th>
+                                    <td class="custom-height">12.08.2024</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="prescription d-flex flex-column h-100">
+                    <div class="prescription_details w-100 d-flex flex-column flex-md-row flex-grow-1">
+                        <div class="pathology_test pt-2 d-flex flex-column align-items-center w-lg-25 w-md-100"
+                            style="background-color: #eae7f1; height: 63vh;">
+                            <p class="text-center mb-2">Blood Pressure</p>
+                            <div class="input_group d-flex flex-md-column flex-md-row align-items-center px-5 gap-1">
+                                <div class="d-flex flex-column align-items-center w-100 w-md-50">
+                                    <label for="up" class="mb-1">Up</label>
+                                    <input type="text" name="up" id="up" class="text-center w-100">
+                                </div>
+                                <div class="d-flex flex-column align-items-center w-100 w-md-50">
+                                    <label for="down" class="mb-1">Down</label>
+                                    <input type="text" name="down" id="down" class="text-center w-100">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="prescription_text pt-2 w-100 w-md-75" style="background-color: white;">
+                            <div class="row mb-3">
+                                <div class="col-md-1 ms-md-5">
+                                    <h1>R<sub>X</sub></h1>
+                                </div>
+                            </div>
+                            <div class="row mb-3 d-flex ms-md-1 justify-content-center align-items-center w-100">
+                                <div class="col-md-9">
+                                    <label class="mb-1">Capsul: Agothmaisin (500)</label>
+                                    <div class="medicine d-flex justify-content-around w-100 ms-md-5 fw-bold">
+                                        <div class="m1 w-50">
+                                            <p> 1+0+1 ...চলেব</p>
+                                        </div>
+                                        <div class="m2 w-50">
+                                            <p>প্রতিদিন খাওর পর  খােব</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 d-flex ms-md-1 justify-content-center align-items-center w-100">
+                                <div class="col-md-9">
+                                    <label class="mb-1">Tablet: Mattile (500)</label>
+                                    <div class="medicine d-flex justify-content-around w-100 ms-md-5 fw-bold">
+                                        <div class="m1 w-50">
+                                            <p> 1+0+1 ...চলেব</p>
+                                        </div>
+                                        <div class="m2 w-50">
+                                            <p>প্রতিদিন খাওর পর  খােব</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="signature-footer">
+                                <img src="images/prescription.png" alt="Signature"> 
+                                <div class="signature-line"></div>
+                                <p class="fw-bold mb-0">Dr. Md. Jasim Uddin Nizami</p>
+                                <p class="mb-0">MBBS DMU FCPS MS</p>
+                                <p>21.08.2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

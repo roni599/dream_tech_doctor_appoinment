@@ -11,88 +11,82 @@
 
 <body class="p-4">
     <div class="container">
-        <div class="row mb-1">
-            <div class="col-md-3">
+        <div class="row mb-3 justify-content-center">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
                 <label class="form-label">Date</label>
                 <input type="date" class="form-control" value="2028-08-12">
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
                 <label class="form-label">Department/Category</label>
                 <select class="form-select">
                     <option selected>Select</option>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
                 <label class="form-label">Doctor</label>
                 <select class="form-select">
                     <option selected>Select</option>
                 </select>
             </div>
         </div>
-        <div class="payment_status d-flex justify-content-end mb-2">
-            <ul class="">
-                <li>Paid</li>
-                <li>Unpaid</li>
-                <li>NotVisit</li>
-                <li>Discount</li>
-                <li>Free</li>
-            </ul>
+
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th>S.L No</th>
+                        <th>Patient Name</th>
+                        <th>Mobile</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                        <th>Appoint</th>
+                        <th>Visit Time</th>
+                        <th>Payment</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>01</td>
+                        <td>Jasim</td>
+                        <td>01778344090</td>
+                        <td>Male</td>
+                        <td>38</td>
+                        <td>Online</td>
+                        <td>1st</td>
+                        <td>
+                            <select class="form-select">
+                                <option>Paid</option>
+                                <option>Unpaid</option>
+                                <option>NotVisit</option>
+                                <option>Discount</option>
+                                <option>Free</option>
+                            </select>
+                        </td>
+                        <td>500</td>
+                        <td class="bg-success text-white">✔</td>
+                    </tr>
+                    <tr>
+                        <td>02</td>
+                        <td>Nizam</td>
+                        <td>01584526412</td>
+                        <td>Male</td>
+                        <td>35</td>
+                        <td>Lutfur</td>
+                        <td>1st</td>
+                        <td>
+                            <select class="form-select">
+                                <option>Paid</option>
+                                <option>Unpaid</option>
+                            </select>
+                        </td>
+                        <td>500</td>
+                        <td class="bg-warning text-white">✔</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <table class="table table-bordered text-center">
-            <thead class="table-primary">
-                <tr>
-                    <th>S.L No</th>
-                    <th>Patient Name</th>
-                    <th>Mobile</th>
-                    <th>Gender</th>
-                    <th>Age</th>
-                    <th>Appoint</th>
-                    <th>Visit Time</th>
-                    <th>Payment</th>
-                    <th>Amount</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>01</td>
-                    <td>Jasim</td>
-                    <td>01778344090</td>
-                    <td>Male</td>
-                    <td>38</td>
-                    <td>Online</td>
-                    <td>1st</td>
-                    <td>
-                        <select class="form-select">
-                            <option>Paid</option>
-                            <option>Unpaid</option>
-                            <option>NotVisit</option>
-                            <option>Discount</option>
-                            <option>Free</option>
-                        </select>
-                    </td>
-                    <td>500</td>
-                    <td class="bg-success text-white">✔</td>
-                </tr>
-                <tr>
-                    <td>02</td>
-                    <td>Nizam</td>
-                    <td>01584526412</td>
-                    <td>Male</td>
-                    <td>35</td>
-                    <td>Lutfur</td>
-                    <td>1st</td>
-                    <td>
-                        <select class="form-select">
-                            <option>Paid</option>
-                            <option>Unpaid</option>
-                        </select>
-                    </td>
-                    <td>500</td>
-                    <td class="bg-warning text-white">✔</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 </body>
 
