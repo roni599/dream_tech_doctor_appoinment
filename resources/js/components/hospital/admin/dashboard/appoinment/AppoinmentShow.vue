@@ -40,6 +40,10 @@
           <table class="info-table">
             <tbody>
               <tr>
+                <td><b class="text-warning">Doctore Serial Numbr:</b></td>
+                <td class="fw-bold">: {{ appointmentData.Sl_no }}</td>
+              </tr>
+              <tr>
                 <td><b>Mobile Number</b></td>
                 <td>: {{ appointmentData.patient_mobile }}</td>
               </tr>
@@ -102,10 +106,13 @@
                 <td>
                   <span v-if="appointmentDoctorData">
                     {{
-                      appointmentData.visit_time === '1st' ? appointmentDoctorData.visit_fee :
-                        appointmentData.visit_time === '2nd' ? appointmentDoctorData.second_dayFee :
-                          appointmentData.visit_time === '3rd' ? appointmentDoctorData.third_dayFee :
-                            'N/A'
+                      appointmentData.visit_time === '1st' ? appointmentData.fee + ' / ' + appointmentData.payment_status
+                        :
+                        appointmentData.visit_time === '2nd' ?  appointmentData.fee + ' / ' + appointmentData.payment_status
+                          :
+                          appointmentData.visit_time === '3rd' ? appointmentData.fee + ' / ' + appointmentData.payment_status
+                          :
+                    'N/A'
                     }}
                   </span>
                 </td>
@@ -116,15 +123,15 @@
         </div>
       </div>
 
-      <div class="container mb-3">
+      <!-- <div class="container mb-3">
         <div class="mb-0">Symptom</div>
         <p>........................................................................................</p>
-      </div>
+      </div> -->
       <div class="container mb-3">
         <div class="mb-0">Description</div>
-        <p>........................................................................................</p>
+        {{ appointmentData.description }}
       </div>
-      <button class="btn btn-primary apply-btn mt-3">Apply</button>
+      <!-- <button class="btn btn-primary apply-btn mt-3">Apply</button> -->
     </div>
   </div>
 </template>

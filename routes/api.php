@@ -96,6 +96,7 @@ Route::group([
     Route::post('/appoinment/search',[AppointmentController::class,'searchAppointments']);
     Route::get('/appoinment/report',[AppointmentController::class,'appoinmentReport']);
     Route::post('/appoinment/apoint/search',[AppointmentController::class,'searchAppointmentsApoint']);
+    Route::get('/appoinment/patient/search/{patientId}',[AppointmentController::class,'searchAppointmentsPatient']);
 
     Route::get('/medicine-group',[MedicineGroupController::class, 'index']);
     Route::post('/medicine-group/store',[MedicineGroupController::class,'store']);

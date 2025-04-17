@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
+            $table->integer('Sl_no')->nullable();
             $table->string('patient_mobile')->nullable();
-            $table->string('Sl_no')->nullable();
-            $table->string('visit_date')->nullable();
+            $table->string('visit_date')->nullable(); 
             $table->string('patient_name')->nullable();
             $table->string('patient_address')->nullable();
             $table->string('gender')->nullable();
@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('appointby')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
+            $table->unique(['visit_date', 'Sl_no']);
         });
         
     }

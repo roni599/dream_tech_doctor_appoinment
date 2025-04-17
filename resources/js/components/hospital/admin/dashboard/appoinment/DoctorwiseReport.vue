@@ -9,6 +9,7 @@
         </div>
         <div class="card">
             <div class="card-body">
+                <h5 class="text-center">Doctorwise Booked Appoinment Report</h5>
                 <div
                     class="filters d-flex flex-column flex-sm-row justify-content-center gap-3 align-items-center mb-4 my-3">
                     <div class="filter-item">

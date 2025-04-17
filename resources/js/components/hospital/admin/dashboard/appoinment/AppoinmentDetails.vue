@@ -10,6 +10,7 @@
             </div>
             <div class="card">
                 <div class="card-body">
+                    <h5 class="text-center">Booked New Appoinment</h5>
                     <div
                         class="filters d-flex flex-column flex-sm-row justify-content-center gap-3 align-items-center mb-4 my-3">
                         <div class="filter-item">
@@ -159,7 +160,12 @@ export default {
                     doctorName: doctor?.doctorName,
                     departmentCategory: department?.department_category,
                     departmentId: selectedDepartment.value,
-                    visitDate: visitDate.value
+                    visitDate: visitDate.value,
+                    visit_fee:doctor?.visitfee,
+                    second_day:doctor?.second_day,
+                    second_dayFee:doctor?.second_dayFee,
+                    thired_day:doctor?.thired_day,
+                    thired_dayFee:doctor?.thired_dayFee,
                 };
             }
             return {
@@ -168,7 +174,12 @@ export default {
                 doctorName: lastAppoinment.doctor.doctorName,
                 departmentCategory: lastAppoinment.department_category.department_category,
                 departmentId: lastAppoinment.department_category.id,
-                visitDate: visitDate.value
+                visitDate: visitDate.value,
+                visit_fee:lastAppoinment.doctor.visitfee,
+                // second_day:lastAppoinment.second_day,
+                // second_dayFee:lastAppoinment.second_dayFee,
+                // thired_day:lastAppoinment.thired_day,
+                // thired_dayFee:lastAppoinment.thired_dayFee,
             };
         });
 
