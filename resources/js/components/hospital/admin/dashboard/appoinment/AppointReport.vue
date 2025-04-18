@@ -176,6 +176,7 @@ export default {
             pdfGenerator.generatePDF();
         };
         const printAppointmentTable = (hospitalName, hospitalLog) => {
+            console.log(hospitalLog)
             PrintHelper.printTable(hospitalName, hospitalLog, appoinments.value);
         };
 

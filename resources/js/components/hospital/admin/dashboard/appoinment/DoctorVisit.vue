@@ -42,6 +42,7 @@
                             <th>Visit Time</th>
                             <th>Payment</th>
                             <th>Amount</th>
+                            <th>Visit Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -58,12 +59,12 @@
                                 <select class="form-select">
                                     <option>Paid</option>
                                     <option>Unpaid</option>
-                                    <option>NotVisit</option>
                                     <option>Discount</option>
                                     <option>Free</option>
                                 </select>
                             </td>
                             <td>500</td>
+                            <td>Not Visited</td>
                             <td class="bg-success text-white">✔</td>
                         </tr>
                         <tr>
@@ -78,9 +79,12 @@
                                 <select class="form-select">
                                     <option>Paid</option>
                                     <option>Unpaid</option>
+                                    <option>Discount</option>
+                                    <option>Free</option>
                                 </select>
                             </td>
                             <td>500</td>
+                            <td>Not Visited</td>
                             <td class="bg-warning text-white">✔</td>
                         </tr>
                     </tbody>
