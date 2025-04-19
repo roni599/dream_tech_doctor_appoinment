@@ -204,7 +204,7 @@
                             <router-link to="/hospital_dashboard" href="index.html" class="nav-link"><i
                                     class="fa-solid fa-desktop text-muted"></i><span>Dashboard</span></router-link>
                         </li>
-                        <li v-if="role === 'Admin'" class="dropdown" style="cursor: pointer;">
+                        <li v-show="role === 'Admin'" class="dropdown" style="cursor: pointer;">
                             <a class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-layer-group"></i><span>Options</span></a>
                             <ul class="dropdown-menu">
@@ -217,7 +217,7 @@
                                 <li><router-link to="/reference" class="nav-link">Reference</router-link></li>
                             </ul>
                         </li>
-                        <li v-if="role === 'Admin'" class="dropdown" style="cursor: pointer;">
+                        <li v-show="role === 'Admin'" class="dropdown" style="cursor: pointer;">
                             <a class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-mortar-pestle"></i><span>Pharmacy</span></a>
                             <ul class="dropdown-menu">
@@ -226,20 +226,20 @@
                                 </li>
                             </ul>
                         </li>
-                        <li v-if="role === 'Admin'" class="dropdown">
+                        <li v-show="role === 'Admin'" class="dropdown">
                             <router-link to="/doctor" href="#" class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
                         </li>
-                        <li v-if="role === 'Admin'" class="dropdown" style="cursor: pointer;">
+                        <li v-show="role === 'Admin'" class="dropdown" style="cursor: pointer;">
                             <router-link to="/appoinment" class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-calendar-check"></i><span>Appoinment</span></router-link>
                         </li>
 
-                        <li v-if="role === 'Doctor'" class="dropdown">
+                        <li v-show="role === 'Doctor'" class="dropdown">
                             <router-link to="/patient-list" href="#" class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-user-doctor"></i><span>Patient</span></router-link>
                         </li>
-                        <li v-if="role === 'Doctor'" class="dropdown" style="cursor: pointer;">
+                        <li v-show="role === 'Doctor'" class="dropdown" style="cursor: pointer;">
                             <router-link to="/prescription" class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-prescription"></i><span>Prescription</span></router-link>
                         </li>

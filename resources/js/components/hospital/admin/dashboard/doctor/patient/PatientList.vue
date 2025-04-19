@@ -18,29 +18,44 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">S.L No</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Patient Name</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Patient Email / Phone
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">S.L No</th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Patient
+                                    Name</th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Patient
+                                    Email / Phone</th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Age</th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Gender</th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Visit Time
                                 </th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Age</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Gender</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Visit Time</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Visit Fee</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Payment Status</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Narration</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Reference</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Appoint</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">Action</th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Visit Fee
+                                </th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Payment
+                                    Status</th>
+                                <th colspan="2"
+                                    style="height: 30px; background-color: #1d93d2; color:white;text-align: center;">
+                                    Narration</th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Reference
+                                </th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Appoint
+                                </th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Action</th>
+                            </tr>
+                            <tr>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Discount</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white;text-align: center;">
+                                    Narration <br> ( Discount or Free )</th>
                             </tr>
                         </thead>
-                        <tbody v-if="patientList.length < 0">
+
+                        <tbody v-if="patientList.length === 0">
                             <tr>
-                                <td colspan="14" class="text-center text-black">No data found</td>
+                                <td colspan="13" class="text-center text-black">No data found</td>
                             </tr>
                         </tbody>
+
                         <tbody v-else>
-                            <tr v-for="patient in patientList" :key="patient.id">
-                                <td>{{ patient.Sl_no }}</td>
+                            <tr v-for="(patient, index) in patientList" :key="patient.id">
+                                <td>{{ index + 1 }}</td>
                                 <td>{{ patient.patient_name }}</td>
                                 <td>{{ patient.patient_mobile }}</td>
                                 <td>{{ patient.age }}</td>
@@ -48,14 +63,40 @@
                                 <td>{{ patient.visit_time }}</td>
                                 <td>{{ patient.fee }}</td>
                                 <td>{{ patient.payment_status }}</td>
-                                <td>{{ patient.discount_narration }}</td>
-                                <td>{{ patient.reference.name }}</td>
+                                <td>
+                                    <template v-if="patient.payment_status === 'Discount'">
+                                        {{ Math.floor(patient.amount) }}% (Discount)
+                                    </template>
+                                    <template v-else-if="patient.payment_status === 'Free'">
+                                        {{ Math.floor(patient.amount) }}% (Free)
+                                    </template>
+                                    <template v-else-if="patient.payment_status === 'Paid'">
+                                        -
+                                    </template>
+                                    <template v-else>
+                                        {{ Math.floor(patient.amount) }} ({{ patient.payment_status }})
+                                    </template>
+                                </td>
+
+
+
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>{{ patient.discount_narration || patient.free_narration || '-' }}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>{{ patient.reference?.name || '-' }}</td>
                                 <td>{{ patient.appointby }}</td>
-                                <td class="text-center text-info" style="cursor: pointer;"><i
-                                        class="fa-solid fa-eye"></i></td>
+                                <td class="text-center text-info" style="cursor: pointer;">
+                                    <i class="fa-solid fa-eye"></i>
+                                </td>
                             </tr>
                         </tbody>
+
                     </table>
+
                 </div>
                 <div class="d-flex justify-content-end">
                     <button class="btn btn-primary me-2">Download PDF</button>
