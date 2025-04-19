@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendOtpEmail;
 use App\Mail\OtpMail;
+use App\Models\Doctor;
 use App\Models\OtpVerification;
 use App\Models\User;
 use Carbon\Carbon;
@@ -32,79 +33,223 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'admin_email' => 'required',
+    //         'password' => 'required'
+    //     ]);
+
+    //     $credentials = request(['admin_email', 'password']);
+
+    //     if (!$token = auth()->attempt($credentials)) {
+    //         return response()->json(['error' => 'Email or password is invalid'], 401);
+    //     }
+    //     return $this->respondWithToken($token);
+    // }
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'admin_email' => 'required|email',
+    //         'password' => 'required'
+    //     ]);
+
+    //     $credentials = $request->only('admin_email', 'password');
+
+    //     // Try User login
+    //     if ($user = User::where('admin_email', $credentials['admin_email'])->first()) {
+    //         if (Hash::check($credentials['password'], $user->password)) {
+    //             $token = auth('user_api')->login($user);
+    //             return $this->respondWithToken($token, 'user');
+    //         }
+    //     }
+
+    //     // Try Doctor login
+    //     if ($doctor = Doctor::where('email', $credentials['admin_email'])->first()) {
+    //         if (Hash::check($credentials['password'], $doctor->password)) {
+    //             $token = auth('doctor_api')->login($doctor);
+    //             return $this->respondWithToken($token, 'doctor');
+    //         }
+    //     }
+
+    //     return response()->json(['error' => 'Email or password is invalid'], 401);
+    // }
     public function login(Request $request)
     {
         $request->validate([
-            'admin_email' => 'required',
+            'admin_email' => 'required|email',
             'password' => 'required'
         ]);
 
-        $credentials = request(['admin_email', 'password']);
+        $credentials = $request->only('admin_email', 'password');
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Email or password is invalid'], 401);
+        // Try User login
+        if ($user = User::where('admin_email', $credentials['admin_email'])->first()) {
+            if (Hash::check($credentials['password'], $user->password)) {
+                $token = auth('user_api')->login($user);
+                return $this->respondWithToken($token, 'user');
+            }
         }
-        return $this->respondWithToken($token);
+
+        // Try Doctor login
+        if ($doctor = Doctor::where('email', $credentials['admin_email'])->first()) {
+            if (Hash::check($credentials['password'], $doctor->password)) {
+                $token = auth('doctor_api')->login($doctor);
+                return $this->respondWithToken($token, 'doctor');
+            }
+        }
+
+        return response()->json(['error' => 'Email or password is invalid'], 401);
     }
+
+    // public function sendOTP(Request $request)
+    // {
+
+    //     $request->validate([
+    //         'admin_email' => 'required|email',
+    //     ]);
+    //     $otp = rand(100000, 999999);
+    //     OtpVerification::updateOrCreate(
+    //         ['email' => $request->admin_email],
+    //         [
+    //             'otp' => $otp,
+    //             'expires_at' => null,
+    //             'expires_at' => Carbon::now()->addMinutes(2),
+    //         ]
+    //     );
+    //     // SendOtpEmail::dispatch($request->admin_email, $otp);
+    //     Mail::to($request->admin_email)->send(new OtpMail($otp, $request->admin_email));
+    //     return response()->json([
+    //         'message' => 'OTP sent to your email',
+    //         'otp' => $otp, // Include the OTP in the response
+    //     ], 200);
+    // }
+
+    // public function passwordResetOtpCheck(Request $request)
+    // {
+    //     $request->validate([
+    //         'admin_email' => 'required|email',
+    //         'otp_check' => 'required'
+    //     ]);
+    //     $otpVerification = OtpVerification::where('email', $request->admin_email)->first();
+    //     if (!$otpVerification) {
+    //         return response()->json(['otpMessage' => 'OTP not found'], 404);
+    //     }
+    //     if (Carbon::now()->greaterThan($otpVerification->expires_at)) {
+    //         return response()->json(['otpMessage' => 'OTP has expired'], 400);
+    //     }
+    //     if ($otpVerification->otp !== $request->otp_check) {
+    //         return response()->json(['otpMessage' => 'Invalid OTP'], 400);
+    //     } else {
+    //         return response()->json(['otpMessage' => 'OTP Check successfully done']);
+    //     }
+    // }
+
+    // public function resetPassword(Request $request)
+    // {
+    //     $request->validate([
+    //         'admin_email' => 'required|email',
+    //         'password' => 'required|string|min:8|confirmed',
+    //     ]);
+
+    //     $user = User::where('admin_email', $request->admin_email)->first();
+    //     if (!$user) {
+    //         return response()->json(['message' => 'User not found'], 404);
+    //     }
+
+    //     $user->password = Hash::make($request->password);
+    //     $user->save();
+
+    //     return response()->json(['message' => 'Password updated successfully']);
+    // }
+
     public function sendOTP(Request $request)
     {
-
+        // Validate input
         $request->validate([
             'admin_email' => 'required|email',
         ]);
+
+        // Generate a 6-digit OTP
         $otp = rand(100000, 999999);
+
+        // Store or update OTP with optional expiry (commented if not used)
         OtpVerification::updateOrCreate(
             ['email' => $request->admin_email],
             [
                 'otp' => $otp,
-                'expires_at' => null,
-                // 'expires_at' => Carbon::now()->addMinutes(2),
+                'expires_at' => Carbon::now()->addMinutes(5), // You can enable/disable expiry
             ]
         );
-        // SendOtpEmail::dispatch($request->admin_email, $otp);
+
+        // Send the OTP via email
         Mail::to($request->admin_email)->send(new OtpMail($otp, $request->admin_email));
+
         return response()->json([
-            'message' => 'OTP sent to your email',
-            'otp' => $otp, // Include the OTP in the response
+            'message' => 'OTP sent to your email.',
+            // 'otp' => $otp, // You can include this for testing; remove in production
         ], 200);
     }
 
     public function passwordResetOtpCheck(Request $request)
     {
+        // Validate input
         $request->validate([
             'admin_email' => 'required|email',
             'otp_check' => 'required'
         ]);
+    
+        // Retrieve OTP record
         $otpVerification = OtpVerification::where('email', $request->admin_email)->first();
+    
+        // OTP not found
         if (!$otpVerification) {
-            return response()->json(['otpMessage' => 'OTP not found'], 404);
+            return response()->json(['otpMessage' => 'OTP not found.'], 404);
         }
-        if (Carbon::now()->greaterThan($otpVerification->expires_at)) {
-            return response()->json(['otpMessage' => 'OTP has expired'], 400);
+    
+        // Check expiry
+        if ($otpVerification->expires_at && Carbon::now()->greaterThan($otpVerification->expires_at)) {
+            return response()->json(['otpMessage' => 'OTP has expired.'], 400);
         }
+    
+        // Check OTP match
         if ($otpVerification->otp !== $request->otp_check) {
-            return response()->json(['otpMessage' => 'Invalid OTP'], 400);
-        } else {
-            return response()->json(['otpMessage' => 'OTP Check successfully done']);
+            return response()->json(['otpMessage' => 'Invalid OTP.'], 400);
         }
+    
+        // ✅ OTP matched – delete the OTP record
+        $otpVerification->delete();
+    
+        return response()->json(['otpMessage' => 'OTP verified successfully.']);
     }
+    
 
     public function resetPassword(Request $request)
     {
+        // Validate input
         $request->validate([
             'admin_email' => 'required|email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        // Try to find user by email in User model
         $user = User::where('admin_email', $request->admin_email)->first();
+
+        // If not found, try Doctor model
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            $user = Doctor::where('email', $request->admin_email)->first();
         }
 
+        // If still not found, return error
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+
+        // Update password
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return response()->json(['message' => 'Password updated successfully']);
+        return response()->json(['message' => 'Password updated successfully.']);
     }
 
 
@@ -205,9 +350,34 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    // public function me()
+    // {
+    //     return response()->json(auth()->user());
+    // }
     public function me()
     {
-        return response()->json(auth()->user());
+        try {
+            // Check and return authenticated User
+            if (auth('user_api')->check()) {
+                return response()->json([
+                    'user' => auth('user_api')->user(),
+                    'role' => 'Admin'
+                ]);
+            }
+
+            // Check and return authenticated Doctor
+            if (auth('doctor_api')->check()) {
+                return response()->json([
+                    'user' => auth('doctor_api')->user(),
+                    'role' => 'Doctor'
+                ]);
+            }
+
+            // If no user is authenticated
+            return response()->json(['message' => 'Not authenticated.'], 401);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve authenticated user.'], 500);
+        }
     }
 
     /**
@@ -225,15 +395,71 @@ class AuthController extends Controller
         }
     }
 
+    // public function logout()
+    // {
+    //     try {
+    //         // Determine which guard is authenticated (user_api or doctor_api)
+    //         if (auth('user_api')->check()) {
+    //             auth('user_api')->logout();
+    //             return response()->json(['message' => 'User logged out successfully.']);
+    //         } elseif (auth('doctor_api')->check()) {
+    //             auth('doctor_api')->logout();
+    //             return response()->json(['message' => 'Doctor logged out successfully.']);
+    //         } else {
+    //             return response()->json(['message' => 'No authenticated user found.'], 401);
+    //         }
+    //     } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+    //         return response()->json(['error' => 'Failed to log out.'], 500);
+    //     }
+    // }
+
+
     /**
      * Refresh a token.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
+    // public function refresh()
+    // {
+    //     return $this->respondWithToken(JWTAuth::refresh(JWTAuth::getToken()));
+    // }
+
+    public function refresh(Request $request)
     {
-        return $this->respondWithToken(JWTAuth::refresh(JWTAuth::getToken()));
+        // Check if a valid token is provided
+        $token = JWTAuth::getToken();
+
+        // Check if the token is valid
+        if (!$token) {
+            return response()->json(['error' => 'Token not provided or invalid'], 401);
+        }
+
+        // Try refreshing the token based on user type (user or doctor)
+        try {
+            $user = JWTAuth::authenticate($token);
+
+            // Check user type from the authenticated token
+            if ($user instanceof User) {
+                // If it's a User, use the user guard for refreshing the token
+                $refreshedToken = auth('user_api')->refresh();  // Using auth helper for refreshing
+                return $this->respondWithToken($refreshedToken, 'user');
+            } elseif ($user instanceof Doctor) {
+                // If it's a Doctor, use the doctor guard for refreshing the token
+                $refreshedToken = auth('doctor_api')->refresh();  // Using auth helper for refreshing
+                return $this->respondWithToken($refreshedToken, 'doctor');
+            } else {
+                return response()->json(['error' => 'Unknown user type'], 400);
+            }
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            return response()->json(['error' => 'Token expired'], 401);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json(['error' => 'Token invalid'], 401);
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(['error' => 'Could not parse token'], 500);
+        }
     }
+
+
 
     /**
      * Get the token array structure.
@@ -242,16 +468,38 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    // protected function respondWithToken($token)
+    // {
+    //     // Fetch the TTL from the config, multiplied by 60 to convert minutes to seconds
+    //     $ttl = config('jwt.ttl') * 60;
+
+    //     return response()->json([
+    //         'access_token' => $token,
+    //         'token_type' => 'bearer',
+    //         'expires_in' => $ttl,
+    //         'user_id' => auth()->user()->id,
+    //     ]);
+    // }
+    protected function respondWithToken($token, $type)
     {
         // Fetch the TTL from the config, multiplied by 60 to convert minutes to seconds
         $ttl = config('jwt.ttl') * 60;
+
+        // Determine the user object based on the login type (user or doctor)
+        if ($type == 'user') {
+            $user = auth('user_api')->user();
+        } elseif ($type == 'doctor') {
+            $user = auth('doctor_api')->user();
+        } else {
+            return response()->json(['error' => 'Invalid user type'], 400);
+        }
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => $ttl,
-            'user_id' => auth()->user()->id,
+            'user_id' => $user->id,
+            'user_type' => $type, // Either 'user' or 'doctor'
         ]);
     }
 }

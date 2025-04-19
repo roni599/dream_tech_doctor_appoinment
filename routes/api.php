@@ -49,7 +49,7 @@ Route::group([
     Route::get('/hospital-doctor/dactive-doctor', [DoctorController::class, 'dactiveDoctor']);
     Route::get('/hospital-doctor/doctor-view/{doctor_id}', [DoctorController::class, 'viewDoctor']);
     Route::get('/hospital-doctor/doctor-viewoffline/{doctor_id}', [DoctorController::class, 'viewDoctorOffline']);
-
+    Route::get('/doctor-appoinment-patient',[DoctorController::class,'DoctorAppoinmentPatient']);
     
     Route::get('/symptoms', [SymptomController::class, 'index']);
     Route::post('/symptoms/store', [SymptomController::class, 'store']);

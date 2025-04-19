@@ -151,11 +151,19 @@
                         </div>
                     </li> -->
                     <li class="dropdown"><a href="#" data-bs-toggle="dropdown"
-                            class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image"
-                                :src="`/hospital/backend/img/users/logo/${hospitals.logo}`"
-                                class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
+                            class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                            <img v-if="role === 'Admin' && hospitals.logo"
+                                :src="`/hospital/backend/img/users/logo/${hospitals.logo}`" alt="User Logo"
+                                class="user-img-radious-style" />
+                            <img v-else-if="role === 'Doctor' && hospitals.doctor_image" :src="hospitals.doctor_image"
+                                alt="Doctor Image" class="user-img-radious-style" />
+
+                            <span class="d-sm-none d-lg-inline-block"></span></a>
                         <div class="dropdown-menu dropdown-menu-right pullDown">
-                            <div class="dropdown-title">Hello Sarah Smith</div>
+                            <div class="dropdown-title"><span v-if="role === 'Admin'" class="d-block">{{
+                                hospitals.admin_name }}</span> <span v-else-if="role === 'Doctor'"
+                                    class="d-block">{{ hospitals.doctorName }}</span>
+                            </div>
                             <a href="#" class="dropdown-item has-icon"> <i class="far
 										fa-user"></i> Profile
                             </a> <a href="#" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
@@ -176,11 +184,17 @@
                 <aside id="sidebar-wrappe">
                     <div class="sidebar-brand bg-info">
                         <a href="#">
-                            <img width="60px" height="auto" alt="image"
-                                :src="`/hospital/backend/img/users/logo/${hospitals.logo}`" class="" />
-                            <p class="logo-name bg-info text-white py-3" style="font-size: 12px; line-height: 1.4;">
-                                Admin
-                                <span class="d-block">{{ hospitals.hospital_name }}</span>
+                            <img v-if="role === 'Admin' && hospitals.logo"
+                                :src="`/hospital/backend/img/users/logo/${hospitals.logo}`" alt="User Logo" width="60px"
+                                height="auto" />
+
+                            <img v-else-if="role === 'Doctor' && hospitals.doctor_image" :src="hospitals.doctor_image"
+                                alt="Doctor Image" width="60px" height="60px" />
+
+                            <p class="logo-name bg-info text-white py-3" style="font-size: 12px; line-height: 1.7;">
+                                <span>{{ role ? role : 'Admin' }}</span>
+                                <span v-if="role === 'Admin'" class="d-block">{{ hospitals.admin_name }}</span>
+                                <span v-else-if="role === 'Doctor'" class="d-block">{{ hospitals.doctorName }}</span>
                             </p>
                         </a>
                     </div>
@@ -190,7 +204,7 @@
                             <router-link to="/hospital_dashboard" href="index.html" class="nav-link"><i
                                     class="fa-solid fa-desktop text-muted"></i><span>Dashboard</span></router-link>
                         </li>
-                        <li class="dropdown" style="cursor: pointer;">
+                        <li v-if="role === 'Admin'" class="dropdown" style="cursor: pointer;">
                             <a class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-layer-group"></i><span>Options</span></a>
                             <ul class="dropdown-menu">
@@ -203,31 +217,47 @@
                                 <li><router-link to="/reference" class="nav-link">Reference</router-link></li>
                             </ul>
                         </li>
-                        <li class="dropdown" style="cursor: pointer;">
-                            <a class="menu-toggle nav-link has-dropdown"><i class="fa-solid fa-mortar-pestle"></i><span>Pharmacy</span></a>
+                        <li v-if="role === 'Admin'" class="dropdown" style="cursor: pointer;">
+                            <a class="menu-toggle nav-link has-dropdown"><i
+                                    class="fa-solid fa-mortar-pestle"></i><span>Pharmacy</span></a>
                             <ul class="dropdown-menu">
                                 <li><router-link to="/medicine-group" class="nav-link">Medicine Group</router-link></li>
                                 <li><router-link to="/medicine" class="nav-link">Medicine</router-link>
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown">
+                        <li v-if="role === 'Admin'" class="dropdown">
                             <router-link to="/doctor" href="#" class="menu-toggle nav-link has-dropdown"><i
-                            class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
+                                    class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
                         </li>
-                        <li class="dropdown" style="cursor: pointer;">
+                        <li v-if="role === 'Admin'" class="dropdown" style="cursor: pointer;">
                             <router-link to="/appoinment" class="menu-toggle nav-link has-dropdown"><i
-                             class="fa-solid fa-calendar-check"></i><span>Appoinment</span></router-link>
+                                    class="fa-solid fa-calendar-check"></i><span>Appoinment</span></router-link>
                         </li>
-                        <li class="dropdown" style="cursor: pointer;">
-                            <router-link to="/prescription" class="menu-toggle nav-link has-dropdown"><i class="fa-solid fa-prescription"></i><span>Prescription</span></router-link>
+
+                        <li v-if="role === 'Doctor'" class="dropdown">
+                            <router-link to="/patient-list" href="#" class="menu-toggle nav-link has-dropdown"><i
+                                    class="fa-solid fa-user-doctor"></i><span>Patient</span></router-link>
+                        </li>
+                        <li v-if="role === 'Doctor'" class="dropdown" style="cursor: pointer;">
+                            <router-link to="/prescription" class="menu-toggle nav-link has-dropdown"><i
+                                    class="fa-solid fa-prescription"></i><span>Prescription</span></router-link>
                         </li>
 
                     </ul>
                 </aside>
             </div>
-            <div class="main-content">
+            <!-- <div class="main-content">
                 <section class="section" style="margin-top: -80px;">
+                    <router-view name="content"></router-view>
+                </section>
+            </div> -->
+            <div class="main-content">
+                <section v-if="$route.path === '/hospital_dashboard'" class="section" style="margin-top: -80px;">
+                    <h1 v-if="role==='Doctor'" class="text-center">Hello {{ hospitals.doctorName }}</h1>
+                    <h1 v-else-if="role==='Admin'" class="text-center">Hello {{ hospitals.admin_name }}</h1>
+                </section>
+                <section v-else class="section" style="margin-top: -80px;">
                     <router-view name="content"></router-view>
                 </section>
             </div>
@@ -255,6 +285,7 @@ export default {
         const hasReloaded = sessionStorage.getItem('hasReloaded');
         const access_token = ref('');
         const hospitals = ref({});
+        const role = ref('');
         onBeforeMount(() => {
             const styleLink = document.createElement("link");
             styleLink.rel = "stylesheet";
@@ -276,8 +307,13 @@ export default {
                         'Authorization': `Bearer ${access_token.value}`
                     }
                 });
-                if (response.data) {
-                    hospitals.value = response.data;
+                if (response.data.role === 'Admin') {
+                    role.value = response.data.role;
+                    hospitals.value = response.data.user;
+                }
+                else if (response.data.role === 'Doctor') {
+                    role.value = response.data.role;
+                    hospitals.value = response.data.user;
                 }
             } catch (error) {
                 console.error('Error fetching hospital data:', error.response ? error.response.data : error.message);
@@ -322,7 +358,8 @@ export default {
         })
         return {
             logout,
-            hospitals
+            hospitals,
+            role
         }
     }
 }

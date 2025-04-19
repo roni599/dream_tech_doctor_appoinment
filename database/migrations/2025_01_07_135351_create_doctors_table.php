@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('regnum')->nullable();
             $table->string('doctorName')->nullable();
             $table->string('email')->nullable();
+            $table->string('password')->nullable();
             $table->string('age')->nullable();
             $table->string('gender')->nullable();
             $table->string('details')->nullable();

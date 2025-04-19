@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -341,5 +342,19 @@ class DoctorController extends Controller
             return response()->json(['message' => 'Doctor updated successfully'], 200);
         }
         return response()->json(['error' => 'Unauthorized'], 401);
+    }
+    public function DoctorAppoinmentPatient()
+    {
+
+        $doctor = Auth::guard('doctor_api')->user();
+        if (!$doctor) {
+            return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
+        }
+
+        $appointments = Appointment::with('user','reference')
+            ->where('doctor_id', $doctor->id)
+            ->get();
+
+        return response()->json($appointments, 200);
     }
 }
