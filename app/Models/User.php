@@ -127,4 +127,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Pathology::class);
     }
+    public function pathologyCategories()
+    {
+        return $this->hasMany(PathologyCategory::class);
+    }
+
 }

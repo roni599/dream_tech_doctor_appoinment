@@ -60,10 +60,13 @@ import Prescription from '../components/hospital/admin/dashboard/prescription/Pr
 import PatientList from '../components/hospital/admin/dashboard/doctor/patient/PatientList.vue';
 import Patient from '../components/hospital/admin/dashboard/doctor/patient/Patient.vue';
 
-import Pathology from '../components/hospital/admin/dashboard/pathology/Pathology.vue';
-import PathologyCreate from '../components/hospital/admin/dashboard/pathology/PathologyCreate.vue';
-import PathologyEdit from '../components/hospital/admin/dashboard/pathology/PathologyEdit.vue';
+import Category from '../components/hospital/admin/dashboard/pathology/pathology-category/Category.vue';
+import CategoryCreate from '../components/hospital/admin/dashboard/pathology/pathology-category/CategoryCreate.vue';
+import CategoryEdit from '../components/hospital/admin/dashboard/pathology/pathology-category/CategoryEdit.vue';
 
+import Pathology from '../components/hospital/admin/dashboard/pathology/pathology/Pathology.vue';
+import PathologyCreate from '../components/hospital/admin/dashboard/pathology/pathology/PathologyCreate.vue';
+import PathologyEdit from '../components/hospital/admin/dashboard/pathology/pathology/PathologyEdit.vue';
 const routes = [
     {
         path: '/',
@@ -443,6 +446,33 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: Patient,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/pathology-category',
+                name: 'Category',
+                components: {
+                    default: Dashboard,
+                    content: Category,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/pathology-category-create',
+                name: 'CategoryCreate',
+                components: {
+                    default: Dashboard,
+                    content: CategoryCreate,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/pathology-category-edit/:id',
+                name: 'CategoryEdit',
+                components: {
+                    default: Dashboard,
+                    content: CategoryEdit,
                 },
                 meta: { hideMainContent: true },
             },

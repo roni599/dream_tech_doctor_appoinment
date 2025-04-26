@@ -19,7 +19,7 @@ class PathologyController extends Controller
             return response()->json(['error' => 'Unauthorized – Admin access only'], 401);
         }
         $pathology = Pathology::where('user_id', $user->id)
-            ->with('user')
+            ->with('user','category')
             ->get();
 
         return response()->json($pathology, 200);
@@ -34,6 +34,7 @@ class PathologyController extends Controller
 
         $pathology = Pathology::create([
             'name' => $request->name,
+            'pathology_category_id' => $request->pathology_category,
             'price' => $request->price,
             'user_id' => $user->id,
         ]);
@@ -50,12 +51,12 @@ class PathologyController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Unauthorized – Admin access only'], 401);
         }
-        $pathology = Pathology::with('user')->find($id);
+        $pathology = Pathology::with('user','category')->find($id);
         if ($pathology) {
             return response()->json($pathology, 200);
         } else {
             return response()->json([
-                'message' => 'No Medicine  found to related this id',
+                'message' => 'No Pathology  found to related this id',
                 'status' => 404,
             ]);
         }
@@ -71,6 +72,7 @@ class PathologyController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
     
+
         $validated = $request->validate([
             'id' => 'required|integer|exists:pathologies,id',
             'name' => [
@@ -81,6 +83,7 @@ class PathologyController extends Controller
             ],
             'price' => 'required|numeric|min:0',
             'status' => 'nullable|in:0,1',
+            'pathology_category_id' => 'required|exists:pathology_categories,id',
         ]);
     
         $pathology = Pathology::find($validated['id']);
@@ -88,7 +91,8 @@ class PathologyController extends Controller
         $pathology->update([
             'name' => $validated['name'],
             'price' => $validated['price'],
-            'status' => $request->input('status', $pathology->status), // fallback to existing status
+            'pathology_category_id' => $validated['pathology_category_id'],
+            'status' => $request->input('status', $pathology->status),
             'user_id' => $user->id,
         ]);
     

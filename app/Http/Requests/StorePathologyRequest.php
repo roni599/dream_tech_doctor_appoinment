@@ -24,6 +24,7 @@ class StorePathologyRequest extends FormRequest
         return [
             'name' => 'required|string|max:191|unique:pathologies,name',
             'price' => 'required|numeric|min:0',
+            'pathology_category' => 'required|exists:pathology_categories,id',
         ];
     }
     public function messages(): array
@@ -33,6 +34,8 @@ class StorePathologyRequest extends FormRequest
             'name.unique' => 'This pathology already exists.',
             'price.required' => 'The price is required.',
             'price.numeric' => 'The price must be a valid number.',
+            'pathology_category_id.required' => 'Please select a pathology category.',
+            'pathology_category_id.exists' => 'Selected category does not exist.',
         ];
     }
 }

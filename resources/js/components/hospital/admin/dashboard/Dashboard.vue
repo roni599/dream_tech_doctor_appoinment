@@ -217,10 +217,16 @@
                                 <li><router-link to="/reference" class="nav-link">Reference</router-link></li>
                             </ul>
                         </li>
-                        <li v-show="role === 'Admin'" class="dropdown">
-                            <router-link to="/pathology" href="#" class="menu-toggle nav-link has-dropdown"><i
-                                    class="fa-solid fa-user-doctor"></i><span>Pathology</span></router-link>
+
+                        <li v-show="role === 'Admin'" class="dropdown" style="cursor: pointer;">
+                            <a class="menu-toggle nav-link has-dropdown"><i
+                                    class="fa-solid fa-layer-group"></i><span>Pathology</span></a>
+                            <ul class="dropdown-menu">
+                                <li><router-link to="/pathology-category" class="nav-link">Pathology-Category</router-link></li>
+                                <li><router-link to="/pathology" class="nav-link">Pathology</router-link></li>
+                            </ul>
                         </li>
+
                         <li v-show="role === 'Admin'" class="dropdown" style="cursor: pointer;">
                             <a class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-mortar-pestle"></i><span>Pharmacy</span></a>

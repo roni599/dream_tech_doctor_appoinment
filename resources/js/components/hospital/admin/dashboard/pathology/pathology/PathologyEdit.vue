@@ -10,6 +10,16 @@
                 <form @submit.prevent="pathologyEdit">
                     <div class="row form-section mb-2">
                         <div class="col-md-12">
+                            <label for="department" class="form-label mb-0">Pathology-Category-Name</label>
+                            <select v-model="form.pathology_category_id" id="pathology_group_id" class="form-control">
+                                <option value="">Select Pathology-Category-Name</option>
+                                <option v-for="pathology_category in pathology_categories" :value="pathology_category.id"
+                                    :key="pathology_category.id">{{ pathology_category.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row form-section mb-2">
+                        <div class="col-md-12">
                             <label for="department" class="form-label mb-0">Pathology Name</label>
                             <input type="text" v-model="form.name" class="form-control" id="reg-number">
                             <div v-if="errors.name" class="text-danger">{{ errors.name[0] }}</div>
@@ -50,9 +60,11 @@ export default {
         const route = useRoute();
         const access_token = ref('');
         const pathology_id = ref('');
+        const pathology_categories = ref([]);
         const form = ref({
             id: '',
             name: '',
+            pathology_category_id: '',
             price: '',
             status: '',
         });
@@ -66,9 +78,11 @@ export default {
                         },
                     }
                 );
+                console.log(response.data.category.name)
                 if (response.data && response.status === 200) {
                     form.value.id = response.data.id;
                     form.value.name = response.data.name;
+                    form.value.pathology_category_id=response.data.category.id;
                     form.value.price = response.data.price;
                     form.value.status = response.data.status;
                 }
@@ -76,6 +90,20 @@ export default {
                 console.log(error.response);
             }
         };
+        const fetchPathologyCategories = async () => {
+            try {
+                const response = await axios.get('/api/auth/pathology-category', {
+                    headers: {
+                        'Authorization': `Bearer ${access_token.value}`
+                    }
+                });
+                if (response.data && response.status === 200) {
+                    pathology_categories.value = response.data;
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
         const pathologyEdit = async () => {
             try {
                 const response = await axios.post("/api/auth/pathology/edit", form.value, {
@@ -91,6 +119,7 @@ export default {
                     });
                     form.value.id = '';
                     form.value.name = '';
+                    form.value.pathology_category_id = '';
                     form.value.price = '';
                     form.value.status = '';
                     router.push({ name: "Pathology" })
@@ -107,11 +136,13 @@ export default {
             access_token.value = Cookies.get("access_token");
             pathology_id.value = route.params.id;
             pathologyEditView();
+            fetchPathologyCategories();
         });
         return {
             form,
             errors,
-            pathologyEdit
+            pathologyEdit,
+            pathology_categories
         }
     }
 }

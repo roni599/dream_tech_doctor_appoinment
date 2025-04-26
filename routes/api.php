@@ -9,6 +9,7 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Medicine\MedicineController;
 use App\Http\Controllers\MedicineGroup\MedicineGroupController;
 use App\Http\Controllers\Pathology\PathologyController;
+use App\Http\Controllers\PathologyCategory\PathologyCategoryController;
 use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SpecialistController;
@@ -110,6 +111,12 @@ Route::group([
     Route::get('/medicine/editdata/{id}', [MedicineController::class, 'medicineEditData']);
     Route::post('/medicine/edit', [MedicineController::class, 'medicineEdit']);
     Route::post('/medicine/delete', [MedicineController::class, 'delete']);
+
+    Route::get('/pathology-category',[PathologyCategoryController::class, 'index']);
+    Route::post('/pathology-category/create',[PathologyCategoryController::class, 'store']);
+    Route::get('/pathology-category/editdata/{id}', [PathologyCategoryController::class, 'pathologyCategoryEditData']);
+    Route::post('/pathology-category/edit', [PathologyCategoryController::class, 'pathologyCategoryEdit']);
+    Route::post('/pathology-category/delete', [PathologyCategoryController::class, 'delete']);
 
     Route::get('/pathology',[PathologyController::class, 'index']);
     Route::post('/pathology/create',[PathologyController::class, 'store']);

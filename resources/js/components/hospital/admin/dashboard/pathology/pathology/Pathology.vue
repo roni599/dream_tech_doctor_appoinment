@@ -22,6 +22,7 @@
                     <thead class="table-light">
                         <tr>
                             <th>Sl No</th>
+                            <th>Pathology-Category-Name</th>
                             <th>Pathology Name</th>
                             <th>Price</th>
                             <th>Status</th>
@@ -31,6 +32,7 @@
                     <tbody>
                         <tr v-for="(pathology, index) in pathologies" :key="pathology.id">
                             <td>{{ index + 1 }}</td>
+                            <td>{{ pathology.category.name }}</td>
                             <td>{{ pathology.name }}</td>
                             <td>{{ pathology.price }}</td>
                             <td>

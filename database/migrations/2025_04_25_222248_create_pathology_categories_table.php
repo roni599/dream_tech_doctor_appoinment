@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pathologies', function (Blueprint $table) {
+        Schema::create('pathology_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('price');
             $table->boolean('status')->default(true);
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('pathology_category_id')->constrained('pathology_categories')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pathologies');
+        Schema::dropIfExists('pathology_categories');
     }
 };
