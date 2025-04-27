@@ -10,6 +10,7 @@ use App\Models\Doctor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AppointmentController extends Controller
 {
@@ -57,6 +58,7 @@ class AppointmentController extends Controller
                 "appointby" => 'Hospital',
                 "doctor_id" => $request->input('doctor_id'),
                 "department_id" => $request->input('department_category_id'),
+                'password' => Hash::make('12345'),
             ]);
             
             // return response()->json(['message' => 'Department Category stored successfully'], 201);

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('Sl_no')->nullable();
             $table->string('patient_mobile')->nullable();
+            $table->string('password')->nullable();
             $table->string('visit_date')->nullable(); 
             $table->string('patient_name')->nullable();
             $table->string('patient_address')->nullable();

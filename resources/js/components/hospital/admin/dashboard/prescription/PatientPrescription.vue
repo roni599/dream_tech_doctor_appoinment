@@ -2,17 +2,17 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h5 class="text-center text-muted mb-2">Visited Patient Appoinment List</h5>
-                <!-- <h6 class="text-muted mb-2 text-center">Date : {{ today }}</h6> -->
+                <h5 class="text-center text-muted mb-2">Today Patient Appoinment List</h5>
+                <h6 class="text-muted mb-2 text-center">Date : {{ today }}</h6>
                 <div class="mb-3 d-flex justify-content-between gap-3 w-100">
                     <div class="w-100">
                         <input type="text" v-model="patient_search.email_phone" class="form-control w-100"
-                            placeholder="Patient Email / Phone" @input="AppoinmentPatientFetch"/>
+                            placeholder="Patient Email / Phone" @input="AppoinmentPatientFetch" />
                     </div>
-                    <div class="w-100">
+                    <!-- <div class="w-100">
                         <input type="date" v-model="patient_search.date" class="form-control w-100"
-                            placeholder="Select Date" @input="AppoinmentPatientFetch"/>
-                    </div>
+                            placeholder="Select Date" @input="AppoinmentPatientFetch" />
+                    </div> -->
                 </div>
 
 
@@ -113,19 +113,19 @@ import { onMounted, ref } from 'vue';
 import axios from "axios";
 import Cookies from "js-cookie";
 export default {
-    name: "PatientList",
+    name: 'PatientPrescription',
     setup() {
         const access_token = ref('');
         const patientList = ref([]);
         const today = ref(new Date().toISOString().split('T')[0]);
         const patient_search = ref({
             email_phone: '',
-            date: '',
+            date: today.value,
         })
 
         const AppoinmentPatientFetch = async () => {
             try {
-                const response = await axios.get('/api/auth/doctor-appoinment-patient', {
+                const response = await axios.get('/api/auth/doctor-appoinment-prescription-patient', {
                     params: patient_search.value,
                     headers: {
                         'Authorization': `Bearer ${access_token.value}`

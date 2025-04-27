@@ -247,11 +247,11 @@
 
                         <li v-show="role === 'Doctor'" class="dropdown">
                             <router-link to="/patient-list" href="#" class="menu-toggle nav-link has-dropdown"><i
-                                    class="fa-solid fa-user-doctor"></i><span>Patient</span></router-link>
+                                    class="fa-solid fa-user-doctor"></i><span>Visited Patient List</span></router-link>
                         </li>
                         <li v-show="role === 'Doctor'" class="dropdown" style="cursor: pointer;">
-                            <router-link to="/prescription" class="menu-toggle nav-link has-dropdown"><i
-                                    class="fa-solid fa-prescription"></i><span>Prescription</span></router-link>
+                            <router-link to="/patient-prescription" class="menu-toggle nav-link has-dropdown"><i
+                                    class="fa-solid fa-prescription"></i><span>Patient-Prescription</span></router-link>
                         </li>
 
                     </ul>

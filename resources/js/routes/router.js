@@ -55,10 +55,12 @@ import MedicineGoup from '../components/hospital/admin/dashboard/pharmacy/medici
 import MedicinegroupCreate from '../components/hospital/admin/dashboard/pharmacy/medicine-group/MedicinegroupCreate.vue';
 import MedicinegroupEdit from '../components/hospital/admin/dashboard/pharmacy/medicine-group/MedicinegroupEdit.vue';
 
+import PatientPrescription from '../components/hospital/admin/dashboard/prescription/PatientPrescription.vue';
 import Prescription from '../components/hospital/admin/dashboard/prescription/Prescription.vue';
 
 import PatientList from '../components/hospital/admin/dashboard/doctor/patient/PatientList.vue';
 import Patient from '../components/hospital/admin/dashboard/doctor/patient/Patient.vue';
+import PatientDetails from '../components/hospital/admin/dashboard/prescription/PatientDetails.vue';
 
 import Category from '../components/hospital/admin/dashboard/pathology/pathology-category/Category.vue';
 import CategoryCreate from '../components/hospital/admin/dashboard/pathology/pathology-category/CategoryCreate.vue';
@@ -421,7 +423,24 @@ const routes = [
                 },
                 meta: { hideMainContent: true },
             },
-
+            {
+                path: '/patient-prescription',
+                name: 'PatientPrescription',
+                components: {
+                    default: Dashboard,
+                    content: PatientPrescription,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/patient-details',
+                name: 'PatientDetails',
+                components: {
+                    default: Dashboard,
+                    content: PatientDetails,
+                },
+                meta: { hideMainContent: true },
+            },
             {
                 path: '/prescription',
                 name: 'Prescription',

@@ -14,6 +14,7 @@ class Appointment extends Model
     //     'Sl_no',
     //     'visit_date',
     //     'patient_mobile',
+    //     'password',
     //     'patient_name',
     //     'patient_address',
     //     'gender',

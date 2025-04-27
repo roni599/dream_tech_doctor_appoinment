@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class DoctorController extends Controller
 {
@@ -134,6 +135,7 @@ class DoctorController extends Controller
             $doctor = Doctor::create([
                 'deparment_category' => $request->deparment_category,
                 'regnum' => $request->regnum,
+                'password' => Hash::make('12345'),
                 'doctorName' => $request->doctorName,
                 'email' => $request->email,
                 'age' => $request->age,
@@ -343,17 +345,54 @@ class DoctorController extends Controller
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }
-    public function DoctorAppoinmentPatient()
-    {
 
+    public function DoctorAppoinmentPatient(Request $request)
+    {
         $doctor = Auth::guard('doctor_api')->user();
         if (!$doctor) {
             return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
         }
 
-        $appointments = Appointment::with('user','reference')
+        $query = Appointment::with(['user', 'reference'])
             ->where('doctor_id', $doctor->id)
-            ->get();
+            ->where('status', 0);
+
+        if (!empty($request->email_phone)) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('patient_mobile', 'like', '%' . $request->email_phone . '%');
+            });
+        }
+
+        if (!empty($request->date)) {
+            $query->whereDate('visit_date', $request->date);
+        }
+
+        $appointments = $query->get();
+
+        return response()->json($appointments, 200);
+    }
+    public function DoctorPatientPrescription(Request $request)
+    {
+        $doctor = Auth::guard('doctor_api')->user();
+        if (!$doctor) {
+            return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
+        }
+
+        $query = Appointment::with(['user', 'reference'])
+            ->where('doctor_id', $doctor->id)
+            ->where('status', 1);
+
+        if (!empty($request->email_phone)) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('patient_mobile', 'like', '%' . $request->email_phone . '%');
+            });
+        }
+
+        // if (!empty($request->date)) {
+        //     $query->whereDate('visit_date', $request->date);
+        // }
+
+        $appointments = $query->get();
 
         return response()->json($appointments, 200);
     }
