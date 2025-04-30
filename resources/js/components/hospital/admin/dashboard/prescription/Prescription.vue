@@ -7,16 +7,16 @@
             <div class="row flex-grow-1">
               <nav class="col-md-2 sidebar d-none d-md-block">
                 <h6 class="p-2 rounded text-center text-white">Pathology List</h6>
-                <a href="#">Hematology Thalassemia <span><i class="fa-solid fa-plus"></i></span></a>
-                <a href="#">Diabetes Kidney <span><i class="fa-solid fa-plus"></i></span></a>
-                <a href="#">Disease Heart <span><i class="fa-solid fa-plus"></i></span></a>
-                <a href="#">Disease Anemia</a>
-                <a href="#">Profile Serum</a>
-                <a href="#">Electrolytes Liver</a>
-                <a href="#">Disease Thyroid</a>
-                <a href="#">Disorders Cancer</a>
-                <a href="#">Markers Endocrine</a>
-                <a href="#">Tests Drug</a>
+                <select class="form-select mb-3" aria-label="Pathology List" v-model="selectedCategoryId">
+                  <option selected disabled value="">Select Category</option>
+                  <option v-for="pathology in pathologies" :key="pathology.id" :value="pathology.id">{{
+                    pathology.name }}</option>
+                </select>
+                <select class="form-select mb-3" aria-label="Pathology List">
+                  <option selected disabled>Select Pathology</option>
+                  <option v-for="pathology in filteredPathologies" :key="pathology.id" :value="pathology.id">{{
+                    pathology.name }}</option>
+                </select>
               </nav>
 
               <main class="col-md-10 pt-2 d-flex flex-column content">
@@ -40,7 +40,8 @@
                   <div class="hospital_address_logo w-100 w-md-50 mb-3">
                     <div class="address_logo d-flex justify-content-start align-items-center">
                       <div class="hospital_logo">
-                        <img src="../../../../../../../public/doctor_html/images/logo.png" width="80" height="auto" alt="">
+                        <img src="../../../../../../../public/doctor_html/images/logo.png" width="80" height="auto"
+                          alt="">
                       </div>
                       <div class="hospital_address">
                         <h3 class="mb-0">Ibnsina Hospital</h3>
@@ -177,11 +178,48 @@
 </template>
 
 <script>
+import { ref, onMounted, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import Cookies from 'js-cookie';
 export default {
   name: 'Prescription',
   setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const selectedCategoryId = ref('')
+    const access_token = ref('');
+    const pathologies = ref([]);
+    const fetchPathology = async () => {
+      try {
+        const response = await axios.get('/api/auth/pathology', {
+          headers: {
+            'Authorization': `Bearer ${access_token.value}`
+          }
+        });
+        console.log(response.data)
+        if (response.data && response.status === 200 && Array.isArray(response.data)) {
+          pathologies.value = response.data;
+        } else {
+          console.error("Data is not in expected format:", response.data);
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    const filteredPathologies = computed(() => {
+      return pathologies.value
+        .flatMap(category => category.pathologies)
+        .filter(p => p.pathology_category_id === selectedCategoryId.value); 
+    });
+    onMounted(async () => {
+      access_token.value = Cookies.get('access_token');
+      const patientId = route.query.id;
+      await fetchPathology();
+    })
     return {
-
+      pathologies,
+      selectedCategoryId,
+      filteredPathologies
     }
   }
 }
@@ -191,7 +229,7 @@ export default {
 .sidebar {
   background-color: #f4f6ff;
   min-height: 100vh;
-  padding: 15px;
+  padding: 10px;
 }
 
 .sidebar a {

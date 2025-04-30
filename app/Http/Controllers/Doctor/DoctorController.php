@@ -373,6 +373,7 @@ class DoctorController extends Controller
     }
     public function DoctorPatientPrescription(Request $request)
     {
+        // return response()->json($request->all());
         $doctor = Auth::guard('doctor_api')->user();
         if (!$doctor) {
             return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
@@ -388,9 +389,9 @@ class DoctorController extends Controller
             });
         }
 
-        // if (!empty($request->date)) {
-        //     $query->whereDate('visit_date', $request->date);
-        // }
+        if (!empty($request->date)) {
+            $query->whereDate('visit_date', $request->date);
+        }
 
         $appointments = $query->get();
 

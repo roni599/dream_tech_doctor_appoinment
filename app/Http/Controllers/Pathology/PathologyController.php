@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pathology;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePathologyRequest;
 use App\Models\Pathology;
+use App\Models\PathologyCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -14,16 +15,31 @@ class PathologyController extends Controller
     public function index()
     {
         $user = Auth::guard('user_api')->user();
+        $doctor = Auth::guard('doctor_api')->user();
 
-        if (!$user) {
-            return response()->json(['error' => 'Unauthorized – Admin access only'], 401);
+        if (!$user && !$doctor) {
+            return response()->json(['error' => 'Unauthorized – Admin or Doctor access only'], 401);
         }
-        $pathology = Pathology::where('user_id', $user->id)
-            ->with('user','category')
-            ->get();
 
-        return response()->json($pathology, 200);
+        if ($doctor) {
+            $pathology = PathologyCategory::where('user_id', $doctor->user_id)
+                ->whereHas('pathologies')
+                ->with('user', 'pathologies')
+                ->get();
+
+            return response()->json($pathology, 200);
+        }
+
+        if ($user) {
+            $pathology = PathologyCategory::where('user_id', $user->id)
+                ->whereHas('pathologies') 
+                ->with('user', 'pathologies')
+                ->get();
+
+            return response()->json($pathology, 200);
+        }
     }
+
     public function store(StorePathologyRequest $request)
     {
         $user = Auth::guard('user_api')->user();
@@ -51,7 +67,7 @@ class PathologyController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Unauthorized – Admin access only'], 401);
         }
-        $pathology = Pathology::with('user','category')->find($id);
+        $pathology = Pathology::with('user', 'category')->find($id);
         if ($pathology) {
             return response()->json($pathology, 200);
         } else {
@@ -67,11 +83,11 @@ class PathologyController extends Controller
     public function pathologyEdit(Request $request)
     {
         $user = Auth::guard('user_api')->user();
-    
+
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-    
+
 
         $validated = $request->validate([
             'id' => 'required|integer|exists:pathologies,id',
@@ -85,9 +101,9 @@ class PathologyController extends Controller
             'status' => 'nullable|in:0,1',
             'pathology_category_id' => 'required|exists:pathology_categories,id',
         ]);
-    
+
         $pathology = Pathology::find($validated['id']);
-    
+
         $pathology->update([
             'name' => $validated['name'],
             'price' => $validated['price'],
@@ -95,13 +111,13 @@ class PathologyController extends Controller
             'status' => $request->input('status', $pathology->status),
             'user_id' => $user->id,
         ]);
-    
+
         return response()->json([
             'message' => 'Pathology updated successfully.',
             'pathology' => $pathology
         ], 200);
     }
-    
+
     public function delete(Request $request)
     {
         $user = Auth::guard('user_api')->user();

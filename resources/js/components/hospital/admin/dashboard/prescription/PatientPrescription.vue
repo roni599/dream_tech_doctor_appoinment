@@ -89,7 +89,10 @@
                                 <td>{{ patient.reference?.name || '-' }}</td>
                                 <td>{{ patient.appointby }}</td>
                                 <td class="text-center text-info" style="cursor: pointer;">
-                                    <router-link to="/patient-details">
+                                    <router-link :to="{
+                                        path: '/patient-details',
+                                        query: { id: patient.id }
+                                    }">
                                         <i class="fa-solid fa-eye"></i>
                                     </router-link>
                                 </td>

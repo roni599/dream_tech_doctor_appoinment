@@ -31,8 +31,11 @@
                                 <td><i class="fa-solid fa-eye"></i></td>
                                 <td class="bg-success"></td>
                                 <td>
-                                    <router-link to="/prescription">
-                                        <button class="btn btn-sm btn-primary">+</button>
+                                    <router-link :to="{
+                                        path: '/prescription',
+                                        query: { id: 1 }
+                                    }">
+                                        <i class="fa-solid fa-eye"></i>
                                     </router-link>
                                 </td>
                             </tr>
@@ -45,9 +48,17 @@
 </template>
 
 <script>
+import { onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 export default {
     name: 'PatientDetails',
     setup() {
+        const router = useRouter();
+        const route = useRoute();
+        onMounted(async()=>{
+            const patientId = route.query.id;
+            console.log(patientId)
+        })
         return {
 
         }

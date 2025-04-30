@@ -71,6 +71,7 @@ export default {
                         'Authorization': `Bearer ${access_token.value}`
                     }
                 });
+                console.log(response)
                 if (response.data && response.status === 200) {
                     pathologies.value = response.data;
                 }
