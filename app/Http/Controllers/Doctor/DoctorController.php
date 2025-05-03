@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Doctor;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Doctor;
+use App\Models\Prescription;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -396,5 +397,42 @@ class DoctorController extends Controller
         $appointments = $query->get();
 
         return response()->json($appointments, 200);
+    }
+
+    public function prescriptionStore(Request $request)
+    {
+        $request->validate([
+            'appoint_id' => 'required|exists:appointments,id',
+            'blood_pressure_up' => 'nullable|string',
+            'blood_pressure_down' => 'nullable|string',
+            'medicineArray' => 'required|array',
+            'pathologyArray' => 'nullable|array',
+        ]);
+
+        $doctor = Auth::guard('doctor_api')->user();
+        if (!$doctor) {
+            return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
+        }
+
+        $prescription = Prescription::create([
+            'appointment_id' => $request->appoint_id,
+            'doctor_id' => $doctor->id,
+            'blood_pressure_up' => $request->blood_pressure_up,
+            'blood_pressure_down' => $request->blood_pressure_down,
+            'medicine' => $request->medicineArray,
+            'pathologies' => $request->pathologyArray ?? [],
+            'visit_date' => $request->visit_date
+        ]);
+        $prescription->load(['doctor.user', 'appointment']);
+        return response()->json([
+            'message' => 'Prescription saved successfully',
+            'data' => $prescription,
+        ], 201);
+    }
+    public function prescription()
+    {
+        $prescriptions = Prescription::with(['doctor.user', 'appointment'])->get(); // removed latest()
+
+        return response()->json($prescriptions,200);
     }
 }

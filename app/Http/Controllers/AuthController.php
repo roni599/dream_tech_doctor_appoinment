@@ -366,9 +366,18 @@ class AuthController extends Controller
             }
 
             // Check and return authenticated Doctor
+            // if (auth('doctor_api')->check()) {
+            //     return response()->json([
+            //         'user' => auth('doctor_api')->user(),
+            //         'role' => 'Doctor'
+            //     ]);
+            // }
+
             if (auth('doctor_api')->check()) {
+                $user = auth('doctor_api')->user()->load('user');
+            
                 return response()->json([
-                    'user' => auth('doctor_api')->user(),
+                    'user' => $user, // now includes doctor + user
                     'role' => 'Doctor'
                 ]);
             }

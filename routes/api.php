@@ -53,6 +53,8 @@ Route::group([
     Route::get('/hospital-doctor/doctor-viewoffline/{doctor_id}', [DoctorController::class, 'viewDoctorOffline']);
     Route::get('/doctor-appoinment-patient',[DoctorController::class,'DoctorAppoinmentPatient']);
     Route::get('/doctor-appoinment-prescription-patient',[DoctorController::class,'DoctorPatientPrescription']);
+    Route::post('/doctor/patient/prescription/store',[DoctorController::class, 'prescriptionStore']);
+    Route::get('/doctor/patient/prescription',[DoctorController::class, 'prescription']);
     
     Route::get('/symptoms', [SymptomController::class, 'index']);
     Route::post('/symptoms/store', [SymptomController::class, 'store']);
@@ -113,6 +115,8 @@ Route::group([
     Route::post('/medicine/edit', [MedicineController::class, 'medicineEdit']);
     Route::post('/medicine/delete', [MedicineController::class, 'delete']);
 
+    Route::get('/medicine/list',[MedicineController::class, 'doctorUserMedicine']);
+
     Route::get('/pathology-category',[PathologyCategoryController::class, 'index']);
     Route::post('/pathology-category/create',[PathologyCategoryController::class, 'store']);
     Route::get('/pathology-category/editdata/{id}', [PathologyCategoryController::class, 'pathologyCategoryEditData']);
@@ -124,6 +128,11 @@ Route::group([
     Route::get('/pathology/editdata/{id}', [PathologyController::class, 'pathologyEditData']);
     Route::post('/pathology/edit', [PathologyController::class, 'pathologyEdit']);
     Route::post('/pathology/delete', [PathologyController::class, 'delete']);
+
+    Route::get('/pathology/list',[PathologyController::class, 'doctorUserPathology']);
+
+    
+    
 });
 
 Route::get('home/hospital-doctor',[HomeController::class,'doctorshow']);

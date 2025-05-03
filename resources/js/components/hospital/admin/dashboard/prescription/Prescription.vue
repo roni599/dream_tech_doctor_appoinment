@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid" style="margin-top: -100px;">
-    <div class="maindiv">
+    <div class="maindiv" v-show="!currentComponent">
       <div class="card">
         <div class="card-body">
           <div class="container-fluid content-wrapper">
@@ -12,9 +12,9 @@
                   <option v-for="pathology in pathologies" :key="pathology.id" :value="pathology.id">{{
                     pathology.name }}</option>
                 </select>
-                <select class="form-select mb-3" aria-label="Pathology List">
+                <select class="form-select mb-3" aria-label="Pathology List" @change="addPathology($event)">
                   <option selected disabled>Select Pathology</option>
-                  <option v-for="pathology in filteredPathologies" :key="pathology.id" :value="pathology.id">{{
+                  <option v-for="pathology in filteredPathologies" :key="pathology.id" :value="pathology.name">{{
                     pathology.name }}</option>
                 </select>
               </nav>
@@ -23,47 +23,53 @@
                 <div
                   class="doctor_details_hospital d-flex flex-column-reverse flex-md-row justify-content-between align-items-center w-100 p-1 mb-md-2">
                   <div class="doctorName_details w-100 w-md-50 mb-2 mb-md-0">
-                    <h6 class="">Dr. Md. Jasim Uddin Nizami</h6>
-                    <div class="doctor_details">
-                      <p class="mb-0">MBBS DMU FCPS MS</p>
-                      <p class="mb-0">WHO Clinical Polw On Child Urologist</p>
-                      <p class="mb-0">Polw On Child Urologist</p>
-                      <p class="fw-bold mb-0">Specialist</p>
-                      <p class="mb-0">Child, BabyCare, Urologists, Medicine</p>
-                      <p class="mb-0">Hfdngf, Reaset</p>
-                      <p class="fw-bold mb-0">Proposer</p>
-                      <p class="mb-0">Department of Child Surgery</p>
-                      <p class="mb-0">Sohid Sorowerdy Medical Collge</p>
-                      <p class="mb-0">01984-994406</p>
+                    <h6 class="mb-2">{{ doctor.doctorName }}</h6>
+                    <div class="doctor_details mb-2">
+                      <p v-for="(line) in splitExperience(doctor.details)" :key="line.id" class="mb-0 line-tight">
+                        {{ line }}
+                      </p>
+                      <p class="mb-0 line-tight"><strong>Specialist: </strong> <br>
+                        <span v-for="(specialist, index) in doctor.Specialist" :key="index">
+                          {{ specialist }}<span v-if="index !== doctor.Specialist.length - 1">, </span>
+                        </span>
+                      </p>
+                      <p class="fw-bold mb-0 line-tight">Proposer</p>
+                      <p class="mb-0 line-tight">Department of Child Surgery</p>
+                      <p class="mb-1 line-tight">Sohid Sorowerdy Medical Collge</p>
+                      <p class="fw-bold mb-0 line-tight">Reg No: </p>
+                      <p class="mb-1 line-tight">{{ doctor.regnum }}</p>
+                      <p class="fw-bold mb-0 line-tight">Contact: </p>
+                      <p class="mb-0 line-tight">{{ doctor.mobile }}</p>
                     </div>
                   </div>
                   <div class="hospital_address_logo w-100 w-md-50 mb-3">
                     <div class="address_logo d-flex justify-content-start align-items-center">
                       <div class="hospital_logo">
-                        <img src="../../../../../../../public/doctor_html/images/logo.png" width="80" height="auto"
-                          alt="">
+                        <img v-if="doctor.user" :src="`/hospital/backend/img/users/logo/${doctor.user.logo}`"
+                          alt="User Logo" width="80" height="auto">
                       </div>
-                      <div class="hospital_address">
-                        <h3 class="mb-0">Ibnsina Hospital</h3>
-                        <p class="mb-0">House# 68, Road # 15/A, Dhanmondi, Dhaka-1206</p>
-                        <p class="mb-0">0194-994406, 01778344090</p>
+                      <div class="ihospital_address line-tight">
+                        <h3 class="mb-0">{{ doctor.user?.hospital_name }}</h3>
+                        <p class="mb-1 line-tight">{{ doctor.user?.location_details }}</p>
+                        <p class="mb-0 line-tight">{{ doctor.user?.mobile_number_1 }}, {{ doctor.user?.mobile_number_2
+                        }}</p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="d-md-none mt-md-3">
-                  <select class="form-select mb-3" aria-label="Pathology List">
+                  <select class="form-select mb-3" aria-label="Pathology List" v-model="selectedCategoryId">
+                    <option selected disabled value="">Select Category</option>
+                    <option v-for="pathology in pathologies" :key="pathology.id" :value="pathology.id">{{
+                      pathology.name }}</option>
+                  </select>
+                </div>
+
+                <div class="d-md-none mt-md-3">
+                  <select class="form-select mb-3" aria-label="Pathology List" @change="addPathology($event)">
                     <option selected disabled>Select Pathology</option>
-                    <option value="hematology-thalassemia">Hematology Thalassemia</option>
-                    <option value="diabetes-kidney">Diabetes Kidney</option>
-                    <option value="disease-heart">Disease Heart</option>
-                    <option value="disease-anemia">Disease Anemia</option>
-                    <option value="profile-serum">Profile Serum</option>
-                    <option value="electrolytes-liver">Electrolytes Liver</option>
-                    <option value="disease-thyroid">Disease Thyroid</option>
-                    <option value="disorders-cancer">Disorders Cancer</option>
-                    <option value="markers-endocrine">Markers Endocrine</option>
-                    <option value="tests-drug">Tests Drug</option>
+                    <option v-for="pathology in filteredPathologies" :key="pathology.id" :value="pathology.name">{{
+                      pathology.name }}</option>
                   </select>
                 </div>
 
@@ -79,7 +85,7 @@
                           <th class="custom-height">Age</th>
                           <td class="custom-height">38</td>
                           <th class="custom-height">Date</th>
-                          <td class="custom-height">12.08.2024</td>
+                          <td class="custom-height">{{ form.visit_date }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -87,20 +93,26 @@
                 </div>
                 <div class="prescription d-flex flex-column h-100">
                   <div class="prescription_details w-100 d-flex flex-column flex-md-row flex-grow-1">
-                    <div class="pathology_test pt-2 d-flex flex-column align-items-center w-lg-25 w-md-100"
-                      style="background-color: #eae7f1; height: 63vh;">
-                      <p class="text-center mb-2">Blood Pressure</p>
-                      <div class="input_group d-flex flex-md-column flex-md-row align-items-center px-5 gap-1">
+                    <div class="pathology_test pt-2  w-lg-25 w-md-100" style="background-color: #eae7f1; height: 63vh;">
+                      <p class="text-center mb-0">Blood Pressure</p>
+                      <div class="input_group d-flex flex-md-column flex-md-row align-items-center px-5 gap-1 mb-2">
                         <div class="d-flex flex-column align-items-center w-100 w-md-50">
-                          <label for="up" class="mb-1">Up</label>
-                          <input type="text" name="up" id="up" class="text-center w-100">
+                          <label for="up" class="mb-0">Up</label>
+                          <input type="text" v-model="form.blood_pressure_up" name="up" id="up"
+                            class="text-center w-100">
                         </div>
                         <div class="d-flex flex-column align-items-center w-100 w-md-50">
-                          <label for="down" class="mb-1">Down</label>
-                          <input type="text" name="down" id="down" class="text-center w-100">
+                          <label for="down" class="mb-0">Down</label>
+                          <input v-model="form.blood_pressure_down" type="text" name="down" id="down"
+                            class="text-center w-100">
                         </div>
                       </div>
-
+                      <div class="pathology_list container mt-1">
+                        <p class="mb-0 text-center text-decoration-underline">Pathology Test</p>
+                        <ul>
+                          <li v-for="(patholoy, index) in form.pathologyArray" :key="index">{{ patholoy }}</li>
+                        </ul>
+                      </div>
                     </div>
                     <div class="prescription_text pt-2 w-100 w-md-75" style="background-color: white;">
                       <div class="row mb-3">
@@ -109,57 +121,73 @@
                         </div>
                         <div class="col-md-4">
                           <label>Medicine Group</label>
-                          <select class="form-select">
-                            <option>Select</option>
+                          <select class="form-select" v-model="medicine_groupId">
+                            <option selected disabled value="">Select</option>
+                            <option v-for="medicine in medicines" :key="medicine.id" :value="medicine.id">{{
+                              medicine.group_name }}</option>
                           </select>
                         </div>
                         <div class="col-md-4">
                           <label>Medicine Name</label>
-                          <select class="form-select">
+                          <select class="form-select" @change="addMedicine($event)">
                             <option>Select</option>
+                            <option v-for="medicine in filteredMedicines" :key="medicine.id"
+                              :value="`${medicine.dosages_description} : ${medicine.medicine_name}(${medicine.strength})`">
+                              {{ medicine.medicine_name }}
+                            </option>
                           </select>
                         </div>
                       </div>
-                      <div class="row mb-3 d-flex ms-md-1 justify-content-center align-items-center w-100">
-                        <div class="col-md-3">
-                          <label>Capsul: Agothmaisin</label>
-                          <select class="form-select">
-                            <option>Select</option>
-                          </select>
-                        </div>
-                        <div class="col-md-3">
-                          <label>Indicate</label>
-                          <select class="form-select">
-                            <option>Select</option>
-                          </select>
-                        </div>
-                        <div class="col-md-2">
-                          <label>Narration</label>
-                          <input type="text" class="form-control">
-                        </div>
-                        <div class="col-md-1">
-                          <p class="pt-md-4"><i class="fa-solid fa-plus"></i></p>
-                        </div>
-                      </div>
-                      <div class="row mb-3 d-flex justify-content-center ms-md-1 align-items-center w-100">
-                        <div class="col-md-3">
-                          <label>Tablet: Mattile</label>
-                          <select class="form-select">
-                            <option>Select</option>
-                          </select>
-                        </div>
-                        <div class="col-md-3">
-                          <label>Indicate</label>
-                          <select class="form-select">
-                            <option>Select</option>
-                          </select>
-                        </div>
-                        <div class="col-md-2">
-                          <label>Narration</label>
-                          <input type="text" class="form-control">
-                        </div>
-                        <div class="col-md-1">
-                          <p class="pt-md-4"><i class="fa-solid fa-plus"></i></p>
+                      <div>
+                        <div class="row mb-3 d-flex ms-md-1 justify-content-center align-items-center w-100"
+                          v-for="(row, index) in form.medicineArray" :key="index">
+                          <div class="col-md-3">
+                            <label>{{ row.medicine_name }}</label>
+                            <select class="form-select" v-model="row.capsul">
+                              <option selected disabled value="">Select</option>
+                              <option value="1+1+1">1+1+1</option>
+                              <option value="0+1+1">0+1+1</option>
+                              <option value="1+0+1">1+0+1</option>
+                              <option value="1+1+0">1+1+0</option>
+                              <option value="1+0+0">1+0+0</option>
+                              <option value="0+1+0">0+1+0</option>
+                              <option value="0+0+1">0+0+1</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-3">
+                            <label>Indicate</label>
+                            <select class="form-select" v-model="row.indicate">
+                              <option selected disabled value="">Select</option>
+                              <option value="চলবে">...চলবে</option>
+                              <option value="৫ দিন">...৫ দিন</option>
+                              <option value="১০ দিন">...১০ দিন</option>
+                              <option value="১৫ দিন">...১৫ দিন</option>
+                              <option value="১ মাস">...১ মাস</option>
+                              <option value="২ মাস">...২ মাস</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-2">
+                            <label>Narration</label>
+                            <select class="form-select" v-model="row.narration">
+                              <option selected disabled value="">Select</option>
+                              <option value="খাওয়ার পর">...খাওয়ার পর</option>
+                              <option value="খাওয়ার আগে">...খাওয়ার আগে</option>
+                              <option value="১ চামচ করে খাওয়ার পর">...১ চামচ করে খাওয়ার পর</option>
+                              <option value="১ চামচ করে খাওয়ার আগে">...১ চামচ করে খাওয়ার আগে</option>
+                              <option value="১/২ চামচ করে খাওয়ার পর">...১/২ চামচ করে খাওয়ার পর</option>
+                              <option value="১/২ চামচ করে খাওয়ার আগে">...১/২ চামচ করে খাওয়ার আগে</option>
+                              <option value="২ চামচ করে খাওয়ার পর">...২ চামচ করে খাওয়ার পর</option>
+                              <option value="২ চামচ করে খাওয়ার আগে">...২ চামচ করে খাওয়ার আগে</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-1 d-flex align-items-end pt-md-4">
+                            <button class="btn btn-outline-danger btn-sm" @click="removeRow(index)">
+                              <i class="fa-solid fa-minus"></i>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -170,33 +198,121 @@
           </div>
         </div>
         <div class="d-flex justify-content-end p-3 bg-white position-sticky bottom-0 w-100 shadow">
-          <button class="btn btn-success">Save & Print</button>
+          <button class="btn btn-success" @click="prescriptionSubmit">Save & Show</button>
         </div>
       </div>
     </div>
   </div>
+  <component v-if="currentComponent && prescriptionData" :is="currentComponent" :prescriptionData="prescriptionData"
+    @loadComponent="loadComponent"></component>
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch, shallowRef, markRaw, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import Cookies from 'js-cookie';
+import axios from "axios";
+import PrintPrescription from "./PrintPrescription.vue";
 export default {
+  components: { PrintPrescription },
   name: 'Prescription',
   setup() {
     const router = useRouter();
     const route = useRoute();
+    const currentComponent = shallowRef(null);
     const selectedCategoryId = ref('')
+    const medicine_groupId = ref('')
+
     const access_token = ref('');
     const pathologies = ref([]);
+    const medicines = ref([]);
+
+    const doctor = ref({});
+    const doctor_shedules = ref([]);
+    const symptoms = ref([]);
+    const prescriptionData = ref({});
+    const today = ref(new Date().toISOString().split('T')[0]);
+    const showPrint = ref(true);
+    const form = ref({
+      blood_pressure_up: '',
+      blood_pressure_down: '',
+      pathologyArray: [],
+      medicineArray: [],
+      appoint_id: '',
+      visit_date: today.value
+
+    })
+    const addPathology = async (event) => {
+      const selectedName = event.target.value
+      form.value.pathologyArray.push(selectedName);
+      console.log(form.value.pathologyArray);
+    }
+
+    const prescriptionSubmit = async () => {
+      try {
+        const response = await axios.post('/api/auth/doctor/patient/prescription/store', form.value,
+          {
+            headers: {
+              Authorization: `Bearer ${access_token.value}`
+            }
+          }
+        );
+        if (response.data && response.status === 201) {
+          prescriptionData.value = response.data.data;
+          showPrint.value = false;
+          await nextTick();
+          currentComponent.value = markRaw(PrintPrescription)
+          Swal.fire({
+            title: response.data.message,
+            icon: "success",
+            draggable: true
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    const loadComponent = () => {
+      // router.push({ name: 'Appoinment' });
+      // currentComponent.value = null;
+    };
+
+    const addMedicine = (event) => {
+      const selectedName = event.target.value
+      if (selectedName && !form.value.medicineArray.some(m => m.medicine_name === selectedName)) {
+        form.value.medicineArray.push({
+          medicine_name: selectedName,
+          capsul: '',
+          indicate: '',
+          narration: ''
+        })
+      }
+
+    }
+    const rows = ref([
+      { capsul: '', indicate: '', narration: '' }
+    ])
+
+    const addRow = () => {
+      form.value.medicineArray.push({
+        medicine_name: '',
+        capsul: '',
+        indicate: '',
+        narration: ''
+      });
+    }
+
+    const removeRow = (index) => {
+      form.value.medicineArray.splice(index, 1)
+    }
+
     const fetchPathology = async () => {
       try {
-        const response = await axios.get('/api/auth/pathology', {
+        const response = await axios.get('/api/auth/pathology/list', {
           headers: {
             'Authorization': `Bearer ${access_token.value}`
           }
         });
-        console.log(response.data)
         if (response.data && response.status === 200 && Array.isArray(response.data)) {
           pathologies.value = response.data;
         } else {
@@ -206,20 +322,152 @@ export default {
         console.log(error)
       }
     }
+
+    const fetchMedicine = async () => {
+      try {
+        const response = await axios.get('/api/auth/medicine/list', {
+          headers: {
+            'Authorization': `Bearer ${access_token.value}`
+          }
+        });
+        if (response.data && response.status === 200 && Array.isArray(response.data)) {
+          medicines.value = response.data;
+        } else {
+          console.error("Data is not in expected format:", response.data);
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     const filteredPathologies = computed(() => {
       return pathologies.value
         .flatMap(category => category.pathologies)
-        .filter(p => p.pathology_category_id === selectedCategoryId.value); 
+        .filter(p => p.pathology_category_id === selectedCategoryId.value);
     });
+
+    const filteredMedicines = computed(() => {
+      return medicines.value
+        .flatMap(category => category.medicines)
+        .filter(p => p.medicine_group_id === medicine_groupId.value);
+    });
+
+
+    const DoctorDataFetch = async () => {
+      try {
+        const response = await axios.get('/api/auth/me', {
+          headers: {
+            'Authorization': `Bearer ${access_token.value}`
+          }
+        });
+
+        if (response.data.role === 'Doctor') {
+          doctor.value = response.data.user;
+          symptoms.value = doctor.value.symptom;
+          let jsonString = doctor.value.Shedule;
+          doctor_shedules.value = JSON.parse(jsonString);
+        }
+      } catch (error) {
+        console.error('Error fetching hospital data:', error.response ? error.response.data : error.message);
+      }
+    };
+
+    const splitExperience = (experience) => {
+      const formattedExperience = (experience || "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => item.length > 0);
+
+      const groupedLines = [];
+      let firstLine = [];
+      let currentLine = [];
+
+      for (let i = 0; i < formattedExperience.length; i++) {
+        const item = formattedExperience[i];
+
+        if (firstLine.length < 3) {
+          if (item.length > 4) {
+            if (firstLine.length > 0) {
+              groupedLines.push(firstLine.join(", "));
+            }
+            groupedLines.push(item);
+            firstLine = [];
+            currentLine = formattedExperience.slice(i + 1);
+            break;
+          } else {
+            firstLine.push(item);
+          }
+        }
+
+        if (firstLine.length === 3 || i === formattedExperience.length - 1) {
+          groupedLines.push(firstLine.join(", "));
+          currentLine = formattedExperience.slice(i + 1);
+          break;
+        }
+      }
+      let tempLine = [];
+      currentLine.forEach((item) => {
+        if (item.length > 11) {
+          if (tempLine.length > 0) {
+            groupedLines.push(tempLine.join(", "));
+            tempLine = [];
+          }
+          groupedLines.push(item);
+        } else {
+          tempLine.push(item);
+          if (tempLine.length === 3) {
+            groupedLines.push(tempLine.join(", "));
+            tempLine = [];
+          }
+        }
+      });
+      if (tempLine.length > 0) {
+        groupedLines.push(tempLine.join(", "));
+      }
+
+      return groupedLines;
+    };
+
+
     onMounted(async () => {
       access_token.value = Cookies.get('access_token');
       const patientId = route.query.id;
+      form.value.appoint_id = route.query.id;
       await fetchPathology();
+      await DoctorDataFetch();
+      await fetchMedicine();
     })
+
+    watch(
+      () => form.value.medicineArray,
+      (newVal) => {
+        console.log('Updated medicine array:', JSON.stringify(newVal, null, 2))
+      },
+      { deep: true }
+    )
+
     return {
       pathologies,
       selectedCategoryId,
-      filteredPathologies
+      medicine_groupId,
+      filteredPathologies,
+      filteredMedicines,
+      doctor,
+      symptoms,
+      doctor_shedules,
+      splitExperience,
+      medicines,
+      addPathology,
+      form,
+      addRow,
+      rows,
+      removeRow,
+      addMedicine,
+      prescriptionSubmit,
+      showPrint,
+      prescriptionData,
+      currentComponent,
+      loadComponent
     }
   }
 }
@@ -230,6 +478,10 @@ export default {
   background-color: #f4f6ff;
   min-height: 100vh;
   padding: 10px;
+}
+
+.line-tight {
+  line-height: 1.5;
 }
 
 .sidebar a {
@@ -273,6 +525,10 @@ export default {
   .prescription_text {
     height: 100%;
   }
+
+  .line-tight {
+    line-height: 1.5;
+  }
 }
 
 @media (max-width: 767px) {
@@ -280,6 +536,10 @@ export default {
   .pathology_test,
   .prescription_text {
     height: auto;
+  }
+
+  .line-tight {
+    line-height: 1.5;
   }
 
   .prescription_details {
@@ -314,6 +574,10 @@ export default {
 @media (max-width: 768px) {
   .custom-height {
     height: 25px;
+  }
+
+  .line-tight {
+    line-height: 1.5;
   }
 }
 </style>

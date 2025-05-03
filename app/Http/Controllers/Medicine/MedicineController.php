@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Medicine;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MedicineRequest;
 use App\Models\Medicine;
+use App\Models\MedicineGroup;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,12 +14,38 @@ class MedicineController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::guard('user_api')->user();
         if ($user) {
-            $medicine = Medicine::with('medicineGroup')->get();
+            $medicine = Medicine::with('medicineGroup')->where('user_id',$user->id)->get();
             return response()->json($medicine, 200);
         }
         return response()->json(['error' => 'Unauthorized'], 401);
+    }
+    public function doctorUserMedicine()
+    {
+        $user = Auth::guard('user_api')->user();
+        $doctor = Auth::guard('doctor_api')->user();
+
+        if (!$user && !$doctor) {
+            return response()->json(['error' => 'Unauthorized – Admin or Doctor access only'], 401);
+        }
+
+        if ($doctor) {
+            $medicine = MedicineGroup::where('user_id', $doctor->user_id)
+                ->whereHas('medicines')
+                ->with('user', 'medicines')
+                ->get();
+
+            return response()->json($medicine, 200);
+        }
+
+        if ($user) {
+            $medicine = MedicineGroup::where('user_id', $user->id)
+                ->whereHas('medicines')
+                ->with('user', 'medicines')
+                ->get();
+            return response()->json($medicine, 200);
+        }
     }
     public function store(MedicineRequest $request)
     {

@@ -12,7 +12,22 @@ use Illuminate\Validation\Rule;
 
 class PathologyController extends Controller
 {
+
     public function index()
+    {
+        $user = Auth::guard('user_api')->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized – Admin access only'], 401);
+        }
+        $pathologies = Pathology::where('user_id', $user->id)
+            ->with('user', 'category')
+            ->get();
+
+        return response()->json($pathologies, 200);
+    }
+
+    public function doctorUserPathology()
     {
         $user = Auth::guard('user_api')->user();
         $doctor = Auth::guard('doctor_api')->user();
@@ -32,7 +47,7 @@ class PathologyController extends Controller
 
         if ($user) {
             $pathology = PathologyCategory::where('user_id', $user->id)
-                ->whereHas('pathologies') 
+                ->whereHas('pathologies')
                 ->with('user', 'pathologies')
                 ->get();
 
