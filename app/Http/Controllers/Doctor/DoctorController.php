@@ -406,6 +406,10 @@ class DoctorController extends Controller
             'blood_pressure_up' => 'nullable|string',
             'blood_pressure_down' => 'nullable|string',
             'medicineArray' => 'required|array',
+            'medicineArray.*.medicine_name' => 'required|string',
+            'medicineArray.*.capsul' => 'required|string',
+            'medicineArray.*.indicate' => 'required|string',
+            'medicineArray.*.narration' => 'required|string',
             'pathologyArray' => 'nullable|array',
         ]);
 
