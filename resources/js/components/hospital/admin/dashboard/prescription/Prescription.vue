@@ -364,9 +364,7 @@
             </div>
           </div>
         </div>
-        <div
-          class="d-flex justify-content-end p-3 bg-white position-sticky bottom-0 w-100 shadow"
-        >
+        <div class="d-flex justify-content-end p-3 bg-white position-sticky bottom-0 w-100 shadow">
           <button class="btn btn-success" @click="prescriptionSubmit">
             Save & Show
           </button>
@@ -467,8 +465,8 @@ export default {
       }
     };
     const loadComponent = () => {
-      // router.push({ name: 'Appoinment' });
-      // currentComponent.value = null;
+      router.push({ name: 'PatientPrescription' });
+      currentComponent.value = null;
     };
 
     const addMedicine = (event) => {

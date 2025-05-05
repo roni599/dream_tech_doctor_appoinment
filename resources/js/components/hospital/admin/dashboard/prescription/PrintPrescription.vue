@@ -121,7 +121,8 @@
                                             style="height: auto;" />
                                         <div class="signature-line"></div>
                                         <p class="fw-bold mb-0" style="white-space: pre-line; line-height: 1.2;">
-                                            {{ prescriptionData.doctor?.prescription_signature_style || 'Dr.Mr.XYZ\nMBBS(BCS)' }}
+                                            {{ prescriptionData.doctor?.prescription_signature_style ||
+                                                'Dr.Mr.XYZ\nMBBS(BCS)' }}
                                         </p>
                                         <p>{{ prescriptionData.visit_date }}</p>
                                     </div>
@@ -132,10 +133,14 @@
                 </div>
             </div>
         </div>
+        <button class="btn btn-success" style="margin-left: 10px; width: 250px;" @click="Print">
+            Save & Show
+        </button>
     </div>
 </template>
 
 <script>
+import PrescriptionPrintHelper from '../../../../Helpers/PrescriptionPrintHelper';
 export default {
     name: "PrintPrescription",
     props: {
@@ -204,9 +209,13 @@ export default {
 
             return groupedLines;
         };
-
+        const Print = () => {
+            PrescriptionPrintHelper.printPrescription(props.prescriptionData)
+        }
         return {
-            splitExperience
+            splitExperience,
+            closeAppointment,
+            Print
         }
     }
 }
@@ -221,6 +230,7 @@ body {
 .line-tight {
     line-height: 1.5;
 }
+
 
 .container_main {
     max-width: 1000px;
@@ -331,5 +341,4 @@ body {
         padding: 15px;
     }
 }
-
 </style>
