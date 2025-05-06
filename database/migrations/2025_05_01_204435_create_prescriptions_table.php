@@ -26,6 +26,7 @@ return new class extends Migration
     
             $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('cascade');
             $table->foreign('appointment_id')->references('id')->on('appointments')->onDelete('cascade');
+            $table->string('patient_phone');
             $table->timestamps();
         });
     }

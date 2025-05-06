@@ -374,7 +374,6 @@ class DoctorController extends Controller
     }
     public function DoctorPatientPrescription(Request $request)
     {
-        // return response()->json($request->all());
         $doctor = Auth::guard('doctor_api')->user();
         if (!$doctor) {
             return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
@@ -411,8 +410,8 @@ class DoctorController extends Controller
             'medicineArray.*.indicate' => 'required|string',
             'medicineArray.*.narration' => 'required|string',
             'pathologyArray' => 'nullable|array',
+            'patient_phone'=>'required|exists:appointments,patient_mobile'
         ]);
-
         $doctor = Auth::guard('doctor_api')->user();
         if (!$doctor) {
             return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
@@ -425,8 +424,15 @@ class DoctorController extends Controller
             'blood_pressure_down' => $request->blood_pressure_down,
             'medicine' => $request->medicineArray,
             'pathologies' => $request->pathologyArray ?? [],
-            'visit_date' => $request->visit_date
+            'visit_date' => $request->visit_date,
+            'patient_phone' => $request->patient_phone,
+
         ]);
+
+        $appointmentUpdate = Appointment::find($request->appoint_id);
+        $appointmentUpdate->status = false;
+        $appointmentUpdate->save();
+        
         $prescription->load(['doctor.user', 'appointment']);
         return response()->json([
             'message' => 'Prescription saved successfully',
@@ -437,6 +443,38 @@ class DoctorController extends Controller
     {
         $prescriptions = Prescription::with(['doctor.user', 'appointment'])->get(); // removed latest()
 
-        return response()->json($prescriptions,200);
+        return response()->json($prescriptions, 200);
     }
+    public function prescriptionFind(Request $request)
+    {
+        $patientPhone = $request->phone;
+        $doctor = Auth::guard('doctor_api')->user();
+        if (!$doctor) {
+            return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
+        }
+        $prescriptions = Prescription::with('appointment') 
+        ->where('patient_phone', $patientPhone)
+        ->get();
+        return response()->json($prescriptions,200);
+
+    }
+    public function appoinmentFind(Request $request)
+    {
+        $patientId = $request->patientId;
+        $visitDate = $request->today;
+        $doctor = Auth::guard('doctor_api')->user();
+        if (!$doctor) {
+            return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
+        }
+    
+        $appointment = Appointment::where('id', $patientId)
+        ->whereDate('visit_date', $visitDate)
+        ->first();
+        if (!$appointment) {
+            return response()->json(['message' => 'No appointment found for today'], 404);
+        }
+    
+        return response()->json($appointment,200);
+    }
+    
 }

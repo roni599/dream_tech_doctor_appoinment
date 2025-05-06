@@ -7,11 +7,11 @@
                 <div class="mb-3 d-flex justify-content-between gap-3 w-100">
                     <div class="w-100">
                         <input type="text" v-model="patient_search.email_phone" class="form-control w-100"
-                            placeholder="Patient Email / Phone" @input="AppoinmentPatientFetch"/>
+                            placeholder="Patient Email / Phone" @input="AppoinmentPatientFetch" />
                     </div>
                     <div class="w-100">
                         <input type="date" v-model="patient_search.date" class="form-control w-100"
-                            placeholder="Select Date" @input="AppoinmentPatientFetch"/>
+                            placeholder="Select Date" @input="AppoinmentPatientFetch" />
                     </div>
                 </div>
 
@@ -89,7 +89,13 @@
                                 <td>{{ patient.reference?.name || '-' }}</td>
                                 <td>{{ patient.appointby }}</td>
                                 <td class="text-center text-info" style="cursor: pointer;">
-                                    <router-link to="/patient-details">
+                                    <router-link :to="{
+                                        path: '/patient-details',
+                                        query: {
+                                            id: patient.id,
+                                            patient_phone: patient.patient_mobile
+                                        }
+                                    }">
                                         <i class="fa-solid fa-eye"></i>
                                     </router-link>
                                 </td>

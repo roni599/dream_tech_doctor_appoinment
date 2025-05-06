@@ -91,7 +91,9 @@
                                 <td class="text-center text-info" style="cursor: pointer;">
                                     <router-link :to="{
                                         path: '/patient-details',
-                                        query: { id: patient.id }
+                                        query: { id: patient.id ,
+                                            patient_phone:patient.patient_mobile 
+                                        }
                                     }">
                                         <i class="fa-solid fa-eye"></i>
                                     </router-link>

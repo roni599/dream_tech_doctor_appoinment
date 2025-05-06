@@ -9,31 +9,15 @@
                 <h6 class="p-2 rounded text-center text-white">
                   Pathology List
                 </h6>
-                <select
-                  class="form-select mb-3"
-                  aria-label="Pathology List"
-                  v-model="selectedCategoryId"
-                >
+                <select class="form-select mb-3" aria-label="Pathology List" v-model="selectedCategoryId">
                   <option selected disabled value="">Select Category</option>
-                  <option
-                    v-for="pathology in pathologies"
-                    :key="pathology.id"
-                    :value="pathology.id"
-                  >
+                  <option v-for="pathology in pathologies" :key="pathology.id" :value="pathology.id">
                     {{ pathology.name }}
                   </option>
                 </select>
-                <select
-                  class="form-select mb-3"
-                  aria-label="Pathology List"
-                  @change="addPathology($event)"
-                >
+                <select class="form-select mb-3" aria-label="Pathology List" @change="addPathology($event)">
                   <option selected disabled>Select Pathology</option>
-                  <option
-                    v-for="pathology in filteredPathologies"
-                    :key="pathology.id"
-                    :value="pathology.name"
-                  >
+                  <option v-for="pathology in filteredPathologies" :key="pathology.id" :value="pathology.name">
                     {{ pathology.name }}
                   </option>
                 </select>
@@ -41,27 +25,18 @@
 
               <main class="col-md-10 pt-2 d-flex flex-column content">
                 <div
-                  class="doctor_details_hospital d-flex flex-column-reverse flex-md-row justify-content-between align-items-center w-100 p-1 mb-md-2"
-                >
+                  class="doctor_details_hospital d-flex flex-column-reverse flex-md-row justify-content-between align-items-center w-100 p-1 mb-md-2">
                   <div class="doctorName_details w-100 w-md-50 mb-2 mb-md-0">
                     <h6 class="mb-2">{{ doctor.doctorName }}</h6>
                     <div class="doctor_details mb-2">
-                      <p
-                        v-for="line in splitExperience(doctor.details)"
-                        :key="line.id"
-                        class="mb-0 line-tight"
-                      >
+                      <p v-for="line in splitExperience(doctor.details)" :key="line.id" class="mb-0 line-tight">
                         {{ line }}
                       </p>
                       <p class="mb-0 line-tight">
                         <strong>Specialist: </strong> <br />
-                        <span
-                          v-for="(specialist, index) in doctor.Specialist"
-                          :key="index"
-                        >
+                        <span v-for="(specialist, index) in doctor.Specialist" :key="index">
                           {{ specialist
-                          }}<span v-if="index !== doctor.Specialist.length - 1"
-                            >,
+                          }}<span v-if="index !== doctor.Specialist.length - 1">,
                           </span>
                         </span>
                       </p>
@@ -77,17 +52,10 @@
                     </div>
                   </div>
                   <div class="hospital_address_logo w-100 w-md-50 mb-3">
-                    <div
-                      class="address_logo d-flex justify-content-start align-items-center"
-                    >
+                    <div class="address_logo d-flex justify-content-start align-items-center">
                       <div class="hospital_logo">
-                        <img
-                          v-if="doctor.user"
-                          :src="`/hospital/backend/img/users/logo/${doctor.user.logo}`"
-                          alt="User Logo"
-                          width="80"
-                          height="auto"
-                        />
+                        <img v-if="doctor.user" :src="`/hospital/backend/img/users/logo/${doctor.user.logo}`"
+                          alt="User Logo" width="80" height="auto" />
                       </div>
                       <div class="ihospital_address line-tight">
                         <h3 class="mb-0">{{ doctor.user?.hospital_name }}</h3>
@@ -103,34 +71,18 @@
                   </div>
                 </div>
                 <div class="d-md-none mt-md-3">
-                  <select
-                    class="form-select mb-3"
-                    aria-label="Pathology List"
-                    v-model="selectedCategoryId"
-                  >
+                  <select class="form-select mb-3" aria-label="Pathology List" v-model="selectedCategoryId">
                     <option selected disabled value="">Select Category</option>
-                    <option
-                      v-for="pathology in pathologies"
-                      :key="pathology.id"
-                      :value="pathology.id"
-                    >
+                    <option v-for="pathology in pathologies" :key="pathology.id" :value="pathology.id">
                       {{ pathology.name }}
                     </option>
                   </select>
                 </div>
 
                 <div class="d-md-none mt-md-3">
-                  <select
-                    class="form-select mb-3"
-                    aria-label="Pathology List"
-                    @change="addPathology($event)"
-                  >
+                  <select class="form-select mb-3" aria-label="Pathology List" @change="addPathology($event)">
                     <option selected disabled>Select Pathology</option>
-                    <option
-                      v-for="pathology in filteredPathologies"
-                      :key="pathology.id"
-                      :value="pathology.name"
-                    >
+                    <option v-for="pathology in filteredPathologies" :key="pathology.id" :value="pathology.name">
                       {{ pathology.name }}
                     </option>
                   </select>
@@ -142,11 +94,11 @@
                       <tbody>
                         <tr>
                           <th class="custom-height">Name</th>
-                          <td class="custom-height">Md. XYZ</td>
+                          <td class="custom-height">{{ patient.patient_name }}</td>
                           <th class="custom-height">Gender</th>
-                          <td class="custom-height">Male</td>
+                          <td class="custom-height">{{ patient.gender }}</td>
                           <th class="custom-height">Age</th>
-                          <td class="custom-height">38</td>
+                          <td class="custom-height">{{ patient.age }}</td>
                           <th class="custom-height">Date</th>
                           <td class="custom-height">{{ form.visit_date }}</td>
                         </tr>
@@ -155,40 +107,19 @@
                   </div>
                 </div>
                 <div class="prescription d-flex flex-column h-100">
-                  <div
-                    class="prescription_details w-100 d-flex flex-column flex-md-row flex-grow-1"
-                  >
-                    <div
-                      class="pathology_test pt-2 w-lg-25 w-md-100"
-                      style="background-color: #eae7f1; height: 63vh"
-                    >
+                  <div class="prescription_details w-100 d-flex flex-column flex-md-row flex-grow-1">
+                    <div class="pathology_test pt-2 w-lg-25 w-md-100" style="background-color: #eae7f1; height: 63vh">
                       <p class="text-center mb-0">Blood Pressure</p>
-                      <div
-                        class="input_group d-flex flex-md-column flex-md-row align-items-center px-5 gap-1 mb-2"
-                      >
-                        <div
-                          class="d-flex flex-column align-items-center w-100 w-md-50"
-                        >
+                      <div class="input_group d-flex flex-md-column flex-md-row align-items-center px-5 gap-1 mb-2">
+                        <div class="d-flex flex-column align-items-center w-100 w-md-50">
                           <label for="up" class="mb-0">Up</label>
-                          <input
-                            type="text"
-                            v-model="form.blood_pressure_up"
-                            name="up"
-                            id="up"
-                            class="text-center w-100"
-                          />
+                          <input type="text" v-model="form.blood_pressure_up" name="up" id="up"
+                            class="text-center w-100" />
                         </div>
-                        <div
-                          class="d-flex flex-column align-items-center w-100 w-md-50"
-                        >
+                        <div class="d-flex flex-column align-items-center w-100 w-md-50">
                           <label for="down" class="mb-0">Down</label>
-                          <input
-                            v-model="form.blood_pressure_down"
-                            type="text"
-                            name="down"
-                            id="down"
-                            class="text-center w-100"
-                          />
+                          <input v-model="form.blood_pressure_down" type="text" name="down" id="down"
+                            class="text-center w-100" />
                         </div>
                       </div>
                       <div class="pathology_list container mt-1">
@@ -198,64 +129,42 @@
                         <ul>
                           <li v-for="(pathology, index) in form.pathologyArray" :key="index" class="mb-2">
                             {{ pathology }}
-                            <button
-                              type="button"
-                              class="btn btn-sm btn-outline-danger ms-2"
-                              @click="form.pathologyArray.splice(index, 1)"
-                            >
+                            <button type="button" class="btn btn-sm btn-outline-danger ms-2"
+                              @click="form.pathologyArray.splice(index, 1)">
                               <i class="fa-solid fa-minus"></i>
                             </button>
                           </li>
                         </ul>
                       </div>
                     </div>
-                    <div
-                      class="prescription_text pt-2 w-100 w-md-75"
-                      style="background-color: white"
-                    >
+                    <div class="prescription_text pt-2 w-100 w-md-75" style="background-color: white">
                       <div class="row mb-3">
                         <div class="col-md-1 ms-md-5">
                           <h3>R<sub>X</sub></h3>
                         </div>
                         <div class="col-md-4">
                           <label>Medicine Group</label>
-                          <select
-                            class="form-select"
-                            v-model="medicine_groupId"
-                          >
+                          <select class="form-select" v-model="medicine_groupId">
                             <option selected disabled value="">Select</option>
-                            <option
-                              v-for="medicine in medicines"
-                              :key="medicine.id"
-                              :value="medicine.id"
-                            >
+                            <option v-for="medicine in medicines" :key="medicine.id" :value="medicine.id">
                               {{ medicine.group_name }}
                             </option>
                           </select>
                         </div>
                         <div class="col-md-4">
                           <label>Medicine Name</label>
-                          <select
-                            class="form-select"
-                            @change="addMedicine($event)"
-                          >
+                          <select class="form-select" @change="addMedicine($event)">
                             <option>Select</option>
-                            <option
-                              v-for="medicine in filteredMedicines"
-                              :key="medicine.id"
-                              :value="`${medicine.dosages_description} : ${medicine.medicine_name}(${medicine.strength})`"
-                            >
+                            <option v-for="medicine in filteredMedicines" :key="medicine.id"
+                              :value="`${medicine.dosages_description} : ${medicine.medicine_name}(${medicine.strength})`">
                               {{ medicine.medicine_name }}
                             </option>
                           </select>
                         </div>
                       </div>
                       <div>
-                        <div
-                          class="row mb-3 d-flex ms-md-1 justify-content-center align-items-center w-100"
-                          v-for="(row, index) in form.medicineArray"
-                          :key="index"
-                        >
+                        <div class="row mb-3 d-flex ms-md-1 justify-content-center align-items-center w-100"
+                          v-for="(row, index) in form.medicineArray" :key="index">
                           <div class="col-md-3">
                             <label>{{ row.medicine_name }}</label>
                             <select class="form-select" v-model="row.capsul">
@@ -268,9 +177,7 @@
                               <option value="0+1+0">0+1+0</option>
                               <option value="0+0+1">0+0+1</option>
                             </select>
-                            <div
-                              v-if="errors?.[`medicineArray.${index}.capsul`]"
-                            >
+                            <div v-if="errors?.[`medicineArray.${index}.capsul`]">
                               <div class="text-danger small">
                                 {{
                                   errors[
@@ -292,9 +199,7 @@
                               <option value="১ মাস">...১ মাস</option>
                               <option value="২ মাস">...২ মাস</option>
                             </select>
-                            <div
-                              v-if="errors?.[`medicineArray.${index}.indicate`]"
-                            >
+                            <div v-if="errors?.[`medicineArray.${index}.indicate`]">
                               <div class="text-danger small">
                                 {{
                                   errors[
@@ -332,11 +237,9 @@
                                 ...২ চামচ করে খাওয়ার আগে
                               </option>
                             </select>
-                            <div
-                              v-if="
-                                errors?.[`medicineArray.${index}.narration`]
-                              "
-                            >
+                            <div v-if="
+                              errors?.[`medicineArray.${index}.narration`]
+                            ">
                               <div class="text-danger small">
                                 {{
                                   errors[
@@ -348,10 +251,7 @@
                           </div>
 
                           <div class="col-md-1 d-flex align-items-end pt-md-4">
-                            <button
-                              class="btn btn-outline-danger btn-sm"
-                              @click="removeRow(index)"
-                            >
+                            <button class="btn btn-outline-danger btn-sm" @click="removeRow(index)">
                               <i class="fa-solid fa-minus"></i>
                             </button>
                           </div>
@@ -372,12 +272,8 @@
       </div>
     </div>
   </div>
-  <component
-    v-if="currentComponent && prescriptionData"
-    :is="currentComponent"
-    :prescriptionData="prescriptionData"
-    @loadComponent="loadComponent"
-  ></component>
+  <component v-if="currentComponent && prescriptionData" :is="currentComponent" :prescriptionData="prescriptionData"
+    @loadComponent="loadComponent"></component>
 </template>
 
 <script>
@@ -407,6 +303,9 @@ export default {
     const access_token = ref("");
     const pathologies = ref([]);
     const medicines = ref([]);
+    const patientId=ref('');
+    const patient=ref({});
+    
 
     const doctor = ref({});
     const doctor_shedules = ref([]);
@@ -421,6 +320,7 @@ export default {
       medicineArray: [],
       appoint_id: "",
       visit_date: today.value,
+      patient_phone:''
     });
     const errors = ref({});
     const addPathology = async (event) => {
@@ -440,6 +340,7 @@ export default {
             },
           }
         );
+        console.log(response)
         if (response.data && response.status === 201) {
           prescriptionData.value = response.data.data;
           showPrint.value = false;
@@ -574,6 +475,26 @@ export default {
       }
     };
 
+    const findAppointment = async () => {
+      try {
+        const response = await axios.get('/api/auth/doctor/patient/appoinment/find', {
+          params: { 
+            patientId: patientId.value,
+            today:today.value
+          },
+          headers: {
+            'Authorization': `Bearer ${access_token.value}`
+          }
+        });
+        if (response.data && response.status === 200) {
+          patient.value = response.data
+          form.value.patient_phone=response.data.patient_mobile
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     const splitExperience = (experience) => {
       const formattedExperience = (experience || "")
         .split(",")
@@ -632,11 +553,12 @@ export default {
 
     onMounted(async () => {
       access_token.value = Cookies.get("access_token");
-      const patientId = route.query.id;
+      patientId.value = route.query.id;
       form.value.appoint_id = route.query.id;
       await fetchPathology();
       await DoctorDataFetch();
       await fetchMedicine();
+      await findAppointment();
     });
 
     watch(
@@ -670,6 +592,8 @@ export default {
       currentComponent,
       loadComponent,
       errors,
+      patientId,
+      patient
     };
   },
 };
@@ -732,6 +656,7 @@ export default {
 }
 
 @media (max-width: 767px) {
+
   .pathology_test,
   .prescription_text {
     height: auto;
