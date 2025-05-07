@@ -133,8 +133,8 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-success" style="margin-left: 10px; width: 250px;" @click="Print">
-            Save & Show
+        <button class="btn btn-success" style="margin-left: 10px; width: 230px;" @click="Print">
+            Print Prescription
         </button>
     </div>
 </template>

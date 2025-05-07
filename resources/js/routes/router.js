@@ -57,6 +57,7 @@ import MedicinegroupEdit from '../components/hospital/admin/dashboard/pharmacy/m
 
 import PatientPrescription from '../components/hospital/admin/dashboard/prescription/PatientPrescription.vue';
 import Prescription from '../components/hospital/admin/dashboard/prescription/Prescription.vue';
+import PrescriptionEdit from '../components/hospital/admin/dashboard/prescription/PrescriptionEdit.vue';
 
 import PatientList from '../components/hospital/admin/dashboard/doctor/patient/PatientList.vue';
 import Patient from '../components/hospital/admin/dashboard/doctor/patient/Patient.vue';
@@ -447,6 +448,15 @@ const routes = [
                 components: {
                     default: Dashboard,
                     content: Prescription,
+                },
+                meta: { hideMainContent: true },
+            },
+            {
+                path: '/prescription-edit',
+                name: 'PrescriptionEdit',
+                components: {
+                  default: Dashboard,
+                  content: PrescriptionEdit,
                 },
                 meta: { hideMainContent: true },
             },

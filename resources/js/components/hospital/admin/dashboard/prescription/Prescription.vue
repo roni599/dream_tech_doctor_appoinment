@@ -303,9 +303,9 @@ export default {
     const access_token = ref("");
     const pathologies = ref([]);
     const medicines = ref([]);
-    const patientId=ref('');
-    const patient=ref({});
-    
+    const patientId = ref('');
+    const patient = ref({});
+
 
     const doctor = ref({});
     const doctor_shedules = ref([]);
@@ -320,13 +320,28 @@ export default {
       medicineArray: [],
       appoint_id: "",
       visit_date: today.value,
-      patient_phone:''
+      patient_phone: ''
     });
     const errors = ref({});
+    // const addPathology = async (event) => {
+    //   const selectedName = event.target.value;
+    //   form.value.pathologyArray.push(selectedName);
+    //   console.log(form.value.pathologyArray);
+    // };
+
     const addPathology = async (event) => {
       const selectedName = event.target.value;
-      form.value.pathologyArray.push(selectedName);
-      console.log(form.value.pathologyArray);
+
+      if (form.value.pathologyArray.includes(selectedName)) {
+        Swal.fire({
+          title: `The medicine "${selectedName}" is already added.`,
+          icon: "success",
+          draggable: true,
+        });
+      } else {
+        form.value.pathologyArray.push(selectedName);
+        console.log(form.value.pathologyArray);
+      }
     };
 
     const prescriptionSubmit = async () => {
@@ -370,12 +385,36 @@ export default {
       currentComponent.value = null;
     };
 
+    // const addMedicine = (event) => {
+    //   const selectedName = event.target.value;
+    //   if (
+    //     selectedName &&
+    //     !form.value.medicineArray.some((m) => m.medicine_name === selectedName)
+    //   ) {
+    //     form.value.medicineArray.push({
+    //       medicine_name: selectedName,
+    //       capsul: "",
+    //       indicate: "",
+    //       narration: "",
+    //     });
+    //   }
+    // };
     const addMedicine = (event) => {
       const selectedName = event.target.value;
-      if (
-        selectedName &&
-        !form.value.medicineArray.some((m) => m.medicine_name === selectedName)
-      ) {
+
+      if (!selectedName) return;
+
+      const isDuplicate = form.value.medicineArray.some(
+        (m) => m.medicine_name === selectedName
+      );
+
+      if (isDuplicate) {
+        Swal.fire({
+          title: `The medicine "${selectedName}" is already added.`,
+          icon: "success",
+          draggable: true,
+        });
+      } else {
         form.value.medicineArray.push({
           medicine_name: selectedName,
           capsul: "",
@@ -384,6 +423,7 @@ export default {
         });
       }
     };
+
     const rows = ref([{ capsul: "", indicate: "", narration: "" }]);
 
     const addRow = () => {
@@ -478,9 +518,9 @@ export default {
     const findAppointment = async () => {
       try {
         const response = await axios.get('/api/auth/doctor/patient/appoinment/find', {
-          params: { 
+          params: {
             patientId: patientId.value,
-            today:today.value
+            today: today.value
           },
           headers: {
             'Authorization': `Bearer ${access_token.value}`
@@ -488,7 +528,7 @@ export default {
         });
         if (response.data && response.status === 200) {
           patient.value = response.data
-          form.value.patient_phone=response.data.patient_mobile
+          form.value.patient_phone = response.data.patient_mobile
         }
       } catch (error) {
         console.error(error);
