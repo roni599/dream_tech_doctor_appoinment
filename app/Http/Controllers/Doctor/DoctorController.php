@@ -379,7 +379,7 @@ class DoctorController extends Controller
             return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
         }
 
-        $query = Appointment::with(['user', 'reference'])
+        $query = Appointment::with(['user', 'reference','doctor'])
             ->where('doctor_id', $doctor->id)
             ->where('status', 1);
 

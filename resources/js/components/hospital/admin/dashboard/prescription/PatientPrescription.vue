@@ -14,10 +14,8 @@
                             placeholder="Select Date" @input="AppoinmentPatientFetch" />
                     </div> -->
                 </div>
-
-
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="appointment-table">
                         <thead>
                             <tr>
                                 <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">S.L No</th>
@@ -40,7 +38,7 @@
                                 </th>
                                 <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Appoint By
                                 </th>
-                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Action</th>
+                                <th id="action" rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Action</th>
                             </tr>
                             <tr>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Discount</th>
@@ -88,7 +86,7 @@
                                 </td>
                                 <td>{{ patient.reference?.name || '-' }}</td>
                                 <td>{{ patient.appointby }}</td>
-                                <td class="text-center text-info" style="cursor: pointer;">
+                                <td id="eye" class="text-center text-info" style="cursor: pointer;">
                                     <router-link :to="{
                                         path: '/patient-details',
                                         query: { id: patient.id ,
@@ -102,11 +100,10 @@
                         </tbody>
 
                     </table>
-
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary me-2">Download PDF</button>
-                    <button class="btn btn-primary">Print</button>
+                    <button class="button_group btn btn-primary me-2" @click="downloadPdf(patientList[0]?.user?.hospital_name,patientList[0]?.user?.logo,patientList[0]?.doctor?.doctorName,patientList[0]?.doctor?.deparment_category,today)">Download PDF</button>
+                    <button class="btn btn-primary" @click="Print">Print</button>
                 </div>
             </div>
         </div>
@@ -117,6 +114,8 @@
 import { onMounted, ref } from 'vue';
 import axios from "axios";
 import Cookies from "js-cookie";
+import PatienPrescriptionPDF from '../../../../Helpers/PatientPrescriptionPDF';
+import PatientPrescriptionPrint from '../../../../Helpers/PatientPrescriptionPrint';
 export default {
     name: 'PatientPrescription',
     setup() {
@@ -136,13 +135,21 @@ export default {
                         'Authorization': `Bearer ${access_token.value}`
                     }
                 });
-                console.log(response);
                 if (response.data && response.status === 200) {
                     patientList.value = response.data;
+                    console.log(patientList.value[0].visit_date);
                 }
             } catch (error) {
                 console.error(error);
             }
+        }
+
+        const downloadPdf = (hospitalName, hospitalLogo,doctorName,departmentCategory,visit_date) => {
+            const pdfGenerator = new PatienPrescriptionPDF(hospitalName, hospitalLogo,doctorName,departmentCategory,visit_date);
+            pdfGenerator.generatePDF();
+        }
+        const Print = () => {
+            PatientPrescriptionPrint.printPrescription(patientList.value)
         }
 
         onMounted(async () => {
@@ -154,7 +161,9 @@ export default {
             today,
             patientList,
             patient_search,
-            AppoinmentPatientFetch
+            AppoinmentPatientFetch,
+            downloadPdf,
+            Print
         }
     }
 }
