@@ -2,7 +2,8 @@ class PatientPrescriptionPrint {
     static printPrescription(patientList) {
         const printArea = document.createElement('div');
         printArea.id = 'print-area';
-        let img=patientList[0].user.logo;
+        const defaultImage = '/hospital/backend/img/no_pic.png';
+        const img = patientList[0]?.user?.logo || defaultImage;
         document.body.appendChild(printArea);
         const content = `
         <style>
@@ -38,7 +39,7 @@ class PatientPrescriptionPrint {
                 .prescription-table th, .prescription-table td {
                     border: 1px solid black; /* Apply black border */
                     padding: 5px;
-                    font-size: 11px;
+                    font-size: 10px;
                     word-wrap: break-word;
                 }
 
@@ -64,11 +65,17 @@ class PatientPrescriptionPrint {
                     margin-bottom:10px;
                     text-align:center;
                 }
+                .thNarration{
+                    text-align:center;
+                }
             }
         </style>
         <div class="hospital_address_logo">
             <div class="image">
-                <img src="/hospital/backend/img/users/logo/${img}" alt="Hospital Logo" style="width: 90px; height: auto;">
+                <img src="/hospital/backend/img/users/logo/${img}" 
+                    alt="Hospital Logo" 
+                    style="width: 90px; height: auto;" 
+                    onerror="this.onerror=null; this.src='/hospital/backend/img/no_pic.png';">
             </div>
             <div class="image2">
                 <h3>${patientList[0].user?.hospital_name || 'N/A'}</h3>
@@ -96,14 +103,13 @@ class PatientPrescriptionPrint {
                         <th rowspan="2" >Visit Time</th>
                         <th rowspan="2" >Fee</th>
                         <th rowspan="3" >Payment Status</th>
-                        <th colspan="2" >Narration</th>
+                        <th colspan="2" class="thNarration" >Narration</th>
                         <th rowspan="2" >Reference</th>
                         <th rowspan="2" >Appoint By</th>
                     </tr>
                     <tr>
                         <th >Discount</th>
-                        <th >
-                        Narration <br> ( Discount or Free )</th>
+                        <th >Discount or Free</th>
                     </tr>
                 </thead>
     

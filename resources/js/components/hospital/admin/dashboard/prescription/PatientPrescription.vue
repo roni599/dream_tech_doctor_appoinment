@@ -18,11 +18,9 @@
                     <table class="table table-bordered" id="appointment-table">
                         <thead>
                             <tr>
-                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">S.L No</th>
-                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Patient
-                                    Name</th>
-                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Patient
-                                    Email / Phone</th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">S.L</th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Name</th>
+                                <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Phone</th>
                                 <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Age</th>
                                 <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Gender</th>
                                 <th rowspan="2" style="height: 30px; background-color: #1d93d2; color:white">Visit Time
@@ -42,8 +40,7 @@
                             </tr>
                             <tr>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Discount</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white;text-align: center;">
-                                    Narration <br> ( Discount or Free )</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white;text-align: center;">Discount or Free</th>
                             </tr>
                         </thead>
 
@@ -102,7 +99,7 @@
                     </table>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button class="button_group btn btn-primary me-2" @click="downloadPdf(patientList[0]?.user?.hospital_name,patientList[0]?.user?.logo,patientList[0]?.doctor?.doctorName,patientList[0]?.doctor?.deparment_category,today)">Download PDF</button>
+                    <button class="button_group btn btn-primary me-2" @click="downloadPdf(patientList[0]?.user?.hospital_name,patientList[0]?.user?.location_details,patientList[0]?.user?.mobile_number_1,patientList[0]?.user?.mobile_number_2,patientList[0]?.user?.logo,patientList[0]?.doctor?.doctorName,patientList[0]?.doctor?.deparment_category,today,pdfFileName)">Download PDF</button>
                     <button class="btn btn-primary" @click="Print">Print</button>
                 </div>
             </div>
@@ -121,6 +118,7 @@ export default {
     setup() {
         const access_token = ref('');
         const patientList = ref([]);
+        const pdfFileName=ref('printPrescription');
         const today = ref(new Date().toISOString().split('T')[0]);
         const patient_search = ref({
             email_phone: '',
@@ -137,15 +135,15 @@ export default {
                 });
                 if (response.data && response.status === 200) {
                     patientList.value = response.data;
-                    console.log(patientList.value[0].visit_date);
+                    console.log(patientList.value);
                 }
             } catch (error) {
                 console.error(error);
             }
         }
 
-        const downloadPdf = (hospitalName, hospitalLogo,doctorName,departmentCategory,visit_date) => {
-            const pdfGenerator = new PatienPrescriptionPDF(hospitalName, hospitalLogo,doctorName,departmentCategory,visit_date);
+        const downloadPdf = (hospitalName,address,mobile_number1,mobile_number_2, hospitalLogo,doctorName,departmentCategory,visit_date,pdfFileName) => {
+            const pdfGenerator = new PatienPrescriptionPDF(hospitalName,address,mobile_number1,mobile_number_2, hospitalLogo,doctorName,departmentCategory,visit_date,pdfFileName);
             pdfGenerator.generatePDF();
         }
         const Print = () => {
@@ -163,7 +161,8 @@ export default {
             patient_search,
             AppoinmentPatientFetch,
             downloadPdf,
-            Print
+            Print,
+            pdfFileName
         }
     }
 }
