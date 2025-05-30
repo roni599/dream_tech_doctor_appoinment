@@ -3,9 +3,18 @@
         <div class="maindiv" v-show="!currentComponent">
             <div
                 class="header-buttons d-flex flex-wrap justify-content-start justify-content-center justify-content-md-start mb-2">
-                <router-link to="/appoinment" class="btn btn-info text-white mb-2">All Appoinment</router-link>
+                <!-- <router-link to="/appoinment-list" class="btn btn-info text-white mb-2">All Appoinment</router-link>
                 <router-link to="/appoinment-report" class="btn btn-info text-white mb-2">Appoint Report</router-link>
                 <router-link to="/appoinment-doctor-report" class="btn btn-info text-white mb-2">Doctor Appoinment Report</router-link>
+                <router-link to="/doctor-visit" class="btn btn-info text-white mb-2">Doctor Visit</router-link> -->
+                <router-link to="/appoinment-list" class="btn btn-info text-white mb-2">Appoinment
+                    List</router-link>
+                <router-link to="/new-appoinment" class="btn btn-info text-white mb-2 bg-success">New
+                    Appoinment</router-link>
+                <router-link to="/appoinment-report" class="btn btn-info text-white mb-2">Appoinment
+                    Report</router-link>
+                <router-link to="/doctor-appoinment-report" class="btn btn-info text-white mb-2">Doctor Appoinment
+                    Report</router-link>
                 <router-link to="/doctor-visit" class="btn btn-info text-white mb-2">Doctor Visit</router-link>
             </div>
             <div class="card">
@@ -41,12 +50,12 @@
                             <thead>
                                 <tr>
                                     <th style="height: 30px; background-color: #1d93d2; color:white">S.L No</th>
+                                    <th style="height: 30px; background-color: #1d93d2; color:white">Appoint Date</th>
+                                    <th style="height: 30px; background-color: #1d93d2; color:white">User ID</th>
                                     <th style="height: 30px; background-color: #1d93d2; color:white">Patient Name</th>
-                                    <th style="height: 30px; background-color: #1d93d2; color:white">Patient Mobile /
-                                        Email
-                                    </th>
-                                    <th style="height: 30px; background-color: #1d93d2; color:white">Patient Gender</th>
-                                    <th style="height: 30px; background-color: #1d93d2; color:white">Patient Age</th>
+                                    <th style="height: 30px; background-color: #1d93d2; color:white">Mobile</th>
+                                    <th style="height: 30px; background-color: #1d93d2; color:white">Gender</th>
+                                    <th style="height: 30px; background-color: #1d93d2; color:white">Age</th>
                                     <th style="height: 30px; background-color: #1d93d2; color:white">Appoint</th>
                                     <th style="height: 30px; background-color: #1d93d2; color:white">Visit Time</th>
                                     <th style="height: 30px; background-color: #1d93d2; color:white">Payment</th>
@@ -64,6 +73,8 @@
                             <tbody v-else>
                                 <tr v-for="appoinment in appoinments" :key="appoinment.id">
                                     <td>{{ appoinment.Sl_no }}</td>
+                                    <td>{{ formatDate(appoinment.created_at) }}</td>
+                                    <td>{{ appoinment.id }}</td>
                                     <td>{{ appoinment.patient_name }}</td>
                                     <td>{{ appoinment.patient_mobile }}</td>
                                     <td>{{ appoinment.gender }}</td>
@@ -79,7 +90,8 @@
                                         <span class="text-info d-block d-md-inline" style="cursor: pointer;"
                                             @click="showAppoint(appoinment.id)"><i class="fa-solid fa-eye"></i></span>
                                         <span class="text-info d-block d-md-inline ms-md-1" style="cursor: pointer;"
-                                            @click="editAppoint(appoinment.id)"><i class="fa-solid fa-pen-to-square"></i></span>
+                                            @click="editAppoint(appoinment.id)"><i
+                                                class="fa-solid fa-pen-to-square"></i></span>
                                         <span class="text-danger d-block d-md-inline ms-md-1"><i
                                                 class="fa-solid fa-trash"></i></span>
                                     </td>
@@ -101,12 +113,13 @@
         </div>
     </div>
     <!-- <component v-if="currentComponent"  :is="currentComponent" :appointmentId="appointmentId" @loadComponent="loadComponent"></component> -->
-    <component v-if="currentComponent && appointmentId" :is="currentComponent" :appointmentId="appointmentId" @loadComponent="loadComponent"></component>
+    <component v-if="currentComponent && appointmentId" :is="currentComponent" :appointmentId="appointmentId"
+        @loadComponent="loadComponent"></component>
 
 </template>
 
 <script>
-import { onMounted, ref, computed, shallowRef, markRaw,nextTick  } from 'vue';
+import { onMounted, ref, computed, shallowRef, markRaw, nextTick } from 'vue';
 import axios from "axios";
 import Cookies from "js-cookie";
 import AppoinmentShow from './AppoinmentShow.vue';
@@ -130,13 +143,13 @@ export default {
         const visitDate = ref('');
 
         const showAppoint = async (id) => {
-            appointmentId.value=id
+            appointmentId.value = id
             await nextTick();
             currentComponent.value = markRaw(AppoinmentShow)
         }
 
         const editAppoint = async (id) => {
-            appointmentId.value=id
+            appointmentId.value = id
             await nextTick();
             currentComponent.value = markRaw(AppoinmentEdit)
         }
@@ -161,11 +174,11 @@ export default {
                     departmentCategory: department?.department_category,
                     departmentId: selectedDepartment.value,
                     visitDate: visitDate.value,
-                    visit_fee:doctor?.visitfee,
-                    second_day:doctor?.second_day,
-                    second_dayFee:doctor?.second_dayFee,
-                    thired_day:doctor?.thired_day,
-                    thired_dayFee:doctor?.thired_dayFee,
+                    visit_fee: doctor?.visitfee,
+                    second_day: doctor?.second_day,
+                    second_dayFee: doctor?.second_dayFee,
+                    thired_day: doctor?.thired_day,
+                    thired_dayFee: doctor?.thired_dayFee,
                 };
             }
             return {
@@ -175,7 +188,7 @@ export default {
                 departmentCategory: lastAppoinment.department_category.department_category,
                 departmentId: lastAppoinment.department_category.id,
                 visitDate: visitDate.value,
-                visit_fee:lastAppoinment.doctor.visitfee,
+                visit_fee: lastAppoinment.doctor.visitfee,
                 // second_day:lastAppoinment.second_day,
                 // second_dayFee:lastAppoinment.second_dayFee,
                 // thired_day:lastAppoinment.thired_day,
@@ -240,6 +253,14 @@ export default {
             searchAppointments();
             currentComponent.value = null;
         };
+        const formatDate = (datetime) => {
+            if (!datetime) return ''
+            const date = new Date(datetime)
+            const day = String(date.getDate()).padStart(2, '0')
+            const month = String(date.getMonth() + 1).padStart(2, '0') // Months are 0-indexed
+            const year = date.getFullYear()
+            return `${day}-${month}-${year}`
+        }
         return {
             doctors,
             departments,
@@ -254,7 +275,8 @@ export default {
             editAppoint,
             currentComponent,
             loadComponent,
-            appointmentId
+            appointmentId,
+            formatDate
         }
     }
 }

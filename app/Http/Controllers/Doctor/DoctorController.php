@@ -23,6 +23,20 @@ class DoctorController extends Controller
             'doctorDepartments' => $doctorDepartment,
         ], 200);
     }
+    public function departmentDoctor(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $departmentDoctor = Doctor::where('deparment_category', $request->department_id)
+            ->where('user_id', $user->id)
+            ->get();
+
+        return response()->json($departmentDoctor, 200);
+    }
     public function index()
     {
         $user = Auth::user();
@@ -354,7 +368,7 @@ class DoctorController extends Controller
             return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
         }
 
-        $query = Appointment::with(['user', 'reference','doctor'])
+        $query = Appointment::with(['user', 'reference', 'doctor'])
             ->where('doctor_id', $doctor->id)
             ->where('status', 0);
 
@@ -379,7 +393,7 @@ class DoctorController extends Controller
             return response()->json(['error' => 'Unauthorized – doctor access only'], 401);
         }
 
-        $query = Appointment::with(['user', 'reference','doctor'])
+        $query = Appointment::with(['user', 'reference', 'doctor'])
             ->where('doctor_id', $doctor->id)
             ->where('status', 1);
 
@@ -443,7 +457,7 @@ class DoctorController extends Controller
 
     public function prescriptionStore(Request $request)
     {
-        
+
         $request->validate([
             'prescriptionId' => $request->has('prescriptionId') ? 'required|exists:prescriptions,id' : 'nullable',
             'appoint_id' => 'required|exists:appointments,id',

@@ -2,9 +2,17 @@
     <div class="container">
         <div
             class="header-buttons d-flex flex-wrap justify-content-start justify-content-center justify-content-md-start mb-2">
-            <router-link to="/appoinment" class="btn btn-info text-white mb-2">All Appoinment</router-link>
+            <!-- <router-link to="/appoinment-list" class="btn btn-info text-white mb-2">All Appoinment</router-link>
             <router-link to="/appoinment-details" class="btn btn-info text-white mb-2">New Appoinment</router-link>
             <router-link to="/appoinment-doctor-report" class="btn btn-info text-white mb-2">Doctor Appoinment Report</router-link>
+            <router-link to="/doctor-visit" class="btn btn-info text-white mb-2">Doctor Visit</router-link> -->
+            <router-link to="/appoinment-list" class="btn btn-info text-white mb-2">Appoinment
+                List</router-link>
+            <router-link to="/new-appoinment" class="btn btn-info text-white mb-2">New Appoinment</router-link>
+            <router-link to="/appoinment-report" class="btn btn-info text-white mb-2  bg-success">Appoinment
+                Report</router-link>
+            <router-link to="/doctor-appoinment-report" class="btn btn-info text-white mb-2">Doctor Appoinment
+                Report</router-link>
             <router-link to="/doctor-visit" class="btn btn-info text-white mb-2">Doctor Visit</router-link>
         </div>
         <div class="card">
@@ -45,9 +53,9 @@
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Total Patient</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Male</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Female</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">1st Timer</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">2nd Timer</th>
-                                <th style="height: 30px; background-color: #1d93d2; color:white">3rd Timer</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">First Time</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Second Time</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Thired Time</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Visit</th>
                             </tr>
                         </thead>

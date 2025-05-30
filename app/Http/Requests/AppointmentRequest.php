@@ -24,7 +24,7 @@ class AppointmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'slNo' => 'required|string|max:100',
+            'slNo' => 'required|integer|max:100',
             'visit_date' => 'required',
             'department_category_id' => 'required|exists:departments,id',
             'doctor_id' => 'required|exists:doctors,id',
@@ -64,8 +64,6 @@ class AppointmentRequest extends FormRequest
     {
         return [
             'slNo.required' => 'The serial number is required.',
-            'slNo.string' => 'The serial number must be a string.',
-            'slNo.max' => 'The serial number may not be greater than 100 characters.',
             'visit_date.required' => 'The visit date is required.',
             'visit_date.date_format' => 'The visit date must be in the format dd/mm/yyyy.',
             'department_category_id.required' => 'The department category is required.',

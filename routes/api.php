@@ -58,6 +58,7 @@ Route::group([
     Route::get('/doctor/patient/prescription/find',[DoctorController::class, 'prescriptionFind']);
     Route::get('/doctor/patient/appoinment/find',[DoctorController::class, 'appoinmentFind']);
     Route::get('/doctor/patient/prescriptionpatient',[DoctorController::class, 'prescriptionpatient']);
+    Route::get('/department/doctor',[DoctorController::class, 'departmentDoctor']);
     
     Route::get('/symptoms', [SymptomController::class, 'index']);
     Route::post('/symptoms/store', [SymptomController::class, 'store']);

@@ -241,7 +241,7 @@
                                     class="fa-solid fa-user-doctor"></i><span>Doctor</span></router-link>
                         </li>
                         <li v-show="role === 'Admin'" class="dropdown" style="cursor: pointer;">
-                            <router-link to="/appoinment" class="menu-toggle nav-link has-dropdown"><i
+                            <router-link to="/appoinment-list" class="menu-toggle nav-link has-dropdown"><i
                                     class="fa-solid fa-calendar-check"></i><span>Appoinment</span></router-link>
                         </li>
 

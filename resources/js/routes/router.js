@@ -155,7 +155,7 @@ const routes = [
             },
 
             {
-                path: '/appoinment',
+                path: '/appoinment-list',
                 name: 'Appoinment',
                 components: {
                     default: Dashboard,
@@ -164,7 +164,7 @@ const routes = [
                 meta: { hideMainContent: true },
             },
             {
-                path: '/appoinment-details',
+                path: '/new-appoinment',
                 name: 'AppoinmentDetails',
                 components: {
                     default: Dashboard,
@@ -191,7 +191,7 @@ const routes = [
                 meta: { hideMainContent: true },
             },
             {
-                path: '/appoinment-doctor-report',
+                path: '/doctor-appoinment-report',
                 name: 'DoctorwiseReport',
                 components: {
                     default: Dashboard,

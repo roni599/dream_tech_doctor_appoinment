@@ -19,10 +19,13 @@
                                 <div class="card w-100">
                                     <div class="card-header d-flex justify-content-between">
                                         <h6 class="text-center mt-2" style="color: #1d93d2">
-                                            Appointment Create
+                                            Appointment Edit
                                         </h6>
                                     </div>
                                     <div class="card-body">
+                                        <div class="mb-1 text-center">
+                                            <span class="fw-bold">Appoinment ID: <span class="text-info">{{ form.appointby }}</span></span>
+                                        </div>
                                         <div class="mb-1 text-center">
                                             <span class="section-title">S.L No: </span>
                                             <span class="badge badge-custom ms-2">{{ SlNo }}</span>
@@ -40,6 +43,46 @@
                                                 v-model="form.department_category_id" />
                                             <p class="mb-0"><strong>Doctor: </strong>{{ DoctorName }}</p>
                                             <input type="hidden" name="doctor_id" v-model="form.doctor_id" />
+                                        </div>
+                                        <div
+                                            class="filters d-flex flex-column flex-sm-row justify-content-center gap-3 align-items-center mb-4 my-3">
+                                            <div class="filter-item">
+                                                <label for="patientMobile" class="form-label mb-0">Visit date</label>
+                                                <input type="date" @change="handleVisitDateChange($event)"
+                                                    class="form-control" />
+                                            </div>
+                                            <div class="filter-item">
+                                                <label for="patientMobile"
+                                                    class="form-label mb-0">Department/Category</label>
+                                                <!-- <select class="form-select" aria-label="Department/Category" v-model="form.department_category_id"  @change="departmentDoctorMethod($event)">
+                                                    <option value="" selected disabled>Choose an option</option>
+                                                    <option v-for="department in departments" :key="department.id" :value="department.id">{{ department.department_category }}</option>
+                                                </select> -->
+                                                <select class="form-select" @change="departmentDoctorMethod($event)">
+                                                    <option disabled selected>Choose an option</option>
+                                                    <option v-for="dept in departments" :key="dept.id"
+                                                        :value="JSON.stringify(dept)">
+                                                        {{ dept.department_category }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="filter-item">
+                                                <label for="patientMobile" class="form-label mb-0">Doctor</label>
+                                                <!-- <select class="form-select" aria-label="Doctor"
+                                                    @change="selectDoctorMethod($event)">
+                                                    <option selected value="" disabled>Choose an option</option>
+                                                    <option v-for="departmentDoctor in departmentDoctors"
+                                                        :key="departmentDoctor.id" :value="departmentDoctor.id">{{
+                                                            departmentDoctor.doctorName }}</option>
+                                                </select> -->
+                                                <select class="form-select" @change="selectDoctorMethod($event)">
+                                                    <option disabled selected>Choose an option</option>
+                                                    <option v-for="doctor in departmentDoctors" :key="doctor.id"
+                                                        :value="JSON.stringify(doctor)">
+                                                        {{ doctor.doctorName }}
+                                                    </option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="mb-2">
                                             <label for="patientMobile" class="form-label mb-0">Patient
@@ -232,7 +275,7 @@
 import { ref, computed, onMounted, watch } from "vue";
 import Cookies from "js-cookie";
 import axios from "axios";
-import {useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 export default {
     name: "AppoinmentEdit",
     props: {
@@ -244,6 +287,7 @@ export default {
     setup(props, { emit }) {
         const { appointmentId } = props;
         const route = useRoute();
+        const departments = ref([]);
         const form = ref({
             appoin_id: '',
             slNo: "",
@@ -266,15 +310,49 @@ export default {
             discount_narration: "",
             free_reference_id: "",
             free_narration: "",
+            appointby:''
         });
-        const SlNo = ref("102");
-        const visitDate = ref("10/08/2024");
-        const departmentCategory = ref("Cardiologist");
-        const DoctorName = ref("Dr. Md. Jasim Uddin");
+        const departmentDoctors = ref([]);
+        const SlNo = ref("");
+        const visitDate = ref("");
+        const departmentCategory = ref("");
+        const DoctorName = ref("");
 
         const references = ref([]);
         const access_token = ref("");
         const errors = ref({});
+
+        const departmentDoctorMethod = async (event) => {
+            const selected = JSON.parse(event.target.value);
+            form.value.department_category_id = selected.id;
+            departmentCategory.value = selected.department_category;
+            try {
+                const response = await axios.get("/api/auth/department/doctor", {
+                    params: {
+                        department_id: departmentCategory.value,
+                    },
+                    headers: {
+                        Authorization: `Bearer ${access_token.value}`,
+                    },
+                });
+                if (response.data && response.status === 200) {
+                    departmentDoctors.value = response.data;
+                }
+            } catch (error) {
+                console.error('Error fetching doctors by department:', error);
+            }
+        };
+
+        const handleVisitDateChange = (event) => {
+            visitDate.value = event.target.value;
+            form.value.visit_date = event.target.value;
+        };
+
+        const selectDoctorMethod = (event) => {
+            const selectedDoctor = JSON.parse(event.target.value);
+            form.value.doctor_id = selectedDoctor.id;
+            DoctorName.value = selectedDoctor.doctorName;
+        };
 
         const closeAppointment = () => {
             emit('loadComponent');
@@ -309,6 +387,7 @@ export default {
                         },
                     }
                 );
+                console.log(response.data)
                 if (response.data && response.status === 200) {
                     resetForm();
                     Swal.fire({
@@ -427,7 +506,7 @@ export default {
                         form.value.discount_narration = response.data.discount_narration,
                         form.value.free_reference_id = response.data.discount_free_reference.id,
                         form.value.free_narration = response.data.free_narration,
-
+                        form.value.appointby=response.data.appointby,
                         SlNo.value = response.data.Sl_no || '',
                         visitDate.value = response.data.visit_date || '',
                         departmentCategory.value = response.data.department_category.department_category || ''
@@ -441,6 +520,7 @@ export default {
         onMounted(() => {
             access_token.value = Cookies.get("access_token");
             fetchReference();
+            fetchDepartment();
             findAppointment(appointmentId);
         });
         const hideContent = () => {
@@ -456,12 +536,25 @@ export default {
                 form.value.percentage = "";
             }
         };
+        const fetchDepartment = async () => {
+            try {
+                const response = await axios.get('/api/auth/department', {
+                    headers: {
+                        'Authorization': `Bearer ${access_token.value}`
+                    }
+                });
+                if (response.data && response.status === 200) {
+                    departments.value = response.data;
+                }
+            } catch (error) {
+            }
+        }
         const resetForm = () => {
             form.value = {
-                slNo: "102",
-                visit_date: "10/4/2024",
-                department_category_id: 1,
-                doctor_id: "1",
+                slNo: "",
+                visit_date: "",
+                department_category_id: "",
+                doctor_id: "",
                 patient_name: "",
                 patient_address: "",
                 patient_mobile: "",
@@ -481,6 +574,11 @@ export default {
             };
         };
         return {
+            handleVisitDateChange,
+            departmentDoctorMethod,
+            selectDoctorMethod,
+            departmentDoctors,
+            departments,
             form,
             SlNo,
             visitDate,
