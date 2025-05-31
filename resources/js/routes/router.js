@@ -22,6 +22,7 @@ import AppoinmentCreate from '../components/hospital/admin/dashboard/appoinment/
 import AppointReport from '../components/hospital/admin/dashboard/appoinment/AppointReport.vue';
 import DoctorwiseReport from '../components/hospital/admin/dashboard/appoinment/DoctorwiseReport.vue';
 import DoctorVisit from '../components/hospital/admin/dashboard/appoinment/DoctorVisit.vue';
+import AppointPatient from '../components/hospital/admin/dashboard/appoinment/AppointPatient.vue';
 
 import Symtom from '../components/hospital/admin/dashboard/options/symtom/Symtom.vue';
 import SymtomCreate from '../components/hospital/admin/dashboard/options/symtom/SymtomCreate.vue';
@@ -190,6 +191,16 @@ const routes = [
                 },
                 meta: { hideMainContent: true },
             },
+            {
+                path: '/appoinment-patient/:doctor_id/:visit_date/:department_id',
+                name: 'AppointPatient',
+                components: {
+                    default: Dashboard,
+                    content: AppointPatient,
+                },
+                meta: { hideMainContent: true },
+            },
+
             {
                 path: '/doctor-appoinment-report',
                 name: 'DoctorwiseReport',
@@ -455,8 +466,8 @@ const routes = [
                 path: '/prescription-edit',
                 name: 'PrescriptionEdit',
                 components: {
-                  default: Dashboard,
-                  content: PrescriptionEdit,
+                    default: Dashboard,
+                    content: PrescriptionEdit,
                 },
                 meta: { hideMainContent: true },
             },

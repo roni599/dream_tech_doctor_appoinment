@@ -82,7 +82,7 @@ class PrintHelper {
                                 <td>${appointment.first_time_visits}</td>
                                 <td>${appointment.second_time_visits}</td>
                                 <td>${appointment.third_time_visits}</td>
-                                <td>0</td>
+                                <td>${appointment.visited}</td>
                             </tr>
                         `).join('')}
                 </tbody>

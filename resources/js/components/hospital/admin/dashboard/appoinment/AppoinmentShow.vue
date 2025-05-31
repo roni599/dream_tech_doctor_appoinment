@@ -167,8 +167,6 @@ export default {
           }
         );
 
-        console.log(response.data);
-
         if (response.status === 200) {
           appointmentData.value = response.data;
         }

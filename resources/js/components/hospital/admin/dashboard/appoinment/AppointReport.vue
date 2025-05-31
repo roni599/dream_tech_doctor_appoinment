@@ -57,6 +57,7 @@
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Second Time</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Thired Time</th>
                                 <th style="height: 30px; background-color: #1d93d2; color:white">Visit</th>
+                                <th style="height: 30px; background-color: #1d93d2; color:white">Action</th>
                             </tr>
                         </thead>
                         <tbody v-if="appoinments.length < 0">
@@ -74,7 +75,14 @@
                                 <td>{{ appoinment.first_time_visits }}</td>
                                 <td>{{ appoinment.second_time_visits }}</td>
                                 <td>{{ appoinment.third_time_visits }}</td>
-                                <td>0</td>
+                                <td>{{ appoinment.visited }}</td>
+                                <td>
+                                    <router-link
+                                        :to="`/appoinment-patient/${appoinment.doctor_id}/${visitDate}/${appoinment.department_id}`"
+                                        class="text-info d-block d-md-inline" style="cursor: pointer;" title="Show">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </router-link>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -128,6 +136,7 @@ export default {
                         Authorization: `Bearer ${access_token.value}`,
                     },
                 });
+                console.log(response)
                 if (response.data && response.status === 200) {
                     appoinments.value = response.data;
                 }
@@ -144,6 +153,7 @@ export default {
                         Authorization: `Bearer ${access_token.value}`,
                     },
                 });
+                console.log(response)
                 if (response.data && response.status === 200) {
                     appoinments.value = response.data;
                 }
